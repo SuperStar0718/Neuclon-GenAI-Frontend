@@ -1,0 +1,47 @@
+{
+  "fields": [
+    {
+      "type": "select",
+      "label": "Authentication Type",
+      "name": "type",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "auth",
+          "label": "Basic Auth"
+        },
+        {
+          "value": "header",
+          "label": "Header Auth"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Username",
+      "name": "name",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Password",
+      "name": "pas",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

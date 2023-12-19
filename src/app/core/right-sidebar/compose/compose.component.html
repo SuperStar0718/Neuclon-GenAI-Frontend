@@ -1,0 +1,71 @@
+
+<div class="compose-container lg:w-[22.5rem] rounded-[20px] p-6">
+  <div class="mb-6 format w-full rounded-3xl p-4 bg-white">
+    <header class="flex items-center rouded-[20px]">
+      <img class="mr-2" src="../../../../assets/icons/icon-blog-search-green.svg" alt="Image" />
+      <h1 class="font-semibold poppins-semibold text-sm">Report Type</h1>
+    </header>
+
+    <div class="formats mt-1">
+      <mat-button-toggle-group  name="favoriteColor" aria-label="Favorite Color">
+        <mat-button-toggle value="red" class="w-24">
+          <mat-icon>format_align_left</mat-icon>Word
+        </mat-button-toggle>
+
+        <mat-button-toggle value="green"><mat-icon>email</mat-icon>Email</mat-button-toggle>
+
+        <mat-button-toggle value="blue"><mat-icon> edit_calendar</mat-icon>Excel</mat-button-toggle>
+
+        <mat-button-toggle value="blue"><mat-icon>format_list_bulleted</mat-icon>PPT</mat-button-toggle>
+        <mat-button-toggle value="blue"><mat-icon>picture_as_pdf</mat-icon>Pdf</mat-button-toggle>
+
+      </mat-button-toggle-group>
+
+      <!-- <div class="flex gap-[2.1rem] mt-2">
+        <p class="text-[10px]">Word</p>
+        <p class="text-[10px]">Email</p>
+        <p class="text-[10px]">Power Point</p>
+        <p class="text-[10px]">Excel</p>
+        <p class="text-[10px]">Pdf</p>
+      </div> -->
+    </div>
+  </div>
+  <h1 class="font-semibold text-sm">Ask Question About Your Data</h1>
+
+  <div class="message mb-6 mt-3">
+    <textarea matInput placeholder="Generate operations performance data for the last shift" class="w-full p-4 rounded-3xl"></textarea>
+  </div>
+
+  <div class="tone mb-6 w-full rounded-3xl p-4 bg-white">
+    <div class="header flex items-center rounded-[20px]">
+      <img class="mr-2" src="../../../../assets/icons/icon-voice.svg" alt="Image" />
+      <h1 class="font-semibold text-sm">Tone</h1>
+    </div>
+    <div class="tone-controls mt-4">
+      <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color">
+        <mat-button-toggle value="professional">Professional</mat-button-toggle>
+        <mat-button-toggle value="casual">Casual</mat-button-toggle>
+        <mat-button-toggle value="enthusiastic">Enthusiastic</mat-button-toggle>
+        <mat-button-toggle value="informal">Informal</mat-button-toggle>
+        <mat-button-toggle value="funny">Funny</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+
+  <div class="mb-6 length w-full rounded-3xl p-4 bg-white">
+    <header class="flex items-center rouded-[20px]">
+      <mat-icon class="mr-2">format_align_justify</mat-icon>
+      <h1 class="font-semibold text-sm">Length</h1>
+    </header>
+    <div class="length-controls mt-4">
+      <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color">
+        <mat-button-toggle value="red">Short</mat-button-toggle>
+        <mat-button-toggle value="green">Medium</mat-button-toggle>
+        <mat-button-toggle value="blue">Long</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <button disabled mat-button class="w-full">Generate Draft</button>
+</div>

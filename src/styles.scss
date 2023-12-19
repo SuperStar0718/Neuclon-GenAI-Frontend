@@ -1,0 +1,192 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import "~@clientio/rappid/rappid.css";
+@import "../node_modules/angular-notifier/styles.scss";
+
+// font style poppins
+@font-face {
+    font-family: poppins;
+    src: url(assets/fonts/Poppins-Regular.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: poppins-semibold;
+    src: url(assets/fonts/Poppins-SemiBold.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: poppins-medium;
+    src: url(assets/fonts/Poppins-Medium.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: poppins-bold;
+    src: url(assets/fonts/Poppins-Bold.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: poppins-light;
+    src: url(assets/fonts/Poppins-Light.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    src: url('assets/fonts/SegoeUI.woff2') format('woff2'),
+    url('assets/fonts/SegoeUI.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+code, kbd, samp, pre{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.ff-poppins {
+    font-family: poppins !important;
+}
+
+.ff-poppins-bold {
+    font-family: poppins-bold !important;
+}
+
+.ff-poppins-semibold {
+    font-family: poppins-semibold !important;
+}
+
+.ff-poppins-medium {
+    font-family: poppins-medium !important;
+}
+
+.ff-poppins-light {
+    font-family: poppins-light !important;
+}
+
+.input-field {
+    .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
+        border-top-left-radius: var(--mdc-shape-small, 12px);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: var(--mdc-shape-small, 12px);
+        border-left: 1.6px solid;
+        border-top: 1.6px solid;
+        border-bottom: 1.6px solid;
+        border-color: #B5B5B5;
+    }
+
+    .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
+        border-top-left-radius: 0;
+        border-top-right-radius: var(--mdc-shape-small, 12px);
+        border-bottom-right-radius: var(--mdc-shape-small, 12px);
+        border-bottom-left-radius: 0;
+        border-right: 1.6px solid;
+        border-top: 1.6px solid;
+        border-bottom: 1.6px solid;
+        border-color: #B5B5B5;
+    }
+
+    .mat-mdc-checkbox {
+        border-top-left-radius: var(--mdc-shape-small, 12px);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: var(--mdc-shape-small, 12px);
+        border-left: 1.6px solid;
+        border-top: 1.6px solid;
+        border-bottom: 1.6px solid;
+        border-color: #B5B5B5;
+
+    }
+
+    .mat-mdc-form-field-infix {
+        min-height: 30px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input,
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+        font-size: 14px;
+        color: #969AB8;
+        font-family: poppins-medium;
+    }
+
+    .mat-mdc-select-placeholder {
+        font-size: 14px !important;
+        color: #969AB8;
+        font-family: poppins-medium;
+    }
+
+    .mat-mdc-form-field-hint,
+    .mat-mdc-form-field-error {
+        white-space: nowrap !important;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: red;
+        font-family: poppins;
+    }
+
+    .search-field .mat-mdc-form-field-subscript-wrapper,
+    .search-field-modelTemplate .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+    }
+
+    .search-field .mat-mdc-form-field-infix {
+        min-height: 30px !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+    }
+
+    .search-field-modelTemplate .mat-mdc-form-field-infix {
+        min-height: 30px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .search-field .mat-icon {
+        padding: 6px !important;
+        font-size: 20px;
+        height: 16px;
+        width: 16px;
+        margin-inline: 2px;
+    }
+
+    .search-field-modelTemplate .mat-icon {
+        padding: 6px !important;
+        font-size: 22px;
+        height: 18px;
+        width: 18px;
+        margin-inline: 2px;
+    }
+}
+
+h1 {
+    font-size: 16px;
+}
+
+.field-label {
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-family: poppins-medium;
+}
+
+.mat-mdc-raised-button {
+    background: #005F65 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    font-size: 12px;
+    font-family: poppins-medium;
+    box-shadow: none !important;
+}

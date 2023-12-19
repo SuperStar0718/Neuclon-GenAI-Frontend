@@ -1,0 +1,102 @@
+{
+  "formOptions": [
+    {
+      "value": "https",
+      "label": "HTTP"
+    },
+    {
+      "value": "https",
+      "label": "HTTP"
+    }
+  ],
+  "fields": [
+    {
+      "type": "text",
+      "label": "Username",
+      "name": "username",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "label": "Password",
+      "disabled": true,
+      "name": "password",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Database Name",
+      "name": "databaseName",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Connection Type",
+      "name": "contype",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "hostname",
+          "label": "Host Name"
+        },
+        {
+          "value": "socket",
+          "label": "socket"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "name": "port",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "SSL",
+      "name": "ssl",
+      "value": ""
+    }
+  ]
+}

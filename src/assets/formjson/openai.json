@@ -1,0 +1,30 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "API Key",
+      "name": "key",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Organization ID",
+      "name": "orgId",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

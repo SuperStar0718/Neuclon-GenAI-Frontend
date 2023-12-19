@@ -1,0 +1,50 @@
+[
+    {
+      "img": "./assets/images/d1.png",
+      "date": 14,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    },
+    {
+      "img": "./assets/images/d2.png",
+      "date": 19,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    },
+    {
+      "img": "./assets/images/d3.png",
+      "date": 14,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    },
+    {
+      "img": "./assets/images/d4.png",
+      "date": 18,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    },
+    {
+      "img": "./assets/images/d5.png",
+      "date": 15,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    },
+    {
+      "img": "./assets/images/d6.png",
+      "date": 11,
+      "month": "APR",
+      "h_text": "Lorem ipsum dolor sit anunc amet condimentum ut vitae.",
+      "p_text":
+        "Lorem ipsum dolor sit amet consectetur. Tis tempus morbi lacus at pellentesque."
+    }
+  ]

@@ -1,0 +1,10 @@
+:host .dx-fieldset {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+:host .dx-field-value-static, :host .dx-field-value:not(.dx-switch):not(.dx-checkbox):not(.dx-button) {
+    width: 300px;
+}

@@ -1,0 +1,8 @@
+<ul>
+    <div class="flex justify-between items-center" *ngFor="let link of quickLinkArray">
+        <li>{{link}}</li>
+        <div class="downtown-analytics" *ngIf="quickLinkArray.indexOf(link) === quickLinkArray.length -1">
+            <img  src="../../../assets/icons/icon-slider.svg" alt="Image">
+        </div>
+    </div>
+</ul>

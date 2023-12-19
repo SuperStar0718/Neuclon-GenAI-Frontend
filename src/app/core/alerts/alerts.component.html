@@ -1,0 +1,21 @@
+<div *ngIf="type == 'success' || type == 'error'">
+  <div class="flex flex-col justify-center items-center dialog">
+    <div class="flex justify-center items-center my-4" *ngIf="image || icon">
+      <img [src]="image" height="80px" width="80px" *ngIf="image" />
+      <mat-icon *ngIf="icon" style="font-size: 40px; overflow: visible; width: 40px; height: 40px; color: #005f65">{{
+        icon
+      }}</mat-icon>
+    </div>
+    <div class="flex flex-col justify-center items-center">
+      <div
+        class="felx justify-center items-center mb-2"
+        style="font-family: poppins-semibold; font-size: 20px; color: #005f65"
+      >
+        {{ data.heading }}
+      </div>
+      <div class="flex text-center justify-center items-center mt-1 mb-4" style="font-family: poppins; font-size: 14px">
+        {{ data.message }}
+      </div>
+    </div>
+  </div>
+</div>

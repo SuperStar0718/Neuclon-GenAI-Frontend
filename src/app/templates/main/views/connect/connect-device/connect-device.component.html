@@ -1,0 +1,120 @@
+<div class="connect-device-container px-8 py-4">
+  <span class="flex justify-end">
+    <mat-icon class="text-[19px] flex items-center justify-center" (click)="closeDialog()">clear</mat-icon>
+  </span>
+  <div class="header flex items-center justify-between">
+    <span class="capitalize">connect Device</span>
+  </div>
+
+  <div class="form-container">
+    <form action="">
+      <div class="input-field mt-[33px] flex flex-col w-full">
+        <mat-form-field appearance="outline">
+          <mat-select fromcontrolname="connectDevice">
+            <mat-option *ngFor="let device of connectDevices" [value]="device.id">
+              {{ device.connection }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- device type and name -->
+
+      <div class="flex gap-[20px] mt-[31px] items-center">
+        <div class="input-field flex-col flex w-[95%]">
+          <mat-form-field appearance="outline">
+            <input type="text" matInput placeholder="FANUC Fanuc Corporation" formControlName="deviceType" />
+            <!-- <mat-error>Please Enter valid name.</mat-error> -->
+          </mat-form-field>
+        </div>
+        <div class="input-field flex-col flex w-[95%]">
+          <mat-form-field appearance="outline">
+            <input type="text" matInput placeholder="FANUC Ethernet ( Gen 1 )" formControlName="deviceName" />
+            <!-- <mat-error>Please Enter valid name.</mat-error> -->
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Name and Description -->
+      <div class="input-field mt-[23px] flex-col flex w-full">
+        <mat-form-field appearance="outline">
+          <img
+            src="assets/icons/icon-tooltip.svg"
+            alt="Image"
+            matPostfix
+            class="ms-4 me-2"
+            width="20px"
+            height="20px"
+          />
+          <input type="text" matInput placeholder="Name" formControlName="name" />
+          <!-- <mat-error>Please Enter valid name.</mat-error> -->
+        </mat-form-field>
+      </div>
+      <div class="input-field flex-col mt-[23px] flex w-full">
+        <mat-form-field appearance="outline">
+          <img
+            src="assets/icons/icon-tooltip.svg"
+            alt="Image"
+            matPostfix
+            class="ms-4 me-2"
+            width="20px"
+            height="20px"
+          />
+          <input type="text" matInput placeholder="Description" formControlName="description" />
+          <!-- <mat-error>Please Enter valid name.</mat-error> -->
+        </mat-form-field>
+      </div>
+
+      <!-- network address and port -->
+      <div class="flex gap-[20px] mt-[23px] items-center">
+        <div class="input-field flex-col flex w-[95%]">
+          <mat-form-field appearance="outline">
+            <img
+              src="assets/icons/icon-tooltip.svg"
+              alt="Image"
+              matPostfix
+              class="ms-4 me-2"
+              width="20px"
+              height="20px"
+            />
+            <input type="text" matInput placeholder="192.168.0.1" formControlName="networkAddress" />
+            <!-- <mat-error>Please Enter valid name.</mat-error> -->
+          </mat-form-field>
+        </div>
+        <div class="input-field flex-col flex w-[95%]">
+          <mat-form-field appearance="outline">
+            <img
+              src="assets/icons/icon-tooltip.svg"
+              alt="Image"
+              matPostfix
+              class="ms-4 me-2"
+              width="20px"
+              height="20px"
+            />
+            <input type="text" matInput placeholder="8191" formControlName="networkPort" />
+            <!-- <mat-error>Please Enter valid name.</mat-error> -->
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- metadata and status registerar -->
+      <div class="checkbox-field mt-[27px] flex-col flex w-full">
+        <mat-checkbox formControlName="metaData">META Data</mat-checkbox>
+      </div>
+      <div class="checkbox-field flex-col mt-[8px] flex w-full">
+        <mat-checkbox formControlName="StatusRegister">Status Register</mat-checkbox>
+      </div>
+
+      <!-- data allias and data Store -->
+      <div class="inline">
+        <mat-checkbox class="mt-[42px] mr-[42px]" formControlName="enableAliasTopics">Enable Alias Topics</mat-checkbox>
+      </div>
+      <div class="inline">
+        <mat-checkbox class="mt-[42px]" formControlName="enableDataStore">Enable data store</mat-checkbox>
+      </div>
+      <div class="flex justify-center items-center w-full">
+        <button mat-raised-button type="button" class="mt-8">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,226 @@
+<div>
+  <div class="background-div">
+    <!-- table portion -->
+    <div class="dataTable">
+      <table
+        matSort
+        matSortActive="position"
+        matSortDirection="asc"
+        matSortDisableClear
+        mat-table
+        [dataSource]="dataSource"
+        multiTemplateDataRows
+      >
+        <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(tableProps?.colHeader)">
+          <th mat-header-cell mat-sort-header disableClear *matHeaderCellDef>
+            <div class="tabel-th">
+              <div style="margin-right: 5px">{{ tableProps.colHeader[tableData] }}</div>
+            </div>
+
+            <!-- Checkbox for the top column -->
+            <mat-checkbox
+              class="header-checkbox"
+              *ngIf="tableProps?.colHeader[tableData] == ''"
+              (change)="checkBoxAll($event.checked)"
+              [(ngModel)]="headerCheckBoxValue"
+              [checked]="isChecked()"
+            >
+            </mat-checkbox>
+          </th>
+
+          <!-- Checkboxes for data rows -->
+          <ng-container *ngIf="tableProps?.colHeader[tableData] == ''">
+            <td style="padding-right: 24px" mat-cell *matCellDef="let row">
+              <mat-checkbox
+                *ngIf="!row['dontShowCB']"
+                class=""
+                color="primary"
+                (click)="$event.stopPropagation()"
+                (change)="checkBox($event, row)"
+                [checked]="row['checked'] == true"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- Normal column -->
+          <ng-container
+            *ngIf="tableProps.columnTypes[tableData] === null || tableProps.columnTypes[tableData] === undefined"
+          >
+            <td mat-cell *matCellDef="let element">{{ element[tableData] }}</td>
+          </ng-container>
+
+          <!-- Column with image and text -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'imageText'">
+            <td mat-cell *matCellDef="let element">
+              <div class="flex items-center">
+                <img
+                  [src]="element.imageText.img ? element.imageText.img : defaultPlaceholder"
+                  alt=""
+                  width="20px"
+                  height="20px"
+                  class="m-4 mx-0"
+                />
+                <span class="mx-2 ff-poppins-medium" style="font-size: 14px">{{ element.imageText.name }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Column with number format -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'number'">
+            <td mat-cell *matCellDef="let element">{{ element[tableData] | number : "1.2-2" }}</td>
+          </ng-container>
+
+          <!-- Column with icon -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'icon'">
+            <td mat-cell *matCellDef="let element">
+              <mat-icon style="cursor: pointer">{{ element[tableData] }}</mat-icon>
+            </td>
+          </ng-container>
+
+          <!-- Column with exceeded text -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'textExceeded'">
+            <td mat-cell *matCellDef="let element">
+              <div class="w-[400px] my-4" style="text-wrap: wrap">
+                {{ element[tableData] }}
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Column with date -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'date'">
+            <td mat-cell *matCellDef="let element">
+              <div
+                style="
+                  border-radius: 6px;
+                  background: rgba(0, 95, 101, 0.29);
+                  width: fit-content;
+                  padding: 6px;
+                  color: #464f60;
+                "
+              >
+                <div>{{ element[tableData] | date : "mediumDate" }}</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Column with time -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'time'">
+            <td mat-cell *matCellDef="let element">
+              <div
+                style="
+                  border-radius: 4px;
+                  background: var(--gray-50, #e9edf5);
+                  width: fit-content;
+                  padding: 6px;
+                  color: #464f60;
+                "
+              >
+                <div>{{ element[tableData] | date : "mediumTime" }}</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Column with status color -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'statusToShow'">
+            <td mat-cell *matCellDef="let element">
+              <div
+                *ngFor="let item of tableProps.statusConfig"
+                [ngStyle]="{ color: element[tableData] == item.status ? item.color : '' }"
+              >
+                {{ element[tableData] }}
+                <div
+                  style="width: fit-content; height: auto; padding: 6px 10px; border-radius: 10px"
+                  *ngIf="element[tableData] == item.status"
+                  [style.background]="element[tableData] == item.status ? item.backgroundColor : '#005f65;'"
+                >
+                  {{ element[tableData] }}
+                </div>
+              </div>
+              <div *ngIf="!tableProps.statusConfig" style="width: fit-content; height: auto; padding: 6px">
+                {{ element[tableData] }}
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Actions Menu column -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'actionsMenu'">
+            <td mat-cell *matCellDef="let element; let index = index">
+              <mat-icon
+                style="height: auto; width: auto"
+                [matMenuTriggerFor]="menu"
+                class="actions"
+                *ngIf="rowActionsVisibility(element)"
+              >
+                more_vert
+              </mat-icon>
+              <mat-menu #menu="matMenu">
+                <button
+                  mat-menu-item
+                  type="button"
+                  class="w-100 justify-content-start align-items-center"
+                  *ngFor="let item of tableProps?.rowActions"
+                  (click)="onRowActionClicked(element, item, index)"
+                  [ngStyle]="
+                    item.visibility && element && (element[item.type] || !item.isCustom)
+                      ? { display: 'flex' }
+                      : { display: 'none' }
+                  "
+                >
+                  <mat-icon
+                    class="btn-action-icon"
+                    *ngIf="item.icon"
+                    [style.background-color]="item.background"
+                    [style.color]="item.color"
+                  >
+                    {{ item.icon }}
+                  </mat-icon>
+                  <img class="btn-action-image" *ngIf="item.source" [src]="item.source" />
+                  <span class="btn-action-text" [style.color]="item.color">{{ item.label }}</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <!-- Actions Seperate column -->
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'actionsSeperate'">
+            <td mat-cell *matCellDef="let element; let index = index">
+              <div style="display: flex; justify-content: start; align-items: center">
+                <ng-container *ngFor="let item of tableProps?.rowActions">
+                  <button
+                    class="btn-action"
+                    *ngIf="rowActionsVisibility(element)"
+                    [ngStyle]="
+                      item.visibility && element && (element[item.type] || !item.isCustom)
+                        ? { display: 'flex' }
+                        : { display: 'none' }
+                    "
+                    (click)="onRowActionClicked(element, item, index)"
+                    [style.background-color]="item.background"
+                  >
+                    <mat-icon
+                      class="btn-action-icon"
+                      *ngIf="item.icon"
+                      [style.background-color]="item.background"
+                      [style.color]="item.color"
+                      >{{ item.icon }}
+                    </mat-icon>
+                    <img class="btn-action-image" *ngIf="item.source && !item.icon" [src]="item.source" />
+                    <span class="btn-action-text" *ngIf="item.label" [style.color]="item.color">{{ item.label }}</span>
+                  </button>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="objectKeys(tableProps?.colHeader)"></tr>
+        <tr mat-row *matRowDef="let row; columns: objectKeys(tableProps?.colHeader)"></tr>
+      </table>
+      <div class="norecord" *ngIf="dataSource?.length === 0">No Record Found</div>
+    </div>
+    <!-- padingation -->
+    <app-pagination *ngIf="pagination" class="mt-20" (setPage)="setPagination($event)" [pagination]="pagination">
+    </app-pagination>
+  </div>
+</div>

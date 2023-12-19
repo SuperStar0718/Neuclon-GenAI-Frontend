@@ -1,0 +1,198 @@
+.sidenav-width {
+  width: 19.8rem;
+  transition: .5s all ease-in;
+}
+
+.sidenav-close {
+  width: 4.7rem;
+  transition: .5s all ease-in;
+}
+
+.sidebar-main-container {
+
+  .logo {
+    .mat-mdc-raised-button {
+      background-color: #F6F6F6 !important;
+      padding: 1rem !important;
+
+    }
+
+    .mat-divider {
+      border-top-width: 3px;
+      border-color: #F6F6F6;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    // connection list
+
+    ul.list {
+      li {
+        height: 3.125rem;
+        cursor: pointer;
+      }
+
+      a,
+      mat-icon {
+        color: #ffffff;
+      }
+
+      .child-node-container {
+        margin-left: 1.9rem;
+        padding: 2rem 0;
+        // border-left: 2px solid white;
+
+        li {
+          // height: 2.7rem;
+          // margin-top: 1rem;
+
+          // padding: 1rem;
+          a {
+            padding: 0.7rem;
+            white-space: nowrap;
+            margin-top: 4rem;
+            width: 204px;
+          }
+
+          .line {
+            height: 66px;
+            width: 30px;
+            background: transparent;
+            border-radius: 0px 0px 0px 60%/28%;
+            border: solid 2px white;
+            border-top: none;
+            border-right: none;
+            padding-right: 2rem;
+          }
+        }
+      }
+    }
+
+    .menu-item {
+      padding: 12px 0px;
+      cursor: pointer;
+      margin: 10px 0px;
+      border-right: 6px solid transparent;
+    }
+
+    .active {
+      background: rgba(232, 237, 242, 0.5);
+      border-radius: 6px;
+      border-right: 6px solid #174680;
+      color: #174680;
+
+      .icon-image {
+        filter: brightness(0) saturate(100%) invert(20%) sepia(18%) saturate(6150%) hue-rotate(194deg) brightness(93%) contrast(87%);
+      }
+    }
+
+    .connectors-invisible {
+      display: none;
+    }
+
+    .connectors ul,
+    .connectors li {
+      margin-top: 0;
+      margin-bottom: 0;
+      list-style-type: none;
+    }
+
+    .connectors div[role=group]>.mat-tree-node {
+      padding-left: 1rem;
+    }
+
+    .mat-tree {
+      background-color: #005F65 !important;
+
+      .mat-nested-tree-node {
+        color: #ffffff;
+      }
+
+      .mat-tree-node {
+        color: #ffffff;
+
+        // hide image
+        img:not([src]) {
+          display: none !important;
+        }
+      }
+    }
+
+    .mat-tree {
+      width: 85%;
+    }
+
+    .shortcut {
+      color: #CECECE;
+      text-transform: uppercase;
+      font-size: .8rem;
+    }
+
+  }
+
+
+  // image sidenav
+
+  .icon-container {
+    .sidenav-close-divider {
+      background: #fff;
+      height: 0.1rem;
+      border-radius: 5px;
+      width: 40px;
+      margin: 1rem 0 0.5rem 0;
+    }
+
+    ul li img {
+      height: 30px;
+      margin: 1.5rem 0 0 0;
+
+    }
+
+    ul li img:hover {}
+
+    .logout {
+      margin-top: 10rem;
+
+      img {
+        height: 30px;
+        margin: 1.5rem 0 0 0;
+      }
+    }
+  }
+
+}
+
+
+.bg-active {
+  background: #13131B;
+  border-radius: 0.5rem;
+}
+
+::ng-deep {
+
+  ::-webkit-scrollbar {
+    width: .5em;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #005F65;
+    /* Set the color of the thumb */
+  }
+
+  /* Customize the scrollbar thumb */
+  ::-webkit-scrollbar-thumb {
+    background-color: #1e7980;
+    /* Set the color of the thumb */
+    border: 1px solid #1da1aa;
+    /* Set the color of the thumb */
+    border-radius: 5px;
+    /* Round the corners of the thumb */
+  }
+
+  /* Customize the scrollbar thumb when hovering */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #249097
+      /* Set the color of the thumb on hover */
+
+  }
+}

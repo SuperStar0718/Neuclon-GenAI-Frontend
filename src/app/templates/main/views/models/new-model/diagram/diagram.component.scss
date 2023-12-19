@@ -1,0 +1,17 @@
+#myDiagramDiv {
+  width: 70vw;
+  height: 700px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.diagram-container {
+  width: 100%;
+  height: 500px;
+}
+
+@media screen and (min-width: 1280px) {
+  .bar {
+    width: 32%;
+  }
+}

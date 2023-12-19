@@ -1,0 +1,134 @@
+<div class="p-6" style="background-color: white; box-shadow: 0px 0px 2px 2px rgba(207, 206, 206, 0.25)">
+  <section class="flex items-center">
+    <div class="flex flex-col items-center w-1/2">
+      <div class="flex flex-col mb-5 pb-5">
+        <h1 class="ff-poppins-semibold" style="font-size: 34px">Welcome to Neuclon</h1>
+        <p class="ff-poppins-medium text-justify" style="font-size: 16px">
+          Neuclon is integrated platform that unifies data, analytics, and AI capabilites. It simplifies data
+          connectivity, enables advanced analytics and harnesses arficial intelligence to drive informed decisions and
+          accelerate digital transformation for organizations.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 w-[400px] my-5 py-5">
+        <div class="flex flex-col items-center menu-item" routerLink="/main/connect/new-connection">
+          <img src="assets/icons/Connect.svg" class="mb-[9px]" alt="" width="30px" height="30px" />
+          <span class="my-2">Connect</span>
+        </div>
+        <div class="flex flex-col items-center menu-item" routerLink="/main/models/new-model">
+          <img src="assets/icons/Model.svg" class="mb-[6px]" alt="" width="30px" height="30px" />
+          <span class="my-2">Model</span>
+        </div>
+        <div class="flex flex-col items-center menu-item" routerLink="/main/dashboard">
+          <img src="assets/icons/Dashboard.svg" class="mb-1" alt="" width="30px" height="30px" />
+          <span class="my-2">Dashboard</span>
+        </div>
+        <div class="flex flex-col items-center menu-item" routerLink="/main/report">
+          <img src="assets/icons/businessexport.svg" alt="" width="30px" height="30px" />
+          <span class="my-2">Reports</span>
+        </div>
+        <div
+          class="flex flex-col items-center justify-center menu-item"
+          style="width: 100px; height: 90px; padding: 2px"
+          routerLink="/main/library"
+        >
+          <img src="assets/icons/Library.svg" class="mb-1" alt="" width="30px" height="30px" />
+          <span>Library</span>
+        </div>
+        <div
+          class="flex flex-col items-center justify-center menu-item"
+          style="width: 100px; height: 90px; padding: 2px"
+          routerLink="/main/copilot"
+        >
+          <img src="assets/icons/CoPllotConfig.svg" class="mb-1" alt="" width="30px" height="30px" />
+          <span>Copilot</span>
+        </div>
+      </div>
+    </div>
+    <div class="w-1/2 ms-5 p-[30px] stepper-block">
+      <h1 class="ff-poppins-medium mb-3 px-[14px]" style="font-size: 24px">Get Started</h1>
+      <ng-container *ngFor="let item of steppers">
+        <div
+          class="flex items-center gap-4 stepper mb-1 p-[14px]"
+          style="cursor: pointer"
+          [ngClass]="item.opened ? 'stepper-active' : ''"
+          *ngIf="!item.opened"
+          (click)="onStepper(item)"
+        >
+          <div class="stepper-count">{{ item.id }}</div>
+          <span class="ff-poppins-medium" style="font-size: 16px">{{ item.label }}</span>
+        </div>
+        <div *ngIf="item.opened" style="background-color: white; border-radius: 18px; padding: 16px 16px 2px 16px">
+          <div class="flex items-center gap-4 mb-2" style="cursor: pointer" (click)="onStepper(item)">
+            <div class="stepper-count">{{ item.id }}</div>
+            <span class="ff-poppins-medium" style="font-size: 16px">{{ item.label }}</span>
+          </div>
+          <p>{{ item.text }}</p>
+          <div class="flex gap-4 my-3" style="cursor: pointer">
+            <div class="stepper-play">
+              <mat-icon>play_arrow</mat-icon>
+            </div>
+            <span class="ff-poppins" style="font-size: 16px">{{ item.label }}</span>
+          </div>
+        </div>
+      </ng-container>
+      <div class="mt-4 mb-3 flex justify-center items-center w-100">
+        <button mat-raised-button type="button" style="font-size: 16px" (click)="onFinish()">Finish</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- <section class="mt-6 gap-5 flex flex-wrap" cdkDropList [cdkDropListData]="widgets" (cdkDropListDropped)="drop($event)">
+  <div
+    *ngFor="let item of widgets"
+    class="p-6 w-[49%] widget"
+    style="background-color: white; box-shadow: 0px 0px 2px 2px rgba(207, 206, 206, 0.25)"
+    cdkDrag
+    [cdkDragDisabled]="!lock"
+    [ngStyle]="{ cursor: lock ? 'move' : 'arrow' }"
+  >
+    <div class="flex justify-between">
+      <div>
+        <h1 class="ff-poppins-semibold" *ngIf="item.type != 'notifications'">{{ item.heading }}</h1>
+        <div *ngIf="item.type == 'notifications'">
+          <h1 class="ff-poppins mb-2" style="color: #47888c">{{ item.heading }}</h1>
+          <div class="flex items-center gap-2">
+            <img src="assets/icons/notification.svg" alt="" width="24px" height="24px" />
+            <span class="ff-poppins-semibold">NO ALARAMS</span>
+          </div>
+        </div>
+      </div>
+      <mat-icon style="color: #47888c; cursor: pointer" *ngIf="lock" [matMenuTriggerFor]="menu">settings</mat-icon>
+      <mat-menu #menu="matMenu" class="menu">
+        <div class="flex gap-2 p-2">
+          <mat-icon style="color: #47888c">edit</mat-icon>
+          <span>Edit</span>
+        </div>
+        <div class="flex gap-2 p-2">
+          <mat-icon style="color: #47888c">delete</mat-icon>
+          <span>Remove</span>
+        </div>
+      </mat-menu>
+    </div>
+    <div *ngIf="item.type == 'chart'" class="p-8">
+      <canvas
+        baseChart
+        [type]="'pie'"
+        [datasets]="pieChartDatasets"
+        [labels]="pieChartLabels"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        [legend]="pieChartLegend"
+      ></canvas>
+    </div>
+    <div *ngIf="item.type == 'map'" class="pt-4">
+      <google-map width="100%" [center]="center" [zoom]="zoom" (mapClick)="addMarker($event)">
+        <map-marker
+          *ngFor="let markerPosition of markerPositions"
+          [position]="markerPosition"
+          [options]="markerOptions"
+        ></map-marker>
+      </google-map>
+    </div>
+  </div>
+</section> -->

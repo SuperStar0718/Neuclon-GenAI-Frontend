@@ -1,0 +1,53 @@
+{
+    "fields": [
+        {
+            "type": "url",
+            "label": "Base Url",
+            "name": "url",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "label": "Authentication Type",
+            "name": "type",
+            "value": "",
+            "formOptions": [
+                {
+                    "value": "auth",
+                    "label": "Basic Auth"
+                },
+                {
+                    "value": "header",
+                    "label": "Header Auth"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "label": "SSL certificate",
+            "name": "key",
+            "value": "",
+            "formOptions": [
+                {
+                    "value": "ca",
+                    "label": "CA Certificate"
+                },
+                {
+                    "value": "client",
+                    "label": "Client Certificate "
+                },
+                {
+                    "value": "none",
+                    "label": "none"
+                }
+            ]
+        }
+    ]
+}

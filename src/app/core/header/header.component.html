@@ -1,0 +1,123 @@
+<div class="flex justify-between items-center w-full ps-8 pe-14" style="background: #f4f4f4">
+  <h1 class="ff-poppins-semibold" style="font-size: 20px">{{ activeComponent }}</h1>
+  <div class="flex">
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="px-4 pt-4" style="cursor: pointer">
+      <mat-icon style="font-size: 40px; width: 40px; overflow: visible; color: #005f65" (click)="onFullScreen()"
+        >zoom_out_map</mat-icon
+      >
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="p-4" style="cursor: pointer">
+      <mat-icon style="font-size: 40px; width: 40px; overflow: visible; color: #005f65" [matMenuTriggerFor]="menu"
+        >apps</mat-icon
+      >
+      <mat-menu #menu="matMenu" class="menu" [backdropClass]="'menu-cdk'">
+        <div class="flex flex-wrap items-center">
+          <div
+            class="flex flex-col items-center menu-item"
+            style="width: 90px; height: 90px; padding: 14px"
+            (click)="onNeuclink()"
+          >
+            <img src="assets/icons/neuclink.svg" class="mb-[9px]" alt="" width="30px" height="30px" />
+            <span class="my-2">Neuclink</span>
+          </div>
+          <!-- <div class="flex flex-col items-center menu-item" style="width: 90px; height: 90px; padding: 14px">
+            <img src="assets/icons/appWave.svg" class="mb-[6px]" alt="" width="30px" height="30px" />
+            <span class="my-2">AppWave</span>
+          </div> -->
+          <div
+            class="flex flex-col items-center menu-item"
+            style="width: 182px; height: 90px; padding: 14px"
+            (click)="onNeuclonEdge()"
+          >
+            <img src="assets/icons/iot.svg" class="mb-[4px]" alt="" width="30px" height="30px" />
+            <span class="my-2">Neuclon Edge</span>
+          </div>
+          <div
+            class="flex flex-col items-center menu-item"
+            style="width: 96px; height: 90px; padding: 14px"
+            (click)="onNeuclonAI($event)"
+          >
+            <img src="assets/icons/neuclon-icon.svg" class="mb-[8px]" alt="" width="20px" height="20px" />
+            <span class="my-2">NeuclonAI</span>
+          </div>
+          <div class="flex flex-col items-center menu-item" style="width: 182px; height: 90px; padding: 2px">
+            <img src="assets/icons/insight.svg" alt="" width="40px" height="40px" class="mb-[8px]" />
+            <span>Single Insight</span>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="flex items-center" [matMenuTriggerFor]="menu2">
+      <span class="ff-poppins-medium ps-4" style="font-size: 14px">Andrew Smith</span>
+      <img
+        src="assets/icons/avatar.svg"
+        alt=""
+        class="mx-4"
+        width="40px"
+        height="40px"
+        style="border-radius: 50%; cursor: pointer"
+      />
+    </div>
+    <mat-menu #menu2="matMenu" class="menu" [backdropClass]="'menu-cdk2'">
+      <ul class="container-fluid list">
+        <li class="list-item" *ngFor="let item of menus">
+          <img [src]="item.img" width="18px" height="18px" *ngIf="item.img" />
+          <mat-icon *ngIf="item.icon" style="width: 19px; height: 19px; overflow: visible; color: #005f65">{{
+            item.icon
+          }}</mat-icon>
+          <div class="ff-poppins-medium" style="font-size: 14px; color: #2e2c34">
+            {{ item.label }}
+          </div>
+        </li>
+        <li class="flex gap-2 p-3">
+          <mat-icon style="color: #47888c">info</mat-icon>
+          <div class="flex flex-col">
+            <div class="flex gap-2">
+              <span class="ff-poppins-medium" style="font-size: 12px">TENANT ID:</span>
+              <span class="ff-poppins-medium" style="font-size: 12px">DV7989889</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="ff-poppins-medium" style="font-size: 12px">BACKEND:</span>
+              <span class="ff-poppins-medium" style="font-size: 12px">789798987</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="ff-poppins-medium" style="font-size: 12px">UI:</span>
+              <span class="ff-poppins-medium" style="font-size: 12px">97987879</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </mat-menu>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<!-- <div *ngIf="isSubHeader" class="flex justify-end items-center px-16 py-4" style="background: #f4f4f4">
+  <div class="flex gap-3 toggle-btn">
+    <div class="flex gap-2" style="cursor: pointer; color: #47888c">
+      <mat-icon>add_circle</mat-icon>
+      <span>Add Widget</span>
+    </div>
+    <div class="flex gap-2" style="cursor: pointer; color: #47888c">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </div>
+    <mat-slide-toggle (change)="onChangeLockStatus($event)">
+      <img src="assets/icons/lock.svg" alt="" />
+    </mat-slide-toggle>
+    <div class="flex gap-1" style="cursor: pointer; color: #47888c">
+      <span>More</span>
+      <mat-icon [matMenuTriggerFor]="menu3">arrow_drop_down</mat-icon>
+    </div>
+    <mat-menu #menu3="matMenu" class="menu">
+      <div class="flex gap-2 p-2">
+        <mat-icon style="color: #47888c">undo</mat-icon>
+        <span>Restore dashboard</span>
+      </div>
+    </mat-menu>
+    <img src="assets/icons/question.svg" alt="" style="cursor: pointer; color: #47888c" />
+  </div>
+</div>
+<mat-divider *ngIf="isSubHeader"></mat-divider> -->

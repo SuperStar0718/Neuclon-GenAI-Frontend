@@ -1,0 +1,24 @@
+{
+    "fields": [
+        {
+            "type": "radio",
+            "label": "Authorize",
+            "name": "googlesheets",
+            "description": "If you want your Neuclone apps to modify your Google sheets, make sure to select read and write access",
+            "value": "",
+            "visible": "false",
+            "radiolabel": [
+                {
+                    "label": "Read Only",
+                    "value": "readonly",
+                    "description": "Your Neuclone can only read data from Google sheets."
+                },
+                {
+                    "label": "Read and write",
+                    "value": "readwrite",
+                    "description": "Your Neuclone apps can read data from sheets, modify sheets, and more."
+                }
+            ]
+        }
+    ]
+}

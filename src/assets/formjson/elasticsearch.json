@@ -1,0 +1,83 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "name": "port",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "SSL",
+      "name": "ssl",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "label": "Username",
+      "name": "key",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Password",
+      "name": "key",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "SSL certificate",
+      "name": "key",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "ca",
+          "label": "CA Certificate"
+        },
+        {
+          "value": "client",
+          "label": "Client Certificate "
+        },
+        {
+          "value": "none",
+          "label": "none"
+        }
+      ]
+    }
+  ]
+}

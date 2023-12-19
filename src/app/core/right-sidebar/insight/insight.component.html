@@ -1,0 +1,12 @@
+<div class="insight-container rounded-[20px] p-6 lg:w-[22.5rem]">
+    <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" #insight="matButtonToggleGroup" [(ngModel)]="defaultSelectedOption">
+        <mat-button-toggle value="analytics">Analytics</mat-button-toggle>
+        <mat-button-toggle value="site">This Site</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div class="insight-content-container px-[0.7rem]">
+          <analytics *ngIf="insight.value === 'analytics'" ></analytics>
+          <site *ngIf="insight.value === 'site'"></site>
+          
+      </div>
+</div>

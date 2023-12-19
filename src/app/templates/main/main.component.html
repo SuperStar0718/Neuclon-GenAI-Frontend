@@ -1,0 +1,88 @@
+<!-- button for left sidenav -->
+<button
+  *ngIf="!isSidebarExtend"
+  type="button"
+  mat-button
+  #btnleftsidebar
+  [ngClass]="{
+    'xsm-left-position': isXsBreakpoint && isExpandedLeftSidebar,
+    'md-left-position': isMdBreakpoint,
+    'sm-left-position': isSmBreakpoint
+  }"
+  [style]="isExpandedLeftSidebar ? 'left: 4rem' : ''"
+  class="left-[19rem] btn-collapsible flex items-center justify-center"
+  (click)="[drawer.toggle(), (this.isExpandedLeftSidebar = !this.isExpandedLeftSidebar)]"
+>
+  <mat-icon class="items-center justify-center" style="margin: 0">{{
+    isExpandedLeftSidebar ? "chevron_right" : "chevron_left"
+  }}</mat-icon>
+</button>
+<mat-sidenav-container class="h-screen overflow-hidden drawer-container" [hasBackdrop]="false">
+  <!-- left-sidebar -->
+  <mat-sidenav
+    #sidenav
+    opened="true"
+    #drawer
+    mode="side"
+    [ngClass]="{ 'sidenav-width': isExpandedLeftSidebar }"
+    [style]="isXsBreakpoint ? 'width: 100%' : ''"
+  >
+    <left-sidebar [isHideSidebarMenu]="isExpandedLeftSidebar"></left-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content
+    class="flex items-center justify-center overflow-y-hidden"
+    [style]="
+      isExpandedLeftSidebar
+        ? 'margin-left: 80px;margin-right: 34px;transition: .5s all ease-in;'
+        : 'margin-right: 34px;margin-left: 324px;transition: .5s all ease-in;'
+    "
+  >
+  <div class="flex flex-col w-full h-full" >
+    <app-header *ngIf="hasHeader"></app-header>
+    <div [class]="hasHeader ? 'py-8 px-4 h-full' : ''">
+      <router-outlet ></router-outlet>
+    </div>
+  </div>
+  </mat-sidenav-content>
+  <!-- right sidebar -->
+  <mat-sidenav
+    [style.background-color]="isExpandedRightSidebar ? '' : '#005F65 !important'"
+    position="end"
+    #sidenav2
+    opened="true"
+    class="right-sidenav"
+    [style.width.vw]="isSidebarExtend ? '100' : ''"
+    [mode]="sidenavMode"
+    [ngClass]="isExpandedRightSidebar ? 'w-full-rght-sidebar sidenav-width' : 'right-sidenav-width'"
+  >
+    <right-sidebar
+      (onRightSidebar)="extendRightSidebar($event)"
+      [isHideRightSidebarMenu]="isExpandedRightSidebar"
+      class="absolute flex justify-end right-4"
+    ></right-sidebar>
+  </mat-sidenav>
+</mat-sidenav-container>
+
+<!-- rightsidebar button -->
+<button
+  type="button"
+  mat-button
+  #btnrightsidebar
+  *ngIf="!isSidebarExtend"
+  [ngClass]="{
+    'lg-right-position': isLgBreakpoint,
+    'xsm-right-position': isXsBreakpoint && isExpandedRightSidebar,
+    'md-right-position': isMdBreakpoint,
+    'sm-right-position': isSmBreakpoint
+  }"
+  [style]="isExpandedRightSidebar ? 'background-color: #005F65' : 'right: 1.5rem; background-color: #fff'"
+  class="btn-collapsible flex items-center justify-center lg:right-[23rem]"
+  (click)="sidenav2.toggle(); this.isExpandedRightSidebar = !this.isExpandedRightSidebar"
+>
+  <mat-icon
+    [style]="!isExpandedRightSidebar ? '' : 'color: #ffffff'"
+    class="items-center justify-center"
+    style="margin: 0"
+    >{{ !isExpandedRightSidebar ? "chevron_left" : "close" }}</mat-icon
+  >
+</button>

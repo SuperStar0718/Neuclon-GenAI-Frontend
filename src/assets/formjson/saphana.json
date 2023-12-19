@@ -1,0 +1,70 @@
+{
+    "fields": [
+        {
+            "type": "text",
+            "label": "Host",
+            "name": "Host",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Port",
+            "name": "port",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Database Name",
+            "name": "databaseName",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Username",
+            "name": "username",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "password",
+            "disabled": true,
+            "label": "Password",
+            "name": "password",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        }
+    ]
+}

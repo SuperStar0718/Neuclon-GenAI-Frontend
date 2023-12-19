@@ -1,0 +1,93 @@
+.ai-collaborator-container {
+    ::ng-deep {
+        .mat-button-toggle-group {
+            margin: 1rem 0;
+        }
+
+        .mat-button-toggle-group-appearance-standard {
+            border: none;
+        }
+
+    }
+
+    .mat-toggle-group {
+        ::ng-deep {
+            mat-icon {
+                color: #005F65;
+            }
+
+            .mat-button-toggle-label-content {
+                font-family: Poppins;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 19px;
+                letter-spacing: 0em;
+                text-align: center;
+
+            }
+
+            .mat-button-toggle-appearance-standard .mat-button-toggle-button {
+                padding: 1rem 8px;
+            }
+
+            .mat-button-toggle-checked {
+                border-bottom: 3px solid #005F65;
+            }
+
+        }
+
+    }
+
+
+    .controls {
+
+        .btn {
+            background-color: #005F65;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 46px;
+        }
+
+        ::ng-deep {
+            .mat-mdc-button>.mat-icon {
+                margin: 0;
+                height: 2rem;
+                font-size: 2rem;
+            }
+
+            mat-icon {
+                color: #fff;
+                overflow: visible;
+
+            }
+        }
+    }
+
+    .mdc-tab__text-label {
+        color: #000;
+    }
+
+    .mat-button-toggle-appearance-standard {
+        background-color: #E9E9E9;
+
+    }
+
+    .mat-button-toggle-label-content {
+        font-weight: 600;
+        color: #000;
+    }
+
+
+    .controls {
+        span {
+            background-color: #005F65;
+
+            mat-icon {
+                color: #fff;
+                font-size: 20px;
+            }
+        }
+    }
+}

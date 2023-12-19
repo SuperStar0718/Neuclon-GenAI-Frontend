@@ -1,0 +1,28 @@
+.manage-connection-container {
+    .add-connection {
+        border: 2px dashed #005F65;
+    }
+
+    ::ng-deep {
+        .mat-icon {
+            height: 55px;
+            width: 55px;
+        }
+
+        .mat-mdc-dialog-container .mdc-dialog__surface {
+            border-radius: 20px;
+        }
+
+        .mdc-checkbox__background {
+            border: 3px solid #8A8A8A;
+        }
+
+        #mat-mdc-checkbox-3 label {
+            color: #8A8A8A;
+        }
+
+        #mat-mdc-checkbox-4 label {
+            color: #8A8A8A;
+        }
+    }
+}

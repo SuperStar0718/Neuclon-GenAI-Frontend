@@ -1,0 +1,19 @@
+{
+    "fields": [
+        {
+            "type": "radio",
+            "label": "Authorize",
+            "name": "googlesheets",
+            "description": "Neuclone can connect to Slack and list users, send messages, etc. Please select appropriate permission scopes.",
+            "value": "",
+            "visible": "false",
+            "radiolabel": [
+                {
+                    "label": "Chat:write",
+                    "value": "readonly",
+                    "description": "Your Neuclone app will be able to list users and send messages to users & channels"
+                }
+            ]
+        }
+    ]
+}

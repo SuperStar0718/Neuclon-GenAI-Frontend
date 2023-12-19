@@ -1,0 +1,62 @@
+<div class="flex flex-wrap justify-between pb-10">
+  <!-- layout -->
+  <div class="flex-grow h-[100vh] overflow-auto pl-5 pr-10">
+    <div class="min-h-[102vh]">
+      <div
+        class="bg-[#F5F5F5] px-[30px] py-[20px] rounded-[10px] shadow-[0px 4px 4px 0px rgba(0, 0, 0, 0.25)] flex flex-wrap gap-4 justify-between items-center shadow-md"
+      >
+        <div>
+          <h1 class="text-xl font-semibold">Delivery Analytics</h1>
+          <p class="text-sm">Analytics of customer delivery performance</p>
+        </div>
+        <!-- user actions -->
+        <div class="flex gap-[18px]">
+          <span class="cursor-pointer">
+            <img src="./assets/icons/settings.svg" alt="" />
+          </span>
+
+          <span class="cursor-pointer">
+            <img src="./assets/icons/grid.svg" alt="" />
+          </span>
+
+          <span class="cursor-pointer">
+            <mat-icon svgIcon="exit_icon" class="fill-black"></mat-icon>
+          </span>
+
+          <span class="cursor-pointer">
+            <img src="./assets/icons/add_grid.svg" alt="" />
+          </span>
+        </div>
+      </div>
+
+      <!-- Analytics section -->
+      <section>
+        <div class="relative mt-12">
+          <h2 class="px-2 inline-block text-base font-semibold border-b-[2px] border-[#005F65]">Delivery Analytics</h2>
+          <span class="absolute bottom-0 left-0 block w-full border-b-[2px] -z-10 border-gray-200"></span>
+        </div>
+        <!-- Render layout -->
+        <div class="flex flex-wrap gap-1 justify-center lg:gap-6 mt-[72px]">
+          <div *ngFor="let box of renderSelectedLayout" class="{{ classes + ' w--' + box }}"></div>
+        </div>
+
+        <button class="mx-auto mt-7 flex gap-2 bg-[#005F65] hover:bg-[#004e54] text-white p-[10px] rounded-[20px]">
+          <mat-icon svgIcon="exit_icon" class="fill-white"></mat-icon>
+          Log In to comment
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <!-- layout selection -->
+  <div class="basis-[250px] grow lg:grow-0">
+    <h1 class="text-xl font-medium text-center">Board Layouts</h1>
+
+    <div class="flex items-center justify-center gap-3 mt-8 lg:flex-col">
+      <div *ngFor="let layout of layouts; let i = index" (click)="onLayoutSelection(i)" class="cursor-pointer">
+        <img [src]="layout.icon" alt="layout" />
+        <span *ngIf="selectedLayout === i" class="border-2 w-full block mt-3 rounded border-[#005F65]"></span>
+      </div>
+    </div>
+  </div>
+</div>

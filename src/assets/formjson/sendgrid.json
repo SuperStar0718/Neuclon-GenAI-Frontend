@@ -1,0 +1,18 @@
+{
+    "fields": [
+        {
+            "type": "password",
+            "label": "Api Key",
+            "disabled": true,
+            "name": "key",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        }
+    ]
+}

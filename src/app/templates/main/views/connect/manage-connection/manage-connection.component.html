@@ -1,0 +1,18 @@
+<div class="manage-connection-container flex gap-[8px] flex-wrap">
+  <div class="flex flex-wrap gap-[10px] w-full">
+    <div class="flex items-center justify-center w-[23rem] add-connection">
+      <mat-icon
+        style="color: #005f65"
+        class="text-[52px] items-center justify-center"
+        routerLink="/main/connect/new-connection"
+        style="cursor: pointer"
+        >add_circle</mat-icon
+      >
+    </div>
+    <app-connection-card
+      class=""
+      *ngFor="let item of manageConnectCollection"
+      [props]="item"
+    ></app-connection-card>
+  </div>
+</div>

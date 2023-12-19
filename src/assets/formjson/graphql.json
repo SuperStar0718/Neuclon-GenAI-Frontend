@@ -1,0 +1,54 @@
+{
+    "fields": [
+        {
+            "type": "url",
+            "label": "URL",
+            "name": "url",
+            "value": "",
+            "visible": "false",
+            "headers": [
+                {
+                    "heading": "Headers",
+                    "type": "text",
+                    "label": "Key",
+                    "name": "Key",
+                    "value": ""
+                },
+                {
+                    "type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "value": ""
+                }
+            ],
+            "urlparameters": [
+                {
+                    "heading": "Url Parameters",
+                    "type": "text",
+                    "label": "Key",
+                    "name": "Key",
+                    "value": ""
+                },
+                {
+                    "type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "label": "Authentication Type",
+            "name": "type",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        }
+    ]
+}

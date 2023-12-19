@@ -1,0 +1,33 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Api Token",
+      "name": "token",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "baserowcloud",
+          "label": "Baserow Cloud"
+        },
+        {
+          "value": "selfhosted",
+          "label": "Self Hosted"
+        }
+      ]
+    }
+  ]
+}

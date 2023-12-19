@@ -1,0 +1,46 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Zendesk Sub-domain",
+      "name": "host",
+      "value": "",
+      "visible": "false",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Client ID",
+      "name": "Port",
+      "value": "",
+      "visible": "false",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Client Secret",
+      "name": "accesskey",
+      "value": "",
+      "visible": "true",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

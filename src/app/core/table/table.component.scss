@@ -1,0 +1,133 @@
+td {
+  font-size: 14px;
+  font-family: poppins-medium;
+  white-space: nowrap;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-table {
+  white-space: nowrap !important;
+  background: #F7F7F7 !important;
+}
+
+td.mat-footer-cell,
+td.mat-cell {
+  border: none;
+  white-space: nowrap;
+}
+
+.mat-mdc-header-cell {
+  border-bottom: none;
+  color: white;
+  font-size: 16px;
+  font-family: poppins-medium;
+
+  .tabel-th {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.mat-mdc-cell {
+  border-bottom-color: #005F65 !important;
+  border-bottom-width: 1.5px !important;
+}
+
+.mat-mdc-table .mdc-data-table__header-row {
+  height: 48px;
+  background: #005F65;
+  box-shadow: 0px 4px 4px 0px rgba(207, 206, 206, 0.25);
+  transform: scale(1);
+}
+
+.background-div {
+  background: #F7F7F7 !important;
+  padding: 10px 0px;
+}
+
+td.mat-footer-cell {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  color: #174680;
+}
+
+::ng-deep .mat-menu-panel {
+  padding-inline: 10px !important;
+  background: #FFFFFF !important;
+  box-shadow: 5px 5px 40px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 0;
+}
+
+::ng-deep .mat-mdc-menu-item {
+  height: 40px !important;
+  padding-inline: 6px !important;
+}
+
+.norecord {
+  background: #F7F8FB !important;
+  text-align: center;
+  padding: 20px;
+  border-radius: 0 !important;
+}
+
+.btn-action {
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  text-align: center;
+  padding: 1px 6px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border-radius: 0px !important;
+  margin-right: 5px;
+  border: none;
+  gap: 4px;
+  padding: 6px;
+  box-shadow: 3px 3px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+
+}
+
+.btn-action-icon {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  border-radius: 50%;
+  color: white;
+}
+
+.btn-action-image {
+  width: 18px;
+  margin: 0px 10px 0px 6px;
+}
+
+.btn-action-text {
+  font-size: 13px;
+  font-family: poppins-semibold;
+}
+
+.dataTable {
+  max-width: 100%;
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #F7F8FB !important;
+  padding: 14px;
+}
+
+::ng-deep .header-checkbox .mdc-checkbox__background {
+  border-color: #ffffff !important;
+}

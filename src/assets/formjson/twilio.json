@@ -1,0 +1,44 @@
+{
+    "fields": [
+        {
+            "type": "password",
+            "label": "Auth Token",
+            "disabled": true,
+            "name": "auth",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Account SID",
+            "name": "sid",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Messaging Service SID",
+            "name": "servicesid",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        }
+    ]
+}

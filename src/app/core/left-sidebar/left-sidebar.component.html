@@ -1,0 +1,130 @@
+<div
+  class="p-6 overflow-hidden sidebar-main-container"
+  [ngClass]="isHideSidebarMenu ? 'sidenav-close' : 'sidenav-width'"
+>
+  <div class="logo sidebar-menu" *ngIf="!isHideSidebarMenu">
+    <img src="../../../assets/images/croped-orignal-logo.png" width="252px" height="60px" class="content-center" />
+
+    <mat-divider [style]="isSmBreakpoint ? 'width: 100%' : ''" class="w-full mt-8 mb-4"></mat-divider>
+    
+    <ul class="list">
+      <ng-container *ngFor="let item of sidebarMenu">
+        <li
+          class="flex items-center justify-between px-4"
+          [class.bg-active]="item == isSelectedItem"
+          [routerLinkActive]="'bg-active'"
+          [routerLink]="item.route"
+          (click)="onNodeClicked(item)"
+        >
+          <div class="flex items-center justify-center" style="height: 2.5rem">
+            <img *ngIf="item.img" [src]="item.img" alt="Image" class="mr-4" />
+            <mat-icon *ngIf="item.name === 'Home'" fontIcon="home" class="mr-4"></mat-icon>
+            <a class="text-base">{{ item.name }}</a>
+          </div>
+
+          <div class="flex justify-end">
+            <mat-icon class="mat-icon-rtl-mirror" *ngIf="item.img && item.name !== 'Home'">
+              {{ item == isSelectedItem && item.children ? "remove" : "add" }}
+            </mat-icon>
+          </div>
+        </li>
+
+        <div class="child-node-container" *ngIf="item.children && item == isSelectedItem">
+          <li
+            class="flex items-center continar row subMenuItem j"
+            *ngFor="let childItem of item.children"
+            [routerLink]="childItem.route"
+          >
+            <span class="line"></span>
+            <a style="font-size: 17px" [routerLinkActive]="'bg-active'" (click)="onChildrenClicked(childItem.name)">{{ childItem.name }}</a>
+          </li>
+        </div>
+      </ng-container>
+    </ul>
+
+    <mat-divider [style]="isSmBreakpoint ? 'width: 100%' : ''" class="w-full mt-8 mb-4 mat-divider"></mat-divider>
+
+    <div class="flex flex-col">
+      <!-- <p class="px-4 shortcut">shortcut</p> -->
+
+      <!-- <ul class="list">
+        <ng-container *ngFor="let item of sidebarMenu1">
+          <li
+            [class.xs:pl-16]="!item.img"
+            class="flex items-center justify-between px-4 xs:pl-16"
+            [class.bg-active]="item == isSelectedItem"
+            [routerLinkActive]="'bg-active'"
+            [routerLink]="item.route"
+            (click)="onNodeClicked(item)"
+          >
+            <div class="flex items-center justify-center" style="height: 2.5rem">
+              <img *ngIf="item.name !== 'Home' && item.img" [src]="item.img" alt="Image" class="mr-4" />
+              <a class="text-base">{{ item.name }}</a>
+            </div>
+
+            <div class="flex justify-end">
+              <mat-icon class="mat-icon-rtl-mirror" *ngIf="item.img && item.name !== 'Home'">
+                {{ item == isSelectedItem && item.children ? "remove" : "add" }}
+              </mat-icon>
+            </div>
+          </li>
+
+          <div class="child-node-container" *ngIf="item.children && item == isSelectedItem">
+            <li
+              class="flex items-center continar row subMenuItem j"
+              *ngFor="let childItem of item.children"
+              [routerLink]="childItem.route"
+            >
+              <span class="line"></span>
+              <a style="font-size: 17px" [routerLinkActive]="'bg-active'">{{ childItem.name }}</a>
+            </li>
+          </div>
+        </ng-container>
+      </ul> -->
+
+      <!-- login and help -->
+      <div class="flex-1 px-4 mt-2">
+        <div class="flex items-center" style="min-height: 40px; cursor: pointer">
+          <img src="../../../assets/icons/icon-help.svg" alt="Image" class="mr-4" />
+          <span class="text-base" style="color: #ffffff">Help</span>
+        </div>
+        <div class="flex items-center" style="min-height: 40px; cursor: pointer">
+          <img src="../../../assets/icons/icon-logout.svg" alt="Image" class="mr-4" />
+          <span class="text-base" style="color: #d55f5a">Logout Account</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="icon-container" *ngIf="isHideSidebarMenu">
+    <img src="../../../assets/images/croped-nav-closed-logo.png" alt="Image" width="35px" />
+    <mat-divider class="w-full mt-8 mb-4 mat-divider sidenav-close-divider"></mat-divider>
+
+    <ul>
+      <li *ngFor="let icon of sidebarMenu" class="">
+        <img class="cursor-pointer" [routerLink]="icon.route" *ngIf="icon.img" [src]="icon.img" alt="Image" />
+        <mat-icon
+          [routerLink]="icon.route"
+          *ngIf="icon.name === 'Home'"
+          fontIcon="home"
+          style="margin: 0; overflow: visible"
+          class="mr-4 text-3xl text-white cursor-pointer"
+        ></mat-icon>
+      </li>
+    </ul>
+    <div class="">
+      <!-- <div>
+        <ul>
+          <li *ngFor="let icon of sidebarMenu1" class="">
+            <img class="cursor-pointer" [routerLink]="icon.route" *ngIf="icon.img" [src]="icon.img" alt="Image" />
+          </li>
+        </ul>
+      </div> -->
+
+      <div class="logout">
+        <img src="../../../assets/icons/icon-help.svg" alt="Image" class="mr-4" />
+        <img src="../../../assets/icons/icon-logout.svg" alt="Image" class="mr-4" />
+      </div>
+    </div>
+  </div>
+</div>

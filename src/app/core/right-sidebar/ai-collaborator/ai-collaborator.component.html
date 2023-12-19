@@ -1,0 +1,33 @@
+<div class="ai-collaborator-container">
+  <mat-button-toggle-group #group="matButtonToggleGroup" class="mat-toggle-group" [(ngModel)]="defaultSelectedOption">
+    <mat-button-toggle value="insight" aria-label="Text align right">
+      <mat-icon class="example-tab-icon">show_chart</mat-icon> Insight
+    </mat-button-toggle>
+    <mat-button-toggle value="reports" aria-label="Text align center">
+      <mat-icon class="example-tab-icon">edit_calendar</mat-icon> Reports
+    </mat-button-toggle>
+    <mat-button-toggle value="chat" aria-label="Text align left">
+      <mat-icon class="example-tab-icon">chat</mat-icon> Chat
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="controls px-[.5rem]">
+    <div class="flex items-center justify-between">
+      <div class="btn">
+        <mat-icon>refresh</mat-icon>
+      </div>
+      <div class="btn">
+        <mat-icon>close</mat-icon>
+      </div>
+      <div class="btn">
+        <mat-icon>more_vert</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-center pt-4">
+    <chat *ngIf="group.value === 'chat'"></chat>
+    <compose *ngIf="group.value === 'reports'"></compose>
+    <insight *ngIf="group.value === 'insight'"></insight>
+  </div>
+</div>

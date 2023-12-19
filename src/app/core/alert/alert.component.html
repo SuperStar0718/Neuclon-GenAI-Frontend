@@ -1,0 +1,12 @@
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-3">
+    <mat-icon *ngIf="data.icon">{{ data.icon }}</mat-icon>
+    <img [src]="data.souce" alt="" *ngIf="data.souce" />
+    <div class="data">{{ data.text }}</div>
+  </div>
+  <div class="dismiss">
+    <button mat-icon-button (click)="snackBarRef.dismiss()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<!-- <div class="model-template">
+  <mat-tab-group class="my-6">
+    <mat-tab label="Automation Models">
+      <div class="w-full flex justify-end">
+        <div class="flex items-center gap-4 input-field py-6 px-10">
+          <button mat-stroked-button class="import" routerLink="/main/models/new-model">
+            <mat-icon style="color: #005f65">add</mat-icon>
+            <span class="ff-poppins-medium" style="color: #005f65">New Model</span>
+          </button>
+          <mat-form-field appearance="outline" class="search-field-modelTemplate">
+            <input matInput placeholder="Search" />
+            <mat-icon matPrefix class="search-icon">search</mat-icon>
+            <mat-icon class="search-icon" style="cursor: pointer" matSuffix>close</mat-icon>
+          </mat-form-field>
+          <mat-icon class="icons" (click)="toggleLayout = !toggleLayout">format_list_bulleted</mat-icon>
+          <mat-icon class="icons" (click)="toggleLayout = !toggleLayout">apps</mat-icon>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-y-8 gap-x-5 mt-4">
+        <div
+          class="flex p-6"
+          [ngClass]="toggleLayout ? 'flex-row w-[100%] justify-between items-end' : 'flex-col w-[23.5%]'"
+          style="border-radius: 20px; background: #f4f4f4"
+          *ngFor="let item of templates"
+        >
+          <div class="flex flex-col">
+            <div class="flex gap-4">
+              <div class="p-3 w-[80px] h-[58px] flex justify-center" style="background-color: white">
+                <img src="assets/images/template3.png" alt="" width="70px" heigth="40px" />
+              </div>
+              <div class="p-3 w-[80px] h-[58px] flex justify-center" style="background-color: white">
+                <img src="assets/images/template2.png" alt="" width="70px" heigth="40px" />
+              </div>
+              <div class="p-3 w-[80px] h-[58px] flex justify-center" style="background-color: white">
+                <img src="assets/images/template1.png" alt="" width="60px" heigth="40px" />
+              </div>
+            </div>
+            <p class="my-5 ff-poppins-medium" style="font-size: 14px">
+              Lorem ipsum dolor sit amet cons ecte tur. Ligula vel odio adipi scing at vitae etiam consequat sit
+            </p>
+          </div>
+          <div class="flex justify-end">
+            <div class="flex gap-4 ff-poppins-semibold" style="color: #005f65">
+              <span style="cursor: pointer">Preview</span>
+              <span style="cursor: pointer">Use Templates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Data Models"> <app-coming-soon></app-coming-soon> </mat-tab>
+  </mat-tab-group>
+</div> -->
+<div>
+  <div class="header flex flex-col justify-center items-center">
+    <h1 class="ff-poppins-semibold mt-6 mb-4" style="font-size: 26px">What would you like to connect or automate ?</h1>
+    <div class="textarea-custom flex flex-col justify-center items-center">
+      <mat-form-field appearance="outline" class="w-full">
+        <textarea
+          matInput
+          placeholder="Describe in detail how you want your Automation to Work?"
+          rows="5"
+          cols="30"
+          class="w-full"
+          style="resize: none"
+        ></textarea>
+      </mat-form-field>
+      <button mat-raised-button type="button">Generate</button>
+    </div>
+    <h1 class="ff-poppins-semibold my-3 invisible">For Ex.</h1>
+    <div class="flex gap-4 w-[70%]">
+      <div *ngFor="let item of EXArr" class="ff-poppins Ex-box p-4 w-[30%] min-h-[140px] h-auto">
+        {{ item }}
+      </div>
+    </div>
+    <h1 class="ff-poppins-medium my-4">Powered by NeuclonAI</h1>
+  </div>
+  <div class="flex flex-wrap gap-y-8 gap-x-5 my-10 mx-6">
+    <div
+      class="flex flex-col w-[23.5%] p-6 justify-between"
+      style="border-radius: 20px; background: #f4f4f4"
+      *ngFor="let item of templates"
+    >
+      <div class="flex flex-col">
+        <div class="flex gap-4 justify-center items-center">
+          <div
+            class="p-3 w-[80px] h-[58px] flex justify-center"
+            style="background-color: white"
+            *ngFor="let img of item.imgs"
+          >
+            <img [src]="img" alt="" width="70px" heigth="40px" />
+          </div>
+        </div>
+        <p class="my-5 ff-poppins text-justify" style="font-size: 14px">
+          {{ item.text }}
+        </p>
+      </div>
+      <div class="flex justify-end">
+        <div class="flex gap-4 ff-poppins-semibold" style="color: #005f65; font-size: 14px">
+          <span style="cursor: pointer">Preview</span>
+          <span style="cursor: pointer">Use Templates</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4">
+    <app-pagination class="mt-20" (setPage)="onPagination($event)" [pagination]="pagination"> </app-pagination>
+  </div>
+</div>

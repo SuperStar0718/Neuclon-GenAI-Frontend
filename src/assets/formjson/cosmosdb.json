@@ -1,0 +1,32 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "End Point",
+      "name": "host",
+      "value": "",
+      "visible": "false",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "label": "Key",
+      "name": "Port",
+      "value": "",
+      "visible": "false",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

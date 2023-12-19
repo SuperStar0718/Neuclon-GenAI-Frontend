@@ -1,0 +1,50 @@
+[
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Andon",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": "./assets/icons/scratching-post.svg"
+  },
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Power Outlet",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": "./assets/icons/lightning-bolt.svg"
+  },
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Pressure Sensors & Transmitter ",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": ""
+  },
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Printers ",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": "./assets/icons/printer.svg"
+  },
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Torque Drivers ",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": "./assets/icons/suspension-dampers.svg"
+  },
+  {
+    "type": "Device",
+    "deviceIcon": "./assets/icons/iMac.svg",
+    "title": "Proximity Sensors",
+    "description":
+      "Lorem ipsum dolor sit amet consectetur. Ligula vel odio adipiscing at vitae etiam consequat sit diam.",
+    "serviceIcon": "./assets/icons/online.svg"
+  }
+]

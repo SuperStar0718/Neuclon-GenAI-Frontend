@@ -1,0 +1,82 @@
+<main>
+  <section class="notification flex justify-end items-center mb-6">
+    <div class="icons flex gap-[10px]">
+      <mat-icon class="w-[25px]">search</mat-icon>
+      <mat-icon class="w-[25px]">help_outline</mat-icon>
+      <mat-icon class="w-[25px]">notifications</mat-icon>
+    </div>
+  </section>
+
+  <div class="flex gap-[24px] w-full">
+    <!-- sidebar filters -->
+    <section class="w-[30%]">
+      <div class="rounded-[20px] overflow-hidden">
+        <div class="bg-[#005E65] py-[15px] flex justify-between">
+          <h3 class="text-[20px] font-medium text-white ml-[30px]">Filter Sources</h3>
+          <mat-icon class="text-white mr-[30px]">tune</mat-icon>
+        </div>
+        <div class="pl-[30px] pt-[18px] bg-[#F4F4F4] rounded-bl-[20px] rounded-br-[20px]">
+          <div class="h-[80vh] overflow-auto mb-[20px]">
+            <span class="uppercase text-[#005E65] text-[1rem] font-bold">categories</span>
+            <div class="flex gap-[10px] items-center">
+              <span (click)="filter('All')" class="text-[1rem] text-[{{
+                  selectedCategory == 'All' ? '#005E65' : '#212121'
+                }}] ff-poppins-medium capitalize mt-[22px] cursor-pointer">
+                All ({{getTotalCategoryTypeCount()}})
+              </span>
+            </div>
+            <div *ngFor="let item of categories; let i = index" class="flex gap-[10px] items-center">
+              <span (click)="filter(item)" class="text-[1rem] text-[{{
+                  selectedCategory == item ? '#005E65' : '#212121'
+                }}] ff-poppins-medium capitalize mt-[22px] cursor-pointer">
+                {{ item }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-[20px] py-[24px] px-[23px] bg-[#F4F4F4] flex flex-col gap-[60px] w-[70%]">
+      <div class="categories-container" *ngFor="let item of datasetCategories ; let i = index">
+        <div class="category-type flex flex-col gap-[17px]">
+          <span class="text-[20px] font-semibold uppercase">{{ item.category }}</span>
+          <div class="flex gap-[19px] flex-wrap">
+            <div *ngFor="let i of item.categoryType" (click)="syncPopup(i)"
+              class="cursor-pointer p-[17px] h-[120px] w-[130px] gap-[18px] border-[#005E65] border-[1px] rounded-[5px]">
+              <p>
+                <img class="w-[{{ i.size ? i.size : '40px' }}] mx-auto mt-[10px]" [src]="i.logo" alt="Image" />
+              </p>
+              <p class="text-[.875rem] text-center mt-[10px] ff-poppins-medium capitalize">
+                {{ i.displayName ?? i.categoryName }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- <section class="rounded-[20px] py-[24px] px-[23px] bg-[#F4F4F4] flex flex-col gap-[60px]">
+      <div class="categories-container" *ngFor="let item of datasetCategories; let i = index">
+        <div class="category-type flex flex-col gap-[17px]">
+          <span class="text-[20px] font-semibold uppercase">{{ item.category }}</span>
+          <div class="flex gap-[19px] flex-wrap">
+            <div
+              *ngFor="let i of item.categoryType"
+              (click)="syncPopup(i)"
+              class="cursor-pointer flex p-[17px] h-[100px] w-[244px] gap-[18px] justify-between items-center border-[#005E65] border-[1px] rounded-[5px]"
+            >
+              <div class="flex flex-col">
+                <span class="text-[18px] ff-poppins-medium capitalize">{{ i.categoryName }}</span>
+                <span class="text-[1rem] mt-[18px] text-[#7A7A7A] font-medium uppercase">{{ i.categoryType }}</span>
+              </div>
+              <div>
+                <img class="w-[40px]" [src]="i.logo" alt="Image" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+  </div>
+</main>
+<div class="w-[50px] w-[25px] w-[70px] w-[90px] d-none"></div>

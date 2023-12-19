@@ -1,0 +1,45 @@
+.form {
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(175, 206, 208, 0.33) 0%, rgba(255, 255, 255, 0.07) 100%);
+    backdrop-filter: blur(10px);
+    width: 74%;
+}
+
+.signup{
+    background: url('/assets/images/signup.png') no-repeat;
+    background-size: cover;
+}
+
+::ng-deep .signup-checkbox .mdc-checkbox+label {
+    font-size: 14px;
+    font-family: poppins;
+    color: #005F65;
+}
+
+.signup-subheading {
+    font-size: 52px;
+    color: white;
+    line-height: 64px;
+}
+
+// responsive settings
+@media screen and (min-width: 599px) and (max-width: 820px) {
+    .form {
+        width: 86%;
+    }
+
+    .signup{
+        background-size: 100% 100%;
+    }
+
+    .signup-subheading{
+        font-size: 42px;
+        line-height: 60px;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .form {
+        width: 86%;
+    }
+}

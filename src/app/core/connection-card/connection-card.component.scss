@@ -1,0 +1,34 @@
+.connection-data {
+    .status {
+        color: #F2F2F2;
+        border-radius: 0px 0px 10px 0px;
+        background: #005F65;
+        font-size: 12px;
+        font-family: poppins-semibold;
+    }
+
+    mat-icon {
+        color: #005F65;
+        cursor: pointer;
+    }
+
+    img {
+        cursor: pointer;
+    }
+
+    span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .actions mat-icon {
+        color: black;
+        background-color: #D0D0D0;
+        width: 58px;
+        height: 36px;
+        border-radius: 4px;
+        text-align: center;
+        padding: 8px 10px;
+    }
+}

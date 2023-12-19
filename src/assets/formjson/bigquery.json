@@ -1,0 +1,11 @@
+{
+  "fields": [
+    {
+      "type": "textarea",
+      "label": "Private Key",
+      "name": "privatekey",
+      "value": "",
+      "visible": "false"
+    }
+  ]
+}

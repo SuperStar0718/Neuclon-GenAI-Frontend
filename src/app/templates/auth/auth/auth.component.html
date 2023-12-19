@@ -1,0 +1,330 @@
+<div class="grid grid-col-1 md:grid-cols-2 h-screen overflow-hidden">
+  <div>
+    <!-- side image for signup -->
+    <div
+      *ngIf="view === 'login'"
+      class="hidden md:grid"
+      style="background: radial-gradient(82.2% 54.8% at 50.8% 4.8%, #005f65 0%, #003538 100%)"
+    >
+      <img src="assets/images/login_img.svg" alt="" class="mix-blend-overlay w-full h-screen object-cover" />
+    </div>
+    <!-- side image for login -->
+    <div *ngIf="view !== 'login'" class="hidden signup h-screen md:grid">
+      <div class="flex flex-col ps-10 pe-20 md:pe-10 pt-12">
+        <h2 class="ff-poppins-medium" style="color: #f5f5f5">WELCOME TO NEUCLON</h2>
+        <div class="ff-poppins-semibold signup-subheading pb-3">Connect data from any Source</div>
+        <p class="px-1 ff-poppins-medium" style="color: #f5f5f5; font-size: 16px">
+          Integrate all your assets and data sources effortlessly within minutes while ensuring automatic data cleanup.
+          Maximize efficiency by leveraging our prebuilt solutions and workflows tailored for common use cases.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex flex-col items-center overflow-auto"
+    [ngClass]="
+      view === 'signup' || view === 'after-signup'
+        ? 'sm:justify-start md:justify-center lg:justify-start'
+        : view === 'forgot-password' || view === 'reset-password'
+        ? 'sm:justify-start md:justify-center lg:justify-center'
+        : 'justify-center'
+    "
+  >
+    <!-- login form -->
+    <form
+      [formGroup]="loginForm"
+      *ngIf="view === 'login'"
+      class="form px-10 lg:px-14 py-6 flex flex-col justify-center items-center"
+    >
+      <img src="assets/images/logo.svg" alt="" width="200px" />
+      <h1 class="ff-poppins-semibold py-3" style="color: #005f65">Log In</h1>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Email address</label>
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="Enter email address" formControlName="email" max="50" />
+          <img src="assets/icons/envelope.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            >Please Enter valid Email</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Password</label>
+        <mat-form-field appearance="outline">
+          <input
+            [type]="visibilityIcon ? 'text' : 'password'"
+            matInput
+            placeholder="Enter password"
+            formControlName="password"
+            max="50"
+          />
+          <img src="assets/icons/key.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <img
+            [src]="visibilityIcon ? 'assets/icons/show_pwd.svg' : 'assets/icons/hide_pwd.svg'"
+            alt=""
+            matSuffix
+            class="mx-4"
+            width="20px"
+            height="20px"
+            style="cursor: pointer"
+            (click)="visibilityIconClick($event, 'password')"
+          />
+          <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            >Please Enter valid Password</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div
+        class="ff-poppins-semibold self-end pb-4"
+        style="color: #005f65; font-size: 14px; cursor: pointer"
+        routerLink="/auth/forgot-password"
+      >
+        Forgot Password ?
+      </div>
+      <button mat-raised-button type="button" class="w-full" routerLink="/main/home">Log In</button>
+      <div class="ff-poppins py-3 text-center" style="font-size: 14px">
+        Don’t have an account ?
+        <span class="ff-poppins-semibold" style="color: #005f65; cursor: pointer" routerLink="/auth/signup"
+          >Sign up</span
+        >
+      </div>
+      <p class="ff-poppins pt-1 text-center" style="font-size: 14px">
+        By clicking “Login” you agree to the Single Insight inc End User Licence Agreement
+      </p>
+    </form>
+    <!-- signup form -->
+    <form
+      [formGroup]="signupForm"
+      *ngIf="view === 'signup'"
+      class="form px-10 lg:px-14 py-6 my-10 flex flex-col justify-center items-center"
+    >
+      <img src="assets/images/logo.svg" alt="" width="200px" />
+      <h1 class="ff-poppins-semibold pt-3" style="color: #005f65">Create An account</h1>
+      <p class="text-center my-4" style="font-size: 14px">Complete this form to get started today</p>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Full Name</label>
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="Enter full name" formControlName="fullName" max="50" />
+          <img src="assets/icons/customer.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <mat-error *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
+            >Please Enter valid name.</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Email address</label>
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="Enter email address" formControlName="email" max="50" />
+          <img src="assets/icons/envelope.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <mat-error *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+            >Please Enter valid Email</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Password</label>
+        <mat-form-field appearance="outline">
+          <input
+            [type]="visibilityIcon ? 'text' : 'password'"
+            matInput
+            placeholder="Enter password"
+            formControlName="password"
+            max="50"
+          />
+          <img src="assets/icons/key.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <img
+            [src]="visibilityIcon ? 'assets/icons/show_pwd.svg' : 'assets/icons/hide_pwd.svg'"
+            alt=""
+            matSuffix
+            class="mx-4"
+            width="20px"
+            height="20px"
+            style="cursor: pointer"
+            (click)="visibilityIconClick($event, 'password')"
+          />
+          <mat-error *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+            >Please Enter valid Password</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox class="signup-checkbox"
+          >I agree to the <span class="ff-poppins-semibold">Single insights term of use</span></mat-checkbox
+        >
+        <div class="flex">
+          <mat-checkbox class="signup-checkbox"></mat-checkbox>
+          <p class="pt-2 text-justify" style="font-size: 13px; color: #005f65">
+            I would like to receive electronic marketing communications from single insight I can withdraw this consent
+            at any time by Unsubscribing here ( optional )
+          </p>
+        </div>
+      </div>
+      <button mat-raised-button type="button" class="w-full mt-8">Sign Up</button>
+      <div class="ff-poppins py-3 text-center" style="font-size: 13px; color: #005f65">
+        Already have an account?
+        <span class="ff-poppins-semibold" style="color: #005f65; cursor: pointer" routerLink="/auth/login"
+          >Log In here</span
+        >
+      </div>
+    </form>
+    <!-- after signup -->
+    <div
+      *ngIf="view === 'after-signup'"
+      class="form px-10 lg:px-14 py-6 my-10 flex flex-col justify-center items-center"
+    >
+      <div class="flex flex-col justify-center items-center">
+        <img src="assets/images/logo.svg" alt="" width="200px" />
+        <h1 class="ff-poppins-semibold py-8 text-center" style="font-size: 20px">
+          This might take a few minutes.... we will email you when we’re done!
+        </h1>
+        <p class="text-center" style="font-size: 14px">Thank you for choosing Neuclon!</p>
+        <p class="text-center my-4" style="font-size: 14px">
+          We're setting up your account and preparing everything for you. Please wait a moment while we create a
+          personalized experience just for you. We appreciate your patience and look forward to providing you with a
+          seamless login experience
+        </p>
+      </div>
+      <div class="flex flex-col md:flex-row justify-between items-center w-full gap-8 my-10">
+        <button mat-raised-button type="button" class="w-full lg:w-6/12" style="border-radius: 4px !important">
+          How its works
+        </button>
+        <button
+          mat-raised-button
+          type="button"
+          class="w-full lg:w-6/12"
+          style="border-radius: 4px !important"
+          routerLink="/auth/login"
+        >
+          Log In
+        </button>
+      </div>
+      <p class="text-center my-2" style="font-size: 14px">
+        © 2023 Single Insight Inc. All rights reserved. Unauthorized duplication or distribution of this software or any
+        part thereof is strictly prohibited. Protected by international copyright laws and treaties.
+      </p>
+    </div>
+    <!-- forgot form -->
+    <form
+      [formGroup]="forgotForm"
+      *ngIf="view === 'forgot-password'"
+      class="form px-10 lg:px-14 py-6 flex flex-col justify-center items-center"
+    >
+      <img src="assets/images/logo.svg" alt="" width="200px" />
+      <h1 class="ff-poppins-semibold py-3" style="color: #005f65">Forgot Password</h1>
+      <p class="text-center my-4" style="font-size: 14px">
+        enter your registered email address below & we’ll send an email with instruction to reset your password
+      </p>
+      <div class="input-field flex flex-col w-full mt-10">
+        <label class="field-label">Email address</label>
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="Enter email address" formControlName="email" max="50" />
+          <img src="assets/icons/envelope.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <mat-error *ngIf="forgotForm.get('email')?.invalid && forgotForm.get('email')?.touched"
+            >Please Enter valid Email</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <button mat-raised-button type="button" class="w-full">Reset Password</button>
+      <div class="flex justify-center items-center mt-10 self-start">
+        <img src="assets/icons/back_arrow.svg" alt="" class="me-2" width="20px" height="20px" />
+        <div style="font-size: 14px">
+          Back To
+          <span class="ff-poppins-semibold" style="color: #005f65; cursor: pointer" routerLink="/auth/login"
+            >Login Screen</span
+          >
+        </div>
+      </div>
+    </form>
+    <!-- reset password form -->
+    <form
+      [formGroup]="resetPasswordForm"
+      *ngIf="view === 'reset-password'"
+      class="form px-10 lg:px-14 py-6 flex flex-col justify-center items-center"
+    >
+      <img src="assets/images/logo.svg" alt="" width="200px" />
+      <h1 class="ff-poppins-semibold py-3" style="color: #005f65">Create New Password</h1>
+      <p class="text-center my-4" style="font-size: 14px">
+        Your new password must be different from previous used password.
+      </p>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Enter New Password</label>
+        <mat-form-field appearance="outline">
+          <input
+            [type]="visibilityIcon ? 'text' : 'password'"
+            matInput
+            placeholder="Enter New Password"
+            formControlName="newPassword"
+            max="50"
+          />
+          <img src="assets/icons/key.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <img
+            [src]="visibilityIcon ? 'assets/icons/show_pwd.svg' : 'assets/icons/hide_pwd.svg'"
+            alt=""
+            matSuffix
+            class="mx-4"
+            width="20px"
+            height="20px"
+            style="cursor: pointer"
+            (click)="visibilityIconClick($event, 'password')"
+          />
+          <mat-error
+            *ngIf="resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched"
+            >Please Enter valid New Password</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="input-field flex flex-col w-full">
+        <label class="field-label">Confirm Password</label>
+        <mat-form-field appearance="outline">
+          <input
+            [type]="visibilityIconConfrimPWD ? 'text' : 'password'"
+            matInput
+            placeholder="Enter password"
+            formControlName="confirmPassword"
+            max="50"
+          />
+          <img src="assets/icons/key.svg" alt="" matPrefix class="ms-4 me-2" width="20px" height="20px" />
+          <img
+            [src]="visibilityIconConfrimPWD ? 'assets/icons/show_pwd.svg' : 'assets/icons/hide_pwd.svg'"
+            alt=""
+            matSuffix
+            class="mx-4"
+            width="20px"
+            height="20px"
+            style="cursor: pointer"
+            (click)="visibilityIconClick($event, 'confirmPassword')"
+          />
+          <mat-error
+            *ngIf="
+              resetPasswordForm.get('confirmPassword')?.invalid && resetPasswordForm.get('confirmPassword')?.touched
+            "
+            >Please Enter valid Confirm Password</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <button mat-raised-button type="button" class="w-full">Reset Password</button>
+      <div class="flex justify-center items-center mt-10 self-start">
+        <img src="assets/icons/back_arrow.svg" alt="" class="me-2" width="20px" height="20px" />
+        <div style="font-size: 14px">
+          Back To
+          <span class="ff-poppins-semibold" style="color: #005f65; cursor: pointer" routerLink="/auth/login"
+            >Login Screen</span
+          >
+        </div>
+      </div>
+    </form>
+    <!-- after update password -->
+    <div
+      *ngIf="view === 'after-reset-password'"
+      class="form px-10 lg:px-14 py-6 my-10 flex flex-col justify-center items-center"
+    >
+      <img src="assets/images/logo.svg" alt="" width="200px" />
+      <img src="assets/icons/success.svg" alt="" class="my-5" width="70px" height="70px" />
+      <h1 class="ff-poppins-semibold pb-6 text-center" style="font-size: 20px">Password Updated Successfully</h1>
+      <p class="text-center mb-14" style="font-size: 14px">
+        Your new password updated successfully, now login with the new password.
+      </p>
+      <button mat-raised-button type="button" class="w-full" routerLink="/auth/login">Try To Login</button>
+    </div>
+  </div>
+</div>

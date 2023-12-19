@@ -1,0 +1,18 @@
+{
+  "fields": [
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Token",
+      "name": "token",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

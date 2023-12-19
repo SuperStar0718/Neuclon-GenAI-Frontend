@@ -1,0 +1,17 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Api Key",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

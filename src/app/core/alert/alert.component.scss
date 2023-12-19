@@ -1,0 +1,7 @@
+::ng-deep .mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__label {
+    color: rgb(33 33 33) !important;
+}

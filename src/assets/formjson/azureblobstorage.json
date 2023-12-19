@@ -1,0 +1,17 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Connection String",
+      "name": "string",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

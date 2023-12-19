@@ -1,0 +1,44 @@
+mat-expansion-panel {
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+mat-expansion-panel-header {
+  padding: 0;
+  padding: 0 !important;
+}
+
+mat-expansion-panel-header:hover {
+  background-color: transparent !important;
+}
+
+::ng-deep .c-expansion-penal {
+
+  .mat-expansion-panel-body {
+    padding: 0 !important;
+  }
+
+  .mat-expansion-indicator::after {
+    border-color: black;
+    margin: 0px 6px 6px 4px;
+  }
+}
+
+.custom-textarea {
+  resize: none;
+  overflow-y: hidden;
+  border-right: none;
+}
+
+.input-group button {
+  border-left: none;
+  background-color: transparent;
+  border-color: #dee2e6;
+}
+
+@media (min-width: 640px) and (max-width: 768px) {
+  #chat-content-container {
+    padding-left: 15rem;
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "fields": [
+    {
+      "type": "select",
+      "label": "Format",
+      "name": "format",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "json",
+          "label": "JSON"
+        },
+        {
+          "value": "yaml",
+          "label": "YAML"
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "label": "Definition",
+      "name": "def",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

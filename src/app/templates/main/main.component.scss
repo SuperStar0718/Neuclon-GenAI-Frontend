@@ -1,0 +1,139 @@
+.drawer-container {
+    position: relative;
+
+    .mat-drawer {
+        background-color: #005F65 !important;
+    }
+
+    mat-tree-node {
+        cursor: pointer;
+    }
+
+    mat-nested-tree-node {
+        cursor: pointer;
+    }
+
+    .sidenav-width {
+        transform: none !important;
+        display: block !important;
+        visibility: visible !important;
+        transition: .5s all ease-in;
+    }
+
+    .right-sidenav-width {
+        transition: .5s all ease-in;
+        width: 2.438rem;
+    }
+
+    .right-sidenav {
+        background-color: #E9E9E9 !important;
+    }
+
+    .w-full-rght-sidebar {
+        width: 24rem;
+        transition: .5s all ease-in;
+    }
+
+
+
+}
+
+
+
+.mat-mdc-button>.mat-icon {
+    color: black;
+    overflow: visible;
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+}
+
+
+.bg-active {
+    background: #13131B;
+    border-radius: 0.5rem;
+}
+
+//  button collapsible
+.btn-collapsible {
+    border-radius: 0.5rem;
+    background-color: #d3d3d3;
+    top: 35px;
+    min-width: auto;
+    z-index: 2;
+    padding: 0.4rem;
+    height: 28px;
+    width: 28px;
+    position: absolute;
+    transition: .5s all ease-in;
+
+}
+
+::ng-deep {
+
+    ::-webkit-scrollbar {
+        width: .3em !important;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #005F65;
+        /* Set the color of the thumb */
+    }
+
+    /* Customize the scrollbar thumb */
+    ::-webkit-scrollbar-thumb {
+        background-color: #1e7980;
+        /* Set the color of the thumb */
+        border: 1px solid #1da1aa;
+        /* Set the color of the thumb */
+        border-radius: 5px;
+        /* Round the corners of the thumb */
+    }
+
+    /* Customize the scrollbar thumb when hovering */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #249097
+            /* Set the color of the thumb on hover */
+
+    }
+}
+
+
+
+// collapsible button utilities classes position base on breakpoints for left sidebar
+
+.md-left-position {
+    left: 16.5rem;
+}
+
+.lg-left-position {
+    left: 16.5rem;
+}
+
+.sm-left-position {
+    left: 14.5rem;
+}
+
+.xsm-left-position {
+    right: 20px;
+}
+
+// collapsible button utilities classes position base on breakpoints for right sidebar
+
+.md-right-position {
+    right: 16.5rem;
+}
+
+.lg-right-position {
+    right: 23rem;
+}
+
+.sm-right-position {
+    right: 14.5rem;
+}
+
+.xsm-right-position {
+    right: 20px;
+}
+
+

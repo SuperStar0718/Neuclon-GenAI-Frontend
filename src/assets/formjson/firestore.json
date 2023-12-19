@@ -1,0 +1,18 @@
+{
+  "fields": [
+    {
+      "type": "textarea",
+      "label": "Private Key",
+      "name": "privatekey",
+      "value": "",
+      "visible": "false",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

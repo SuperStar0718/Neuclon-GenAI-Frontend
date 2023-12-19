@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12.562" height="12.562" viewBox="0 0 12.562 12.562">
+  <g id="lock-unlocked-svgrepo-com" transform="translate(0.75 0.75)">
+    <path id="Path_212" data-name="Path 212" d="M2,13.319c0-1.564,0-2.347.486-2.833S3.754,10,5.319,10H9.744c1.564,0,2.347,0,2.833.486s.486,1.268.486,2.833,0,2.347-.486,2.833-1.268.486-2.833.486H5.319c-1.564,0-2.347,0-2.833-.486S2,14.883,2,13.319Z" transform="translate(-2 -5.575)" fill="none" stroke="#005f65" stroke-width="1.5"/>
+    <path id="Path_213" data-name="Path 213" d="M6,6.425V5.319a3.319,3.319,0,0,1,6.533-.83" transform="translate(-3.788 -2)" fill="none" stroke="#005f65" stroke-linecap="round" stroke-width="1.5" opacity="0.5"/>
+  </g>
+</svg>

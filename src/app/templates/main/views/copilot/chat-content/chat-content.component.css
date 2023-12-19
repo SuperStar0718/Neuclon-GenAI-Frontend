@@ -1,0 +1,6 @@
+#mainChatContainer {
+    overflow-y: scroll;
+  }
+  .overflowWrap{
+    overflow-wrap: break-word;
+  }

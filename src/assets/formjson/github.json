@@ -1,0 +1,38 @@
+{
+  "fields": [
+    {
+      "type": "select",
+      "label": "Authentication",
+      "name": "Authentication",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "accesskeys",
+          "label": "Use IAM Access Keys"
+        },
+        {
+          "value": "instanceCredentials",
+          "label": "Use AWS Instance Credentials"
+        },
+        {
+          "value": "arnrole",
+          "label": "Use AWS ARN Role"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Password",
+      "name": "pass",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<div class="pt-16 pb-8">
+  <!-- page header -->
+  <div class="flex flex-wrap justify-between gap-3 mb-12">
+    <div>
+      <h1 class="mb-4 font-semibold text-[1.5rem]">Good Morning Andrew</h1>
+      <p class="drop-shadow-md">Find and share actionable insights to make data driven decision</p>
+    </div>
+    <!-- user actions -->
+    <div class="flex flex-wrap items-center gap-5">
+      <button class="flex gap-2 bg-[#005F65] hover:bg-[#004e54] text-white p-[10px] rounded-[10px] w-[146px]">
+        <mat-icon>add</mat-icon>
+        New report
+      </button>
+      <span class="cursor-pointer">
+        <img src="./assets/icons/tiles.svg" alt="" />
+      </span>
+      <span class="cursor-pointer">
+        <img src="./assets/icons/chevron-down.svg" alt="" />
+      </span>
+    </div>
+  </div>
+
+  <!-- section# Recommended -->
+  <div>
+    <div class="flex justify-between px-1">
+      <h2 class="font-medium mb-7 text-[1.25rem]">Recommended</h2>
+      <!-- page controls -->
+      <div class="flex gap-4">
+        <span class="cursor-pointer">
+          <img src="./assets/icons/chevron-left.svg" alt="" />
+        </span>
+        <span class="cursor-pointer">
+          <img src="./assets/icons/chevron-right.svg" alt="" />
+        </span>
+      </div>
+    </div>
+    <!-- card items section -->
+    <section class="flex gap-x-[14px] gap-y-[72px] flex-wrap">
+      <div
+        *ngFor="let card of cardsList"
+        class="basis-[340px] max-w-[400px] grow shadow-sm lg:w-[32%] xl:w-[24%] rounded-[19px] overflow-hidden hover:shadow-md bg-transparent"
+      >
+        <div>
+          <img
+            class="w-full rounded-tr-[19px] rounded-tl-[19px] overflow-hidden"
+            mat-card-image
+            [src]="card.img"
+            alt="image"
+          />
+        </div>
+
+        <div class="flex gap-[23px] px-6 py-5">
+          <!-- <div>
+            <p class="text-[#005F65] text-xs font-bold">{{ card.month }}</p>
+            <h2 class="font-bold text-[1.75rem]">{{ card.date }}</h2>
+          </div> -->
+          <div>
+            <h2 class="text-base font-bold">{{ card.h_text }}</h2>
+            <p class="text-[#6A6A6A] text-sm">{{ card.p_text }}</p>
+
+            <div class="flex gap-3 mt-6">
+              <button
+                class="w-[127px] p-[10px] hover:shadow-gray-400 hover:shadow border border-[#2B2B2B] rounded-[10px] flex gap-x-2 justify-center items-center"
+              >
+                <img src="./assets/icons/preview.svg" alt="" />
+                <span>Preview</span>
+              </button>
+
+              <button
+                class="w-[127px] p-[10px] hover:shadow-gray-400 hover:shadow border border-[#2B2B2B] rounded-[10px] flex gap-x-2 justify-center items-center"
+              >
+                <img src="./assets/icons/edit.svg" alt="" />
+                <span>Edit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

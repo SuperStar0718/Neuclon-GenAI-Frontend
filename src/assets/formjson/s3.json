@@ -1,0 +1,165 @@
+{
+    "fields": [
+        {
+            "type": "select",
+            "label": "Region",
+            "name": "region",
+            "value": "",
+            "formOptions": [
+                {
+                    "value": "ohio",
+                    "label": "US East (Ohio)"
+                },
+                {
+                    "value": "virginia",
+                    "label": "US East (N. Virginia)"
+                },
+                {
+                    "value": "California",
+                    "label": "US West (N. California)"
+                },
+                {
+                    "value": "oregon",
+                    "label": "US West (Oregon)"
+                },
+                {
+                    "value": "caprtown",
+                    "label": "Africa (Cape Town)"
+                },
+                {
+                    "value": "hongkong",
+                    "label": "Asia Pacific (Hong Kong)"
+                },
+                {
+                    "value": "mumbai",
+                    "label": "Asia Pacific (Mumbai)"
+                },
+                {
+                    "value": "Osaka",
+                    "label": "Asia Pacific (Osaka)"
+                },
+                {
+                    "value": "Seoul",
+                    "label": "Asia Pacific (Seoul)"
+                },
+                {
+                    "value": "Singapore",
+                    "label": "Asia Pacific (Singapore)"
+                },
+                {
+                    "value": "Sydney",
+                    "label": "Asia Pacific (Sydney)"
+                },
+                {
+                    "value": "Tokyo",
+                    "label": "Asia Pacific (Tokyo)"
+                },
+                {
+                    "value": "Central",
+                    "label": "Canada (Central)"
+                },
+                {
+                    "value": "Beijing",
+                    "label": "China (Beijing)"
+                },
+                {
+                    "value": "Ningxia",
+                    "label": "China (Ningxia)"
+                },
+                {
+                    "value": "Stockholm",
+                    "label": "Europe (Stockholm)"
+                },
+                {
+                    "value": "Frankfurt",
+                    "label": "Europe (Frankfurt)"
+                },
+                {
+                    "value": "Ireland",
+                    "label": "Europe (Ireland)"
+                },
+                {
+                    "value": "London",
+                    "label": "Europe (London)"
+                },
+                {
+                    "value": "Milan",
+                    "label": "Europe (Milan)"
+                },
+                {
+                    "value": "Paris",
+                    "label": "Europe (Paris)"
+                },
+                {
+                    "value": "Bahrain",
+                    "label": "Middle East (Bahrain)"
+                },
+                {
+                    "value": "Sao Paulo",
+                    "label": "South America (Sao Paulo)"
+                },
+                {
+                    "value": "US-East",
+                    "label": "AWS GovCloud (US-East)"
+                },
+                {
+                    "value": "US-West",
+                    "label": "AWS GovCloud (US-West)"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "label": "Authentication",
+            "name": "Authentication",
+            "value": "",
+            "formOptions": [
+                {
+                    "value": "accesskeys",
+                    "label": "Use IAM Access Keys"
+                },
+                {
+                    "value": "instanceCredentials",
+                    "label": "Use AWS Instance Credentials"
+                },
+                {
+                    "value": "arnrole",
+                    "label": "Use AWS ARN Role"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Access Key",
+            "name": "key",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "password",
+            "disabled": true,
+            "label": "Secret Key",
+            "name": "key",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "label": "Custom Endpoint",
+            "name": "endpoint",
+            "value": ""
+        }
+    ]
+}

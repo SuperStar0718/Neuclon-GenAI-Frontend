@@ -1,0 +1,124 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "Host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "name": "port",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "SID/Service Name",
+      "name": "sid",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "SID",
+          "label": "SID"
+        },
+        {
+          "value": "ServiceName",
+          "label": "Service Name"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Database Name",
+      "name": "databaseName",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "SSL",
+      "name": "ssl",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "label": "Username",
+      "name": "username",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Password",
+      "name": "password",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Client Library Location",
+      "name": "location",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Instant Client version",
+      "name": "version",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "21.10",
+          "label": "21.10"
+        },
+        {
+          "value": "11.2",
+          "label": "11.2"
+        }
+      ]
+    }
+  ]
+}

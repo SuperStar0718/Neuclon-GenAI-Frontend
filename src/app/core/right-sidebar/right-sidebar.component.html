@@ -1,0 +1,28 @@
+<!-- <div class="right-sidebar-container" >
+    <div class="header flex justify-between items-center px-12 py-8">
+        <p class="text-xl">insight</p>
+        <span class="icon-plus border text-lg flex justify-center items-center"><mat-icon>add</mat-icon></span>
+    </div>
+    <mat-tab-group #tabgroup animationDuration="0ms" >
+        <mat-tab label="Quick Link" class="quick-link">
+            <quick-link></quick-link>
+        </mat-tab>
+        <mat-tab label="AI Collaborator"> <ai-collaborator></ai-collaborator> </mat-tab>
+    </mat-tab-group>
+      
+</div> -->
+  <div [ngClass]="isFullWidth ? 'right-sidebar' : ''" *ngIf="isHideRightSidebarMenu" style="width: 22.5rem;">
+    <div class="header flex justify-between items-center px-4 py-8">
+      <p class="text-xl">Insight</p>
+      <button class="icon-plus border text-lg flex justify-center items-center" style="border-color: #000;" (click)="extendRightSidebar()" >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-tab-group #tabgroup animationDuration="0ms" [selectedIndex]="1">
+      <mat-tab label="Quick Link" class="quick-link">
+        <quick-link></quick-link>
+      </mat-tab>
+      <mat-tab label="CoPilot"> <ai-collaborator></ai-collaborator> </mat-tab>
+    </mat-tab-group>
+
+  </div>

@@ -1,0 +1,96 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Username",
+      "name": "username",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Password",
+      "name": "password",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "label": "Connection Limit",
+      "name": "climit",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Database",
+      "name": "databse",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "SSL",
+      "name": "ssl",
+      "value": ""
+    },
+    {
+      "type": "select",
+      "label": "SSL certificate",
+      "name": "key",
+      "value": "",
+      "formOptions": [
+        {
+          "value": "ca",
+          "label": "CA Certificate"
+        },
+        {
+          "value": "client",
+          "label": "Client Certificate "
+        },
+        {
+          "value": "none",
+          "label": "none"
+        }
+      ]
+    }
+  ]
+}

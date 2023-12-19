@@ -1,0 +1,35 @@
+.insight-container {
+    background-color: #EEEEEE;
+
+
+    ::ng-deep {
+        .mat-button-toggle-group-appearance-standard {
+            border: none;
+        }
+
+        .mat-button-toggle-checked {
+            border-bottom: 3px solid #005F65;
+        }
+
+        .mat-button-toggle-appearance-standard {
+            background-color: #EEEEEE;
+
+        }
+
+        .mat-button-toggle-label-content {
+            font-family: Poppins;
+            font-size: 12px;
+            font-weight: 400;
+            color: #2D2D2D;
+
+        }
+
+        .mat-button-toggle-checked .mat-button-toggle-label-content {
+            font-weight: 600;
+            color: #000;
+        }
+
+    }
+
+
+}

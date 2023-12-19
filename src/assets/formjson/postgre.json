@@ -1,0 +1,131 @@
+{
+    "fields": [
+        {
+            "type": "text",
+            "label": "Host",
+            "name": "host",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Port",
+            "name": "port",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "label": "SSL",
+            "name": "ssl",
+            "value": ""
+        },
+        {
+            "type": "text",
+            "label": "Database Name",
+            "name": "databaseName",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Username",
+            "name": "username",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "password",
+            "label": "Password",
+            "name": "password",
+            "disabled": true,
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Key",
+            "name": "key",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "label": "Value",
+            "name": "value",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "label": "SID/Service Name",
+            "name": "sid",
+            "value": "",
+            "formOptions": [
+                {
+                    "value": "SID",
+                    "label": "SID"
+                },
+                {
+                    "value": "ServiceName",
+                    "label": "Service Name"
+                }
+            ]
+        },
+        {
+            "type": "textarea",
+            "label": "CA Cert",
+            "name": "ca",
+            "value": "",
+            "validations": [
+                {
+                    "name": "required",
+                    "validator": "required",
+                    "message": "Field is required"
+                }
+            ]
+        }
+    ]
+}

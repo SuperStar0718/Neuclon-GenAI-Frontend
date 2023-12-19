@@ -1,0 +1,63 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "name": "port",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "SSL",
+      "name": "ssl",
+      "value": ""
+    },
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Secret Key",
+      "name": "key",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Secret Key",
+      "name": "key",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}

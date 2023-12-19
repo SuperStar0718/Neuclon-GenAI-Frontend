@@ -1,0 +1,76 @@
+.analytics-container{
+    .header{
+        > :first-child{
+            font-family: Inter;
+            font-size: 24px;
+            font-weight: 600;
+
+        }
+
+       > :last-child{
+            color: #005F65;
+            font-family: Inter;
+            font-size: 16px;
+            font-weight: 600;
+
+        }
+    }
+
+    .progress-bar{
+        .first-progress-bar, .last-progress-bar{
+            font-family: Inter;
+            font-size: 12px;
+            font-weight: 600;
+
+        }
+
+        ::ng-deep{
+            .mat-mdc-progress-bar {
+                height: 7px;
+            }
+            
+            .mdc-linear-progress__buffer-bar{
+                background-color: #D9D9D9;
+
+            }
+
+            .mdc-linear-progress__bar{
+                transform-origin: top center;
+            }
+
+            .mdc-linear-progress__bar-inner{
+             border-color: #005F65;
+            }
+            .mdc-linear-progress__bar-inner {
+                border-top-width: 7px;
+            }
+        }
+    }
+
+    .performance{
+        .panel-1{
+            background-color: #71B3B7;
+            span{
+                color: #005F65;
+            }
+        }
+        .panel-3{
+            background-color: #FF7878;
+            span{
+                color: #860000;
+            }
+        }
+        .panel-4{
+            background-color: #4E9397;
+            span{
+                color: #FFFFFF;
+            }
+        }
+        .panel-5{
+            background-color: #167177;
+            span{
+                color: #FFFFFF;
+            }
+        }
+    }
+}

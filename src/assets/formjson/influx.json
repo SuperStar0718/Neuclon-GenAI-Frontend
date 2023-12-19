@@ -1,0 +1,57 @@
+{
+  "fields": [
+    {
+      "type": "password",
+      "disabled": true,
+      "label": "Api Token",
+      "name": "token",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Name is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Host",
+      "name": "host",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Name is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "name": "port",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Name is required"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Protocol",
+      "name": "protocol",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Email is required"
+        }
+      ]
+    }
+  ]
+}
