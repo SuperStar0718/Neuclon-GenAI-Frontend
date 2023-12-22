@@ -5,4 +5,5 @@ export const environment = {
     backendUri: 'https://neuclon-gen-api.azurewebsites.net',
     //neuclon-gen-api.azurewebsites.net
     // add more variables here
+    
   };
