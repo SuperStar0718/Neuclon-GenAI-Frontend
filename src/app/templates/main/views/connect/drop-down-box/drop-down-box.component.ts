@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 
 import { DxTreeViewComponent } from "devextreme-angular";
+import { NotifierService } from "angular-notifier";
 
 import CustomStore from "devextreme/data/custom_store";
 import { ApiService } from "src/app/services/api.service";
@@ -23,6 +24,8 @@ export class DropDownBoxComponent {
 	@ViewChild(DxTreeViewComponent, { static: false }) treeView: any;
 	@Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
 	treeDataSource: any;
+    private readonly notifier: NotifierService;
+
 
 	treeBoxValue: string;
 
@@ -36,233 +39,12 @@ export class DropDownBoxComponent {
 
 	gridColumns: any = ["CompanyName", "City", "Phone"];
 
-	jsonData: any = [
-		{
-			ID: 1,
-			name: "DataBases",
-			expanded: true,
-		},
-		{
-			ID: "1_1",
-			categoryId: "1",
-			name: "MongoDB",
-			expanded: true,
-		},
-		{
-			ID: "1_1_1",
-			categoryId: "1_1",
-			name: "DB_Name_1",
-			expanded: true,
-		},
-		{
-			ID: "1_1_1_1",
-			categoryId: "1_1_1",
-			name: "Collection Name 1",
-			price: 220,
-			expanded: true,
-		},
-		{
-			ID: "1_1_1_2",
-			categoryId: "1_1_1",
-			name: "Collection Name 2",
-			price: 270,
-		},
-		{
-			ID: "1_1_2",
-			categoryId: "1_1",
-			name: "DB_Name_2",
-		},
-		{
-			ID: "1_1_2_1",
-			categoryId: "1_1_2",
-			name: "Collection Name 1",
-			price: 1200,
-		},
-		{
-			ID: "1_1_2_2",
-			categoryId: "1_1_2",
-			name: "Collection Name 2",
-			price: 1450,
-		},
-		{
-			ID: "1_1_2_3",
-			categoryId: "1_1_2",
-			name: "Collection Name 3",
-			price: 1600,
-		},
-		{
-			ID: "1_1_2_4",
-			categoryId: "1_1_2",
-			name: "Collection Name 4",
-			price: 1750,
-		},
-		{
-			ID: "1_1_2_5",
-			categoryId: "1_1_2",
-			name: "Collection Name 5",
-			price: 4000,
-		},
-		{
-			ID: "1_1_3",
-			categoryId: "1_1",
-			name: "DB_Name_3",
-		},
-		{
-			ID: "1_1_3_1",
-			categoryId: "1_1_3",
-			name: "Collection Name 1",
-		},
-		{
-			ID: "1_1_4",
-			categoryId: "1_1",
-			name: "DB_Name_4",
-		},
-		{
-			ID: "1_1_4_1",
-			categoryId: "1_1_4",
-			name: "collection Name 1",
-		},
-		{
-			ID: "1_1_4_2",
-			categoryId: "1_1_4",
-			name: "collection Name 2",
-		},
-		{
-			ID: "1_2",
-			categoryId: 1,
-			name: "PostgreSQL",
-		},
-		{
-			ID: "1_2_1",
-			categoryId: "1_2",
-			name: "DB_Name_1",
-		},
-		{
-			ID: "1_2_1_1",
-			categoryId: "1_2_1",
-			name: "Table Name 1",
-		},
-		{
-			ID: "1_2_1_2",
-			categoryId: "1_2_1",
-			name: "Table Name 2",
-		},
-		{
-			ID: "1_2_1_3",
-			categoryId: "1_2_1",
-			name: "Table Name 3",
-		},
-		{
-			ID: "1_2_1_4",
-			categoryId: "1_2_1",
-			name: "Table Name 4",
-		},
-		{
-			ID: "1_2_1_5",
-			categoryId: "1_2_1",
-			name: "Table Name 5",
-		},
-		{
-			ID: "1_2_2",
-			categoryId: "1_2",
-			name: "DB_Name_2",
-		},
-		{
-			ID: "1_2_2_1",
-			categoryId: "1_2_2",
-			name: "Table Name 1",
-		},
-		{
-			ID: "1_2_2_2",
-			categoryId: "1_2_2",
-			name: "Table Name 2",
-		},
-		{
-			ID: "1_2_2_3",
-			categoryId: "1_2_2",
-			name: "Table Name 3",
-		},
-		{
-			ID: "1_2_2_4",
-			categoryId: "1_2_2",
-			name: "Table Name 4",
-		},
-		{
-			ID: "1_2_2_5",
-			categoryId: "1_2_2",
-			name: "Table Name 5",
-		},
-		{
-			ID: "1_3",
-			categoryId: 1,
-			name: "MS SQL",
-		},
-		{
-			ID: "1_3_1",
-			categoryId: "1_3",
-			name: "DB_Name_1",
-		},
-		{
-			ID: "1_3_1_1",
-			categoryId: "1_3_1",
-			name: "Table Name 1",
-		},
-		{
-			ID: "1_3_1_2",
-			categoryId: "1_3_1",
-			name: "Table Name 2",
-		},
-		{
-			ID: "1_3_1_3",
-			categoryId: "1_3_1",
-			name: "Table Name 3",
-		},
-		{
-			ID: "1_3_1_4",
-			categoryId: "1_3_1",
-			name: "Table Name 4",
-		},
-		{
-			ID: "1_3_1_5",
-			categoryId: "1_3_1",
-			name: "Table Name 5",
-		},
-		{
-			ID: "1_3_2",
-			categoryId: "1_3",
-			name: "DB_Name_2",
-		},
-		{
-			ID: "1_3_2_1",
-			categoryId: "1_3_2",
-			name: "Table Name 1",
-		},
-		{
-			ID: "1_3_2_2",
-			categoryId: "1_3_2",
-			name: "Table Name 2",
-		},
-		{
-			ID: "1_3_2_3",
-			categoryId: "1_3_2",
-			name: "Table Name 3",
-		},
-		{
-			ID: "1_3_2_4",
-			categoryId: "1_3_2",
-			name: "Table Name 4",
-		},
-		{
-			ID: "1_3_2_5",
-			categoryId: "1_3_2",
-			name: "Table Name 5",
-		},
-	];
 
 	constructor(
 		private httpClient: HttpClient,
 		private ref: ChangeDetectorRef,
 		private apiService: ApiService,
+        notifierService: NotifierService,
 		private cdr: ChangeDetectorRef
 	) {
 		// this.gridDataSource = this.makeAsyncDataSource(
@@ -276,10 +58,12 @@ export class DropDownBoxComponent {
 		this.isTreeBoxOpened = false;
 		this.isGridBoxOpened = false;
 		this.treeBoxValue = "1_1_1";
+        this.notifier = notifierService;
 	}
 	ngOnInit() {
 		// this.treeDataSource = this.makeAsyncDataSource(this.jsonData);
-		this.apiService.getDatabaseList().subscribe((res) => {
+		this.apiService.getDatabaseList().subscribe(
+			(res) => {
 			console.log("database list: ", res);
 			const table = res.find((item: any)=> item.ID === this.treeBoxValue);
 
@@ -288,7 +72,12 @@ export class DropDownBoxComponent {
 			this.selectedDatabaseInfo.emit(table);
 
 			this.cdr.detectChanges(); // Trigger change detection
-		});
+			},
+			(error)=>{
+                console.log(error);
+                this.notifier.notify("error", "Whoops, something went wrong.");
+			}
+		);
 	}
 
 	isLeaf(value: any) {
