@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, from, Observable } from "rxjs";
@@ -63,7 +63,7 @@ export class ApiService {
             .pipe(catchError(this.handleError));
     }
 
-    getData(databaseInfo : JSON): Observable<any> {
+    getData(databaseInfo: JSON): Observable<any> {
         return this.http
             .post(this.baseUrl + "/api/getData", databaseInfo)
             .pipe(catchError(this.handleError));
@@ -84,6 +84,20 @@ export class ApiService {
     getDatabaseList(): Observable<any> {
         return this.http
             .get(this.baseUrl + "/api/getDatabaseList")
+            .pipe(catchError(this.handleError));
+    }
+
+    downloadFile(id: any): Observable<any> {
+        const headers = new HttpHeaders({
+            "Content-Type": "application/json",
+            Accept: "application/octet-stream",
+        });
+        return this.http
+            .get(this.baseUrl + "/chatgpt/downloadFile/" + id, {
+                headers: headers,
+                observe: "response", // Set the observe option to 'response'
+                responseType: "blob" as "json", // Set the responseType option to 'blob'
+            })
             .pipe(catchError(this.handleError));
     }
 

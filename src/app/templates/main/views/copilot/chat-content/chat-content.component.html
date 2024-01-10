@@ -1,86 +1,141 @@
-<div
-  id="chat-content-container"
-  class="flex flex-col justify-between h-[75vh]"
->
-  <div id="mainChatContainer" *ngIf="messages.length > 0" class="overflow-y-scroll ">
-    <div *ngFor="let message of messages" class="mx-5 mb-2 text-black">
-      <div class="flex " [class]="(message.role === 'user' ? ' justify-end' : 'justify-start')" >
-        <div *ngIf="message.content !== null" class= 'max-w-[80%]'>
-          <div
-            [class]="
-              'flex items-start p-5 ' +
-              (message.role === 'user' ? 'bg-[#e8ebfa] flex-row-reverse' : 'bg-[#f2f2f2]')
-            "
-          >
-          <div class=" min-w-fit" >
-            <img
-              height="50"
-              width="50"
-              [src]="
-                message.role === 'assistant'
-                  ? 'assets/images/chatgpt.jpg'
-                  : 'assets/images/user.png'
-              "
-              class="mx-5 rounded-full"
-              alt="user_photo"
-            />
-          </div>
-            <div class="overflow-auto align-middle overflowWrap">
-              <div class="prose prose-invert" [innerHTML]="getSanitizedHtml(message.content)" >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="messages.length === 0">
-    <div [class]="'justify-center flex items-center p-5 flex-col'">
-      <h1 *ngIf="apiKey" [class]="'text-black text-6xl font-semibold mb-8'">
-        Explore your data
-      </h1>
-      <h2 class="mt-4 mb-4 text-2xl font-semibold" >Ask anything or try an example</h2>
-      <div class="flex flex-col max-w-4xl gap-3 md:grid-cols-3 md:gap-3 md:grid" >
-        <div (click)="askExamQuestion($event)" class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]" >
-          Assess production process efficiency by comparing actual build times to expected build times.
-        </div>
-        <div (click)="askExamQuestion($event)" class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]" >
-          Examine the distribution of lost time and identify any common factors.
-        </div>
-        <div (click)="askExamQuestion($event)" class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]" >
-          Analyze the frequency and impact of different interference categories on production.
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  <div class="flex p-4 mx-5 border rounded-lg shadow-xl ">
-    <textarea
-      class="w-full p-3 text-black resize-none rounded-l-md focus:outline-none"
-      placeholder="Ask any question about your data"
-      rows="2"
-      name="textInput"
-      #textInput
-      (keyup.enter)="createCompletion(textInput)"
-      [disabled]="apiKey === null || apiKey === ''"
-    ></textarea>
-    <button
-      [disabled]="apiKey === null || apiKey === ''"
-      class="flex flex-col-reverse p-3 rounded-r-md "
-      type="button "
+<div class="flex flex-col h-full">
+    <app-drop-down-box
+        [multipleSelection]="true"
+        (selectedDatabaseInfo)="onSelectedDatabaseInfoChange($event)"
+    ></app-drop-down-box>
+    <div
+        id="chat-content-container"
+        class="flex flex-col justify-between h-full"
     >
-      <i
-        *ngIf="isBusy === false"
-        (click)="createCompletion(textInput)"
-        class="text-[#7376e1] fa-regular fa-paper-plane"
-      ></i>
-      <div
+        <div
+            id="mainChatContainer"
+            *ngIf="messages.length > 0"
+            class="overflow-y-scroll"
+        >
+            <div *ngFor="let message of messages" class="mx-5 mb-2 text-black">
+                <div
+                    class="flex"
+                    [class]="
+                        message.role === 'user'
+                            ? ' justify-end'
+                            : 'justify-start'
+                    "
+                >
+                    <div *ngIf="message.content !== null" class="max-w-[80%]">
+                        <div
+                            [class]="
+                                'flex items-start p-5 ' +
+                                (message.role === 'user'
+                                    ? 'bg-[#e8ebfa] flex-row-reverse rounded-tl-xl rounded-tr-[4px] rounded-b-xl '
+                                    : 'bg-[#f2f2f2] rounded-tr-xl rounded-tl-[4px] rounded-b-xl')
+                            "
+                        >
+                            <div class="min-w-fit">
+                                <img
+                                    height="50"
+                                    width="50"
+                                    [src]="
+                                        message.role === 'assistant'
+                                            ? 'assets/images/chatgpt.jpg'
+                                            : 'assets/images/user.png'
+                                    "
+                                    [class]="
+                                        (message.role === 'user'
+                                            ? ' ml-5'
+                                            : 'mr-5') + ' rounded-full'
+                                    "
+                                    alt="user_photo"
+                                />
+                            </div>
+                            <div
+                                class="overflow-auto align-middle overflowWrap min-h-[50px] flex items-center"
+                            >
+                                <div
+                                    class="loading-dots"
+                                    *ngIf="message.content === ''"
+                                >
+                                    <div class="loading-dots--dot"></div>
+                                    <div class="loading-dots--dot"></div>
+                                    <div class="loading-dots--dot"></div>
+                                </div>
+                                <div
+                                    class="prose prose-invert"
+                                    [innerHTML]="
+                                        getSanitizedHtml(message.content)
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="messages.length === 0">
+            <div [class]="'justify-center flex items-center p-5 flex-col'">
+                <h1
+                    *ngIf="apiKey"
+                    [class]="'text-black text-6xl font-semibold mb-8 mt-24'"
+                >
+                    Explore your data
+                </h1>
+                <h2 class="mt-4 mb-4 text-2xl font-semibold">
+                    Ask anything or try an example
+                </h2>
+                <div
+                    class="flex flex-col max-w-4xl gap-3 md:grid-cols-3 md:gap-3 md:grid"
+                >
+                    <div
+                        (click)="askExamQuestion($event)"
+                        class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]"
+                    >
+                        Assess production process efficiency by comparing actual
+                        build times to expected build times.
+                    </div>
+                    <div
+                        (click)="askExamQuestion($event)"
+                        class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]"
+                    >
+                        Examine the distribution of lost time and identify any
+                        common factors.
+                    </div>
+                    <div
+                        (click)="askExamQuestion($event)"
+                        class="p-5 bg-[#dbdbdb] cursor-pointer rounded-xl hover:shadow-md hover:outline-2 hover:outline hover:outline-[#7376e1]"
+                    >
+                        Analyze the frequency and impact of different
+                        interference categories on production.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex p-4 mx-5 border rounded-lg shadow-xl">
+            <textarea
+                class="w-full p-3 text-black resize-none rounded-l-md focus:outline-none"
+                placeholder="Ask any question about your data"
+                rows="2"
+                name="textInput"
+                #textInput
+                (keyup.enter)="createCompletion(textInput)"
+                [disabled]="apiKey === null || apiKey === ''"
+            ></textarea>
+            <button
+                [disabled]="apiKey === null || apiKey === ''"
+                class="flex flex-col-reverse p-3 rounded-r-md"
+                type="button "
+            >
+                <i
+                    (click)="isBusy ? null : createCompletion(textInput)"
+                    [class.disabled]="isBusy"
+                    class="text-[#7376e1] fa-regular fa-paper-plane"
+                ></i>
+                <!-- <div
         *ngIf="isBusy === true"
         class="inline-block h-5 w-5 text-black animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
         role="status"
       >
         <span class="sr-only">Loading...</span>
-      </div>
-    </button>
-  </div>
+      </div> -->
+            </button>
+        </div>
+    </div>
 </div>

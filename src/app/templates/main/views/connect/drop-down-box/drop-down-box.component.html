@@ -8,7 +8,7 @@
           [(opened)]="isTreeBoxOpened"
           valueExpr="ID"
           displayExpr="name"
-          placeholder="Select a value..."
+          placeholder="Select dataset"
           [showClearButton]="false"
           [dataSource]="treeDataSource"
           (onValueChanged)="syncTreeViewSelection($event)"
@@ -20,7 +20,8 @@
               dataStructure="plain"
               keyExpr="ID"
               parentIdExpr="categoryId"
-              selectionMode="single"
+              [showCheckBoxesMode]="multipleSelection ? 'normal' : 'none'"
+              [selectionMode]="multipleSelection ? 'multiple' : 'single'"
               displayExpr="name"
               [selectByClick]="true"
               (onItemSelectionChanged)="treeView_itemSelectionChanged($event)"
@@ -63,4 +64,3 @@
       </div>
     </div> -->
   </div>
-<notifier-container></notifier-container>
