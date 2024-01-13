@@ -1,10 +1,58 @@
 <div class="chat-container lg:w-[22.5rem] rounded-[20px] p-6">
   <!-- <iframe title="chat-with-your-data" width="100%" height="100%" [src]='sanitzedURL' allowFullScreen="true"  ></iframe> -->
 
-  <h1 class="font-semibold text-sm">Ask Question About Your Data</h1>
+  <h1 *ngIf="messages.length === 0" class="font-semibold text-sm">Ask Question About Your Data</h1>
+  <div
+            id="mainChatContainer"
+            *ngIf="messages.length > 0"
+            class="overflow-y-auto"
+        >
+            <div *ngFor="let message of messages" class=" mb-2 text-black">
+                <div
+                    class="flex"
+                    [class]="
+                        message.role === 'user'
+                            ? ' justify-end'
+                            : 'justify-start'
+                    "
+                >
+                    <div *ngIf="message.content !== null" class="max-w-[80%]">
+                        <div
+                            [class]="
+                                'flex items-start p-5 ' +
+                                (message.role === 'user'
+                                    ? 'bg-[#d4e8e9] flex-row-reverse rounded-tl-xl rounded-tr-[4px] rounded-b-xl '
+                                    : 'bg-[#f2f2f2] rounded-tr-xl rounded-tl-[4px] rounded-b-xl')
+                            "
+                        >
+                           
+                            <div
+                                class="overflow-auto align-middle overflowWrap  flex items-center"
+                            >
+                                <div
+                                    class="loading-dots"
+                                    *ngIf="message.content === ''"
+                                >
+                                    <div class="loading-dots--dot"></div>
+                                    <div class="loading-dots--dot"></div>
+                                    <div class="loading-dots--dot"></div>
+                                </div>
+                                <div
+                                    class="prose prose-invert"
+                                    [innerHTML]="
+                                        getSanitizedHtml(message.content)
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
   <div class="message mb-6 mt-3">
-    <textarea matInput placeholder="Generate operations performance data for the last shift" class="w-full p-4 rounded-3xl"></textarea>
+    <textarea matInput placeholder="Generate operations performance data for the last shift" name="textInput" #textInput
+      (keyup.enter)="createCompletion(textInput)" class="w-full p-4 rounded-3xl"></textarea>
   </div>
-  <button  mat-button class="w-full">Send</button>
+  <button mat-button class="w-full" (click)="createCompletion(textInput)" >Send</button>
 </div>

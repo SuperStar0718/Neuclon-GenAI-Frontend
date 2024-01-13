@@ -72,7 +72,7 @@ export class DataExplorerComponent implements OnInit {
 
     onSelectedDatabaseInfoChange(databaseInfo: any): void {
         console.log("databaseInfo", databaseInfo);
-        this.dbName = databaseInfo.name;
+      this.dbName = databaseInfo.name;
         this.isLoading = true;
         if (!databaseInfo) {
             this.isLoading = false;

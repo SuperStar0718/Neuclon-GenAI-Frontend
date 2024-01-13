@@ -13,6 +13,7 @@ import { DxTreeViewComponent } from "devextreme-angular";
 import CustomStore from "devextreme/data/custom_store";
 import { ApiService } from "src/app/services/api.service";
 import { EventEmitter, Input, Output } from "@angular/core";
+import { event } from "devextreme/events";
 
 @Component({
     selector: "app-drop-down-box",
@@ -25,7 +26,7 @@ export class DropDownBoxComponent {
     @Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
     treeDataSource: any;
 
-    treeBoxValue: string;
+    treeBoxValue: Array<string>;
 
     isTreeBoxOpened: boolean;
 
@@ -43,7 +44,7 @@ export class DropDownBoxComponent {
     ) {
         this.isTreeBoxOpened = false;
         this.isGridBoxOpened = false;
-        this.treeBoxValue = "1_1_1";
+        this.treeBoxValue = ["1_1_1"];
     }
     ngOnInit() {
         this.apiService.getDatabaseList().subscribe((res) => {
@@ -56,6 +57,23 @@ export class DropDownBoxComponent {
             this.cdr.detectChanges(); // Trigger change detection
         });
     }
+    onTreeViewReady(e : any) {
+        this.updateSelection(e.component);
+      }
+    
+      updateSelection(treeView: any) {
+        if (!treeView) return;
+    
+        if (!this.treeBoxValue) {
+          treeView.unselectAll();
+        }
+    
+        if (this.treeBoxValue) {
+          this.treeBoxValue.forEach(((value) => {
+            treeView.selectItem(value);
+          }));
+        }
+      }
 
     isLeaf(value: any) {
         return value.leaf;
@@ -85,7 +103,7 @@ export class DropDownBoxComponent {
         console.log("treeView_itemSelectionChanged: ", e);
         if (e.itemData.leaf) {
             this.treeBoxValue = e.component.getSelectedNodeKeys();
-            this.selectedDatabaseInfo.emit(e.itemData);
+            this.selectedDatabaseInfo.emit(this.multipleSelection ? e.component.getSelectedNodes() : e.itemData);
         }
     }
 
@@ -93,12 +111,12 @@ export class DropDownBoxComponent {
         return item && `${item.CompanyName} <${item.Phone}>`;
     }
 
-    onTreeBoxOptionChanged(e: any) {
-        if (e.name === "value") {
-            this.isTreeBoxOpened = false;
-            this.ref.detectChanges();
-        }
-    }
+    // onTreeBoxOptionChanged(e: any) {
+    //     if (e.name === "value") {
+    //         this.isTreeBoxOpened = false;
+    //         this.ref.detectChanges();
+    //     }
+    // }
 
     onGridBoxOptionChanged(e: any) {
         if (e.name === "value") {

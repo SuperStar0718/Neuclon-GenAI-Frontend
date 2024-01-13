@@ -39,6 +39,7 @@ export class ChatContentComponent
   @ViewChild("window") window!: any;
   @ViewChild("container", { static: false }) containerRef: ElementRef;
   public messages: ChatCompletionRequestMessage[] = [];
+  selectedDataset: Array<object> = [];
   apiKey: string | null = "";
   isBusy: boolean = false;
   currChatSelected: string = "";
@@ -56,8 +57,9 @@ export class ChatContentComponent
       this.apiKey = "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";
     });
   }
-  onSelectedDatabaseInfoChange(databaseInfo: any): void {
-    console.log("databaseInfo", databaseInfo);
+  onSelectedDatabaseInfoChange(databaseInfo: Array<object>): void {
+    this.selectedDataset = databaseInfo;
+    console.log('selectedDataset: ', this.selectedDataset)
   }
 
   ngAfterViewInit() {
@@ -142,6 +144,7 @@ export class ChatContentComponent
       const req = {
         prompt: element.value,
         new: this.messages.length > 2 ? false : true,
+        selectedDataset : this.selectedDataset,
       };
       this.apiService
         .generateResponseFromChatGPT(req)
