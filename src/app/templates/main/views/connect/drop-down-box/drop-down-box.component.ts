@@ -1,8 +1,8 @@
 import {
-    Component,
-    ViewChild,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
+  Component,
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 
 import { HttpClient } from "@angular/common/http";
@@ -16,112 +16,126 @@ import { EventEmitter, Input, Output } from "@angular/core";
 import { event } from "devextreme/events";
 
 @Component({
-    selector: "app-drop-down-box",
-    templateUrl: "./drop-down-box.component.html",
-    styleUrls: ["./drop-down-box.component.scss"],
+  selector: "app-drop-down-box",
+  templateUrl: "./drop-down-box.component.html",
+  styleUrls: ["./drop-down-box.component.scss"],
 })
 export class DropDownBoxComponent {
-    @ViewChild(DxTreeViewComponent, { static: false }) treeView: any;
-    @Input() multipleSelection: boolean = false;
-    @Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
-    treeDataSource: any;
+  @ViewChild(DxTreeViewComponent, { static: false }) treeView: any;
+  @Input() multipleSelection: boolean = false;
+  @Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
+  treeDataSource: any;
 
-    treeBoxValue: Array<string>;
+  treeBoxValue: Array<string>;
 
-    isTreeBoxOpened: boolean;
+  isTreeBoxOpened: boolean;
 
-    gridDataSource: any;
+  gridDataSource: any;
 
-    gridBoxValue: number[] = [3];
+  gridBoxValue: number[] = [3];
 
-    isGridBoxOpened: boolean;
+  isGridBoxOpened: boolean;
 
-    constructor(
-        private httpClient: HttpClient,
-        private ref: ChangeDetectorRef,
-        private apiService: ApiService,
-        private cdr: ChangeDetectorRef
-    ) {
-        this.isTreeBoxOpened = false;
-        this.isGridBoxOpened = false;
-        this.treeBoxValue = ["1_1_1"];
-    }
-    ngOnInit() {
-        this.apiService.getDatabaseList().subscribe((res) => {
-            console.log("database list: ", res);
-            const table = res.find(
-                (item: any) => item.ID === this.treeBoxValue
-            );
-            this.treeDataSource = this.makeAsyncDataSource(res);
-            this.selectedDatabaseInfo.emit(table);
-            this.cdr.detectChanges(); // Trigger change detection
-        });
-    }
-    onTreeViewReady(e : any) {
-        this.updateSelection(e.component);
+  constructor(
+    private httpClient: HttpClient,
+    private ref: ChangeDetectorRef,
+    private apiService: ApiService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.isTreeBoxOpened = false;
+    this.isGridBoxOpened = false;
+    this.treeBoxValue = ["1_1_1"];
+  }
+  ngOnInit() {
+    this.apiService.getDatabaseList().subscribe((res) => {
+      console.log("database list: ", res);
+      let selectedDataset: Array<object> = [];
+      const foundItem = res.find(
+        (item: any) => item.ID === this.treeBoxValue[0]
+      );
+
+      if (foundItem !== undefined) {
+        selectedDataset.push(foundItem);
       }
-    
-      updateSelection(treeView: any) {
-        if (!treeView) return;
-    
-        if (!this.treeBoxValue) {
-          treeView.unselectAll();
-        }
-    
-        if (this.treeBoxValue) {
-          this.treeBoxValue.forEach(((value) => {
-            treeView.selectItem(value);
-          }));
-        }
-      }
+      this.treeDataSource = this.makeAsyncDataSource(res);
+      this.selectedDatabaseInfo.emit(
+        this.multipleSelection ? selectedDataset : selectedDataset[0]
+      );
 
-    isLeaf(value: any) {
-        return value.leaf;
+      this.cdr.detectChanges(); // Trigger change detection
+    });
+  }
+  onTreeViewReady(e: any) {
+    this.updateSelection(e.component);
+  }
+
+  updateSelection(treeView: any) {
+    if (!treeView) return;
+
+    if (!this.treeBoxValue) {
+      treeView.unselectAll();
     }
 
-    makeAsyncDataSource(jsonData: any) {
-        return new CustomStore({
-            loadMode: "raw",
-            key: "ID",
-            load() {
-                return jsonData;
-            },
-        });
+    if (this.treeBoxValue) {
+      this.treeBoxValue.forEach((value) => {
+        treeView.selectItem(value);
+      });
     }
+  }
 
-    syncTreeViewSelection(e: any) {
-        if (!this.treeView) return;
+  isLeaf(value: any) {
+    return value.leaf;
+  }
 
-        if (!this.treeBoxValue) {
-            this.treeView.instance.unselectAll();
-        } else {
-            this.treeView.instance.selectItem(this.treeBoxValue);
-        }
+  makeAsyncDataSource(jsonData: any) {
+    return new CustomStore({
+      loadMode: "raw",
+      key: "ID",
+      load() {
+        return jsonData;
+      },
+    });
+  }
+
+  syncTreeViewSelection(e: any) {
+    if (!this.treeView) return;
+
+    if (!this.treeBoxValue) {
+      this.treeView.instance.unselectAll();
+    } else {
+      this.treeView.instance.selectItem(this.treeBoxValue);
     }
+  }
 
-    treeView_itemSelectionChanged(e: any) {
-        console.log("treeView_itemSelectionChanged: ", e);
-        if (e.itemData.leaf) {
-            this.treeBoxValue = e.component.getSelectedNodeKeys();
-            this.selectedDatabaseInfo.emit(this.multipleSelection ? e.component.getSelectedNodes() : e.itemData);
-        }
+  treeView_itemSelectionChanged(e: any) {
+    console.log("treeView_itemSelectionChanged: ", e);
+    if (e.itemData.leaf) {
+      this.treeBoxValue = e.component.getSelectedNodeKeys();
+      let selectedDataset: Array<object>=[]
+      selectedDataset =  e.component.getSelectedNodes().map((node: { itemData: any; }) => {
+        return node.itemData
+      });
+      this.selectedDatabaseInfo.emit(
+        this.multipleSelection ? selectedDataset : e.itemData
+      );
     }
+  }
 
-    gridBox_displayExpr(item: any) {
-        return item && `${item.CompanyName} <${item.Phone}>`;
+  gridBox_displayExpr(item: any) {
+    return item && `${item.CompanyName} <${item.Phone}>`;
+  }
+
+  // onTreeBoxOptionChanged(e: any) {
+  //     if (e.name === "value") {
+  //         this.isTreeBoxOpened = false;
+  //         this.ref.detectChanges();
+  //     }
+  // }
+
+  onGridBoxOptionChanged(e: any) {
+    if (e.name === "value") {
+      this.isGridBoxOpened = false;
+      this.ref.detectChanges();
     }
-
-    // onTreeBoxOptionChanged(e: any) {
-    //     if (e.name === "value") {
-    //         this.isTreeBoxOpened = false;
-    //         this.ref.detectChanges();
-    //     }
-    // }
-
-    onGridBoxOptionChanged(e: any) {
-        if (e.name === "value") {
-            this.isGridBoxOpened = false;
-            this.ref.detectChanges();
-        }
-    }
+  }
 }

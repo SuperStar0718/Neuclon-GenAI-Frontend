@@ -5,7 +5,8 @@
     overflow-wrap: break-word;
   }
 
-::ng-deep .link{
+
+::ng-deep .chat-content-container a{
   color: #007bff;
   text-decoration: underline;
   cursor: pointer;

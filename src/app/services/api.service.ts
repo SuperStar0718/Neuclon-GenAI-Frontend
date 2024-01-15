@@ -87,7 +87,7 @@ export class ApiService {
             .pipe(catchError(this.handleError));
     }
 
-    downloadFile(id: any): Observable<any> {
+    downloadFile(id: string): Observable<any> {
         const headers = new HttpHeaders({
             "Content-Type": "application/json",
             Accept: "application/octet-stream",

@@ -10,13 +10,13 @@ import {
 import { ChatService } from "src/app/services/chat.service";
 import { MarkdownService } from "ngx-markdown";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ApiKeyService } from "src/app/services/api-key.service";
 import { ChatCompletionRequestMessage } from "openai";
 import { ApiService } from "src/app/services/api.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { HttpResponse } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
+import { json } from "express";
 
 @Component({
   selector: "app-chat-content",
@@ -29,7 +29,6 @@ export class ChatContentComponent
   constructor(
     private chatService: ChatService,
     private markdownService: MarkdownService,
-    private apiKeyService: ApiKeyService,
     private snackBar: MatSnackBar,
     private apiService: ApiService,
     private cdr: ChangeDetectorRef,
@@ -52,10 +51,6 @@ export class ChatContentComponent
       this.messages = messages;
     });
 
-    // Subscribe to the api key.
-    this.apiKeyService.getApiKey().subscribe((apiKey) => {
-      this.apiKey = "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";
-    });
   }
   onSelectedDatabaseInfoChange(databaseInfo: Array<object>): void {
     this.selectedDataset = databaseInfo;
@@ -87,12 +82,26 @@ export class ChatContentComponent
     return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 
-  async downloadFile(event: Event) {
-    console.log("download file");
+  enableDownload(event: MouseEvent){
+    const target = event.target as HTMLElement;
+    console.log('Link clicked!');
+
+    // Check if the clicked element is an 'a' tag
+    if (target.tagName.toLowerCase() === 'a') {
+      event.preventDefault(); // Prevent default if it's a link
+      // Perform your action here
+      console.log('Link clicked!');
+      const file_info = target.className.split(' ')
+      const id = file_info[0];
+      const name = file_info[1];
+      this.downloadFile(id, name)
+      // You can also check for specific attributes, IDs, etc.
+    }
+  }
+
+  async downloadFile(id: string, filename: string|null) {
     // event.preventDefault(); // Prevent default action of the link
-    const target = event.target as HTMLAnchorElement;
-    const id = target.id;
-    const filename = target.getAttribute("name");
+   
     console.log("filename: ", filename);
     console.log("download file:", id);
 
@@ -144,7 +153,7 @@ export class ChatContentComponent
       const req = {
         prompt: element.value,
         new: this.messages.length > 2 ? false : true,
-        selectedDataset : this.selectedDataset,
+        selectedDataset : JSON.stringify(this.selectedDataset),
       };
       this.apiService
         .generateResponseFromChatGPT(req)
@@ -156,7 +165,8 @@ export class ChatContentComponent
 
           this.scrollToBottom();
           this.isBusy = false;
-          this.chatService.setMessagesSubject(this.messages);
+          // this.chatService.setMessagesSubject(this.messages);
+
           console.log("messages: ", this.messages);
         }, (error:any)=>{
             console.error('An error occurred:', error);
@@ -190,10 +200,10 @@ export class ChatContentComponent
     element.value = "";
     console.log("set eventlistner");
     // Add event listener after a brief delay to ensure DOM is updated
-    const links = document.querySelectorAll("pre a");
-    links.forEach((link) => {
-      link.addEventListener("click", this.downloadFile.bind(this));
-    });
+    // const links = document.querySelectorAll("a");
+    // links.forEach((link) => {
+    //   link.addEventListener("click", this.downloadFile.bind(this));
+    // });
   }
 
   scrollToBottom() {
