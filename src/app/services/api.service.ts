@@ -33,6 +33,12 @@ export class ApiService {
             .pipe(catchError(this.handleError));
     }
 
+    connectTables(connectionData: any): Observable<any> {
+        return this.http
+            .post(this.baseUrl + "/api/connectTables", connectionData)
+            .pipe(catchError(this.handleError));
+    }
+
     getAllConnections(): Observable<any> {
         return this.http
             .get(this.baseUrl + "/api/getAllConnections")

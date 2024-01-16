@@ -16,7 +16,7 @@
     </div>
 
     <form>
-      <mat-tab-group>
+      <mat-tab-group #tabGroup>
         <mat-tab label="Connect" class="custom-tab">
           <div class="flex mt-[31px] items-center flex-col" *ngFor="let field of currentForm?.fields"
             class="form-group">
@@ -76,70 +76,24 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Dataset" class="custom-tab">
-          <div class="flex mt-[31px] items-center flex-col" *ngFor="let field of currentForm?.fields"
-            class="form-group">
-            <div class="input-field flex-col flex w-[95%]">
-              <mat-label class="font-medium text-[1rem] capitalize">
-                {{ field.label }}
-                <button mat-raised-button class="m-[10px]" type="button" *ngIf="field.type === 'password'"
-                  (click)="toggleInputField(field)">
-                  {{ buttonText }}
-                </button>
-              </mat-label>
-              <!-- input fields -->
-             
-              <mat-form-field appearance="outline" *ngIf="field.type != 'checkbox'">
-                
-                <input [type]="field.type" matInput [value]="field.value" [placeholder]="field.label"
-                  *ngIf="!(field.type === 'select' || field.type === 'checkbox' || field.type === 'textarea'||field.type==='radio')"
-                  class="form-control" [readonly]="field.disabled" 
-                  [(ngModel)]="field.value" [name]="field.name"
-                  />
-                  
-                <textarea matInput *ngIf="field.type === 'textarea'" [placeholder]="field.label"></textarea>
-                <!-- dropdown -->
-                <mat-select *ngIf="field.type === 'select'" [(ngModel)]="field.value" [name]="field.name" (selectionChange)="changeConnectionMethod($event.value)" >
-                  <mat-option *ngFor="let option of field.formOptions" [value]="option.value"  >{{option.label}}</mat-option>
-                </mat-select>
-                <!-- radio button -->
-                <div *ngIf="field.type==='radio'">
-                  <p> {{field.description}} </p>
-                  <mat-radio-group aria-label="Select an option" *ngFor="let item of field.radiolabel">
-                    <mat-radio-button [value]="item.value"> {{item.label}} </mat-radio-button>
-                    <p><small> {{item.description}}</small></p>
-                    <mat-error></mat-error>
-                  </mat-radio-group>
-                </div>
-              </mat-form-field>
-              <!-- for key value input -->
-              <div class="mat-form-fields">
-                <mat-form-field class="form-field" appearance="outline" *ngFor="let item of field.headers">
-                  <input [type]="item.type" matInput [placeholder]="item.label" class="form-control">
-                </mat-form-field>
-                <button mat-mini-fab color="accent" *ngIf="field.type==='url'">
-                  <mat-icon>plus_one</mat-icon>
-                </button>
-              </div>
-              <div class="mat-form-fields">
-                <mat-form-field class="form-field" appearance="outline" *ngFor="let item of field.urlparameters">
-                  <input [type]="item.type" matInput [placeholder]="item.label" class="form-control">
-                </mat-form-field>
-                <button mat-mini-fab color="accent" *ngIf="field.type==='url'">
-                  <mat-icon>plus_one</mat-icon>
-                </button>
-              </div>
-
-              <!-- switch -->
-              <mat-slide-toggle *ngIf="field.type === 'checkbox'"></mat-slide-toggle>
+        <mat-tab label="Dataset" [disabled]="!dataBaseConnected" class="custom-tab">
+          <div class="flex mt-2 px-5 items-center flex-col pb-5 form-group">
+            <p class="text-center font-bold" >Select datasets to connect</p>
+            <div class="input-field flex-col flex w-[95%]" *ngFor = "let table of availableTables | keyvalue" >
+              <mat-checkbox [(ngModel)]="selectedTables[table.key]"  checked="true" [ngModelOptions]="{standalone: true}">
+                {{table.key}}
+              </mat-checkbox>
             </div>
+
+              
+             
           </div>
         </mat-tab>
       </mat-tab-group>
     </form>
 
     <div class="flex items-center justify-center w-full">
-      <button mat-raised-button (click)="connectDB()" type="button" >Connect</button>
+      <button mat-raised-button (click)="dataBaseConnected ? connectTables() : connectDB();" type="button" >Connect</button>
       <!-- <button (click)="submitForm()">Submit</button> -->
     </div>
   </section>
