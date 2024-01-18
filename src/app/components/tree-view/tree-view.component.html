@@ -1,0 +1,9 @@
+<dx-tree-view
+  id="simple-treeview"
+  selectionMode="multiple"
+  showCheckBoxesMode="normal"
+  [selectByClick]="true"
+  [items]="DBTables"
+  [width]="300"
+  (onSelectionChanged)="selectItem($event)"
+></dx-tree-view>

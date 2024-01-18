@@ -15,7 +15,7 @@ import { DataExplorerComponent } from "./data-explorer/data-explorer.component";
 import { MatPaginatorGotoComponent } from "./mat-paginator-goto/mat-paginator-goto.component";
 import { DropDownBoxComponent } from "./drop-down-box/drop-down-box.component";
 import { DropDownBoxModule } from "./drop-down-box/drop-down-box.module";
-
+import { TreeViewModule } from "src/app/components/tree-view/tree-view.module";
 /**
  * Custom angular notifier options
  */
@@ -78,6 +78,7 @@ const customNotifierOptions: NotifierOptions = {
     HttpClientModule,
     DropDownBoxModule,
     NotifierModule.withConfig(customNotifierOptions),
+    TreeViewModule,
   ],
 })
 export class ConnectModule {}

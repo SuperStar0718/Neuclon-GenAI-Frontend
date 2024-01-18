@@ -8,9 +8,13 @@ import { HttpClient } from "@angular/common/http";
 import { NotifierService } from "angular-notifier";
 import { ApiService } from "src/app/services/api.service";
 import { MatTabGroup } from "@angular/material/tabs";
+import { DropDownBoxComponent } from "../drop-down-box/drop-down-box.component";
+import { TreeViewComponent } from "src/app/components/tree-view/tree-view.component";
 import { json } from "express";
 import { JsonExporterService } from "cdk-table-exporter";
+import CustomStore from "devextreme/data/custom_store";
 import { error } from "jquery";
+import { IDBTable } from "src/app/components/tree-view/tree-view.component";
 
 @Component({
   selector: "dataset-synchronization",
@@ -22,6 +26,7 @@ export class DatasetSynchronizationComponent implements OnInit {
   selectConnects: any[] = [];
   private readonly notifier: NotifierService;
   @ViewChild("tabGroup") tabGroup: MatTabGroup;
+  @ViewChild("treeView") treeView: TreeViewComponent;
 
   constructor(
     private http: HttpClient,
@@ -36,7 +41,7 @@ export class DatasetSynchronizationComponent implements OnInit {
   currentForm: any;
   dataBaseConnected: boolean;
   availableTables: Array<string>;
-  selectedTables: { [key: string]: boolean };
+  selectedTables: Array<IDBTable> = [];
   connection: {
     status?: string;
     tables?: string;
@@ -126,6 +131,12 @@ export class DatasetSynchronizationComponent implements OnInit {
     }
   }
 
+  onSelectedDatabaseInfoChange(databaseInfo: Array<object>): void {
+    // this.selectedDataset = databaseInfo;
+    // console.log('selectedDataset: ', this.selectedDataset)
+    console.log("selected Dataset:", databaseInfo);
+  }
+
   connectDB() {
     console.log(this.currentForm);
     let connectionData: { [key: string]: any } = {};
@@ -135,17 +146,32 @@ export class DatasetSynchronizationComponent implements OnInit {
     connectionData["type"] = this.dataSetCategories.categoryName;
     this.apiService.establishConnection(connectionData).subscribe(
       (res) => {
-        console.log("success:", res);
+        console.log("success:", JSON.parse(res.tables));
+        const tablesData = JSON.parse(res.tables);
+        let treeData: Array<IDBTable> = [];
+        tablesData.forEach((database: any, index: number) => {
+          ++index;
+          const tables: IDBTable[] = database.collections.map(
+            (collection: string, i: number) => {
+              return {
+                id: `${index}_${++i}`,
+                text: collection,
+                isTable: true,
+                parentDB: database.dbname,
+              };
+            }
+          );
+
+          treeData.push({
+            id: `${index}`,
+            text: database.dbname,
+            expanded: true,
+            items: tables,
+          });
+        });
         this.connection = res;
         this.dataBaseConnected = true;
-        this.availableTables = JSON.parse(res.tables);
-        this.selectedTables = Object.keys(this.availableTables).reduce(
-          (obj: { [key: string]: boolean }, key) => {
-            obj[key] = true; // or false if you want the checkbox to be unchecked by default
-            return obj;
-          },
-          {}
-        );
+        this.treeView.DBTables = treeData;
         this.tabGroup.selectedIndex = 1;
         this.notifier.notify("success", "Connection Successful");
       },
@@ -155,13 +181,36 @@ export class DatasetSynchronizationComponent implements OnInit {
       }
     );
   }
+  selectDBTables(selectionData: any) {
+    this.selectedTables = selectionData;
+  }
 
   connectTables() {
     console.log("selected tables:", this.selectedTables);
+    const selectedTables = this.selectedTables
+      .filter((table: IDBTable) => table.isTable)
+      .reduce((acc: any[], table: IDBTable) => {
+        // Find the database in the accumulator
+        const db = acc.find((db) => db.name === table.parentDB);
+
+        const collectionName = table.text;
+        if (db) {
+          // If the database is already in the accumulator, add the table to its collections
+          db.collections.push(collectionName);
+        } else {
+          // If the database is not in the accumulator, add it
+          acc.push({
+            name: table.parentDB,
+            collections: [collectionName],
+          });
+        }
+
+        return acc;
+      }, []);
     const data = {
       type: this.connection.type,
-      tables: JSON.stringify(this.selectedTables),
-      dbname: this.connection.dbname,
+      tables: JSON.stringify(selectedTables),
+      host: this.connection.host,
     };
     this.apiService.connectTables(data).subscribe(
       (res) => {

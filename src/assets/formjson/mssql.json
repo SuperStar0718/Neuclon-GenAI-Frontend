@@ -41,19 +41,6 @@
     },
     {
       "type": "text",
-      "label": "Database Name",
-      "name": "databse",
-      "value": "",
-      "validations": [
-        {
-          "name": "required",
-          "validator": "required",
-          "message": "Field is required"
-        }
-      ]
-    },
-    {
-      "type": "text",
       "label": "Username",
       "name": "username",
       "value": "",

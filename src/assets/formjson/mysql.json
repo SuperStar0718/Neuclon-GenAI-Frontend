@@ -38,19 +38,6 @@
       ]
     },
     {
-      "type": "text",
-      "label": "Database Name",
-      "name": "databaseName",
-      "value": "",
-      "validations": [
-        {
-          "name": "required",
-          "validator": "required",
-          "message": "Field is required"
-        }
-      ]
-    },
-    {
       "type": "select",
       "label": "Connection Type",
       "name": "contype",

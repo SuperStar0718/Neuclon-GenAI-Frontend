@@ -1,38 +1,37 @@
 <div class="dx-fieldset">
-    <div class="dx-field">
-      <div class="dx-field-label"></div>
-      <div class="dx-field-value">
-        <dx-drop-down-box
-          [(value)]="treeBoxValue"
-          [inputAttr]="{ 'aria-label': 'Owner' }"
-          [(opened)]="isTreeBoxOpened"
-          valueExpr="ID"
-          displayExpr="name"
-          placeholder="Select dataset"
-          [showClearButton]="true"
-          [dataSource]="treeDataSource"
-          (onValueChanged)="syncTreeViewSelection($event)"
-        >
-          <div *dxTemplate="let data of 'content'">
-            <dx-tree-view
-              [dataSource]="treeDataSource"
-              dataStructure="plain"
-              keyExpr="ID"
-              parentIdExpr="categoryId"
-              [selectNodesRecursive]="false"
-              [showCheckBoxesMode]="multipleSelection ? 'normal' : 'none'"
-              [selectionMode]="multipleSelection ? 'multiple' : 'single'"
-              displayExpr="name"
-              [selectByClick]="true"
-              (onContentReady)="onTreeViewReady($event)"
-              (onItemSelectionChanged)="treeView_itemSelectionChanged($event)"
-            >
-            </dx-tree-view>
-          </div>
-        </dx-drop-down-box>
-      </div>
+  <div class="dx-field">
+    <div class="dx-field-value">
+      <dx-drop-down-box
+        [(value)]="treeBoxValue"
+        [inputAttr]="{ 'aria-label': 'Owner' }"
+        [(opened)]="isTreeBoxOpened"
+        valueExpr="ID"
+        displayExpr="name"
+        placeholder="Select dataset"
+        [showClearButton]="true"
+        [dataSource]="treeDataSource"
+        (onValueChanged)="syncTreeViewSelection($event)"
+        (onOptionChanged)="onTreeBoxOptionChanged($event)"
+      >
+        <div *dxTemplate="let data of 'content'">
+          <dx-tree-view
+            [dataSource]="treeDataSource"
+            dataStructure="plain"
+            keyExpr="ID"
+            parentIdExpr="categoryId"
+            [selectNodesRecursive]="false"
+            [showCheckBoxesMode]="multipleSelection ? 'normal' : 'none'"
+            [selectionMode]="multipleSelection ? 'multiple' : 'single'"
+            displayExpr="name"
+            [selectByClick]="true"
+            (onItemSelectionChanged)="treeView_itemSelectionChanged($event)"
+          >
+          </dx-tree-view>
+        </div>
+      </dx-drop-down-box>
     </div>
-    <!-- <div class="dx-field">
+  </div>
+  <!-- <div class="dx-field">
       <div class="dx-field-label">DropDownBox with embedded DataGrid</div>
       <div class="dx-field-value">
         <dx-drop-down-box
@@ -64,4 +63,4 @@
         </dx-drop-down-box>
       </div>
     </div> -->
-  </div>
+</div>

@@ -23,14 +23,15 @@ import { event } from "devextreme/events";
 export class DropDownBoxComponent {
   @ViewChild(DxTreeViewComponent, { static: false }) treeView: any;
   @Input() multipleSelection: boolean = false;
+  @Input() expandAll: boolean = false;
   @Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
   treeDataSource: any;
 
   treeBoxValue: Array<string>;
 
-  isTreeBoxOpened: boolean;
-
   gridDataSource: any;
+
+  isTreeBoxOpened: boolean;
 
   gridBoxValue: number[] = [3];
 
@@ -42,7 +43,6 @@ export class DropDownBoxComponent {
     private apiService: ApiService,
     private cdr: ChangeDetectorRef
   ) {
-    this.isTreeBoxOpened = false;
     this.isGridBoxOpened = false;
     this.treeBoxValue = ["1_1_1"];
   }
@@ -98,6 +98,7 @@ export class DropDownBoxComponent {
   }
 
   syncTreeViewSelection(e: any) {
+    console.log("synctreeview selction");
     if (!this.treeView) return;
 
     if (!this.treeBoxValue) {
@@ -111,10 +112,12 @@ export class DropDownBoxComponent {
     console.log("treeView_itemSelectionChanged: ", e);
     if (e.itemData.leaf) {
       this.treeBoxValue = e.component.getSelectedNodeKeys();
-      let selectedDataset: Array<object>=[]
-      selectedDataset =  e.component.getSelectedNodes().map((node: { itemData: any; }) => {
-        return node.itemData
-      });
+      let selectedDataset: Array<object> = [];
+      selectedDataset = e.component
+        .getSelectedNodes()
+        .map((node: { itemData: any }) => {
+          return node.itemData;
+        });
       this.selectedDatabaseInfo.emit(
         this.multipleSelection ? selectedDataset : e.itemData
       );
@@ -125,12 +128,12 @@ export class DropDownBoxComponent {
     return item && `${item.CompanyName} <${item.Phone}>`;
   }
 
-  // onTreeBoxOptionChanged(e: any) {
-  //     if (e.name === "value") {
-  //         this.isTreeBoxOpened = false;
-  //         this.ref.detectChanges();
-  //     }
-  // }
+  onTreeBoxOptionChanged(e: any) {
+      if (e.name === "value") {
+          this.isTreeBoxOpened = false;
+          this.ref.detectChanges();
+      }
+  }
 
   onGridBoxOptionChanged(e: any) {
     if (e.name === "value") {
