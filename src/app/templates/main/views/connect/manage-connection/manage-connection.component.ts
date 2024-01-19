@@ -1,40 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { connection } from 'src/app/Models/connection';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConnectDeviceComponent } from '../connect-device/connect-device.component';
-import { HttpClient } from '@angular/common/http';
-import { ApiService } from 'src/app/services/api.service';
-import { SharedService } from 'src/app/services/shared.service';
-
+import { Component, OnInit } from "@angular/core";
+import { IConnection } from "src/app/Models/connection";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { ConnectDeviceComponent } from "../connect-device/connect-device.component";
+import { HttpClient } from "@angular/common/http";
+import { ApiService } from "src/app/services/api.service";
+import { SharedService } from "src/app/services/shared.service";
 
 @Component({
-  selector: 'app-manage-connection',
-  templateUrl: './manage-connection.component.html',
-  styleUrls: ['./manage-connection.component.scss'],
+  selector: "app-manage-connection",
+  templateUrl: "./manage-connection.component.html",
+  styleUrls: ["./manage-connection.component.scss"],
 })
 export class ManageConnectionComponent implements OnInit {
-  manageConnectCollection!: connection[];
+  manageConnectCollection!: IConnection[];
 
   constructor(
     private dialog: MatDialog,
-    private http:HttpClient,
+    private http: HttpClient,
     private apiService: ApiService,
     private sharedService: SharedService
-    ) {}
+  ) {}
   ngOnInit(): void {
-    this.sharedService.component.next('Manage Connections');
-    localStorage.setItem('activeComp', 'Manage Connections');
-    this.apiService.getAllConnections().subscribe((res:any)=>{
-      console.log('all connections: ', res);
+    this.sharedService.component.next("Manage Connections");
+    localStorage.setItem("activeComp", "Manage Connections");
+    this.apiService.getAllConnections().subscribe((res: any) => {
       this.manageConnectCollection = res;
-    }
-    );
+      let dataEndpoints: Array<IConnection> = [];
+      res.forEach((connection: IConnection) => {
+        const tables = JSON.parse(connection.tables);
+        tables.forEach(
+          (table: { name: string; collections: Array<string> }) => {
+            table.collections.forEach((collection: string) => {
+              dataEndpoints.push({
+                ...connection,
+                dataset: collection,
+              });
+            });
+          }
+        );
+      });
+      console.log("data endpoints: ", dataEndpoints);
+      this.manageConnectCollection = dataEndpoints;
+    });
     // this.manageConnectCollection = manageConnectionCollection;
   }
 
   openConnectionDialog() {
     this.dialog.open(ConnectDeviceComponent, {
-      width: '900px',
+      width: "900px",
     });
   }
 }

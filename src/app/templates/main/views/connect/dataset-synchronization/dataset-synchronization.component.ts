@@ -15,6 +15,7 @@ import { JsonExporterService } from "cdk-table-exporter";
 import CustomStore from "devextreme/data/custom_store";
 import { error } from "jquery";
 import { IDBTable } from "src/app/components/tree-view/tree-view.component";
+import { IConnection, IConnectionInfo } from "src/app/Models/connection";
 
 @Component({
   selector: "dataset-synchronization",
@@ -31,7 +32,8 @@ export class DatasetSynchronizationComponent implements OnInit {
   constructor(
     private http: HttpClient,
     public dialogRef: MatDialogRef<DatasetSynchronizationComponent>,
-    @Inject(MAT_DIALOG_DATA) public dialogData: CategoryType,
+    @Inject(MAT_DIALOG_DATA)
+    public dialogData: CategoryType | IConnectionInfo,
     private formDataService: FormService,
     notifierService: NotifierService,
     private apiService: ApiService
@@ -39,6 +41,7 @@ export class DatasetSynchronizationComponent implements OnInit {
     this.notifier = notifierService;
   }
   currentForm: any;
+  existingConnectionInfo: IConnection;
   dataBaseConnected: boolean;
   availableTables: Array<string>;
   selectedTables: Array<IDBTable> = [];
@@ -56,8 +59,14 @@ export class DatasetSynchronizationComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataBaseConnected = false;
-    console.log("dialog data ====>>>>>", this.dialogData);
-    this.dataSetCategories = this.dialogData;
+    if ("categoryInfo" in this.dialogData) {
+      this.dataSetCategories = this.dialogData.categoryInfo;
+      this.existingConnectionInfo = this.dialogData.dataSetInfo;
+      console.log("dialog data ====>>>>>", this.dialogData);
+    } else {
+      this.dataSetCategories = this.dialogData;
+    }
+
     if (this.dataSetCategories.categoryName === "Salesforce") {
       this.selectConnects = salesforceSelectConnects;
     } else if (this.dataSetCategories.categoryName === "MBrain") {
@@ -77,6 +86,13 @@ export class DatasetSynchronizationComponent implements OnInit {
     this.formDataService.getFormData(formName).subscribe(
       (data) => {
         this.currentForm = data;
+        if (this.existingConnectionInfo) {
+          this.currentForm?.fields.forEach((field: any) => {
+            const fieldName = field.name as keyof IConnection;
+            if (this.existingConnectionInfo[fieldName])
+              field.value = this.existingConnectionInfo[fieldName];
+          });
+        }
       },
       (error) => console.log(error)
     );
@@ -128,6 +144,13 @@ export class DatasetSynchronizationComponent implements OnInit {
           },
           (error) => console.log(error)
         );
+    }
+    if (this.existingConnectionInfo) {
+      this.currentForm?.fields.forEach((field: any) => {
+        const fieldName = field.name as keyof IConnection;
+        if (this.existingConnectionInfo[fieldName])
+          field.value = this.existingConnectionInfo[fieldName];
+      });
     }
   }
 

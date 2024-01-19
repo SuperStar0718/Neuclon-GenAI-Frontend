@@ -22,6 +22,9 @@ main {
   }
 }
 
+.mat-mdc-form-field-input-control{
+  color: black !important;
+}
 ::ng-deep.mat-mdc-dialog-container .mdc-dialog__surface {
   max-height: 600px !important;
 }

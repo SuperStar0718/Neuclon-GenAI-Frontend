@@ -178,7 +178,7 @@
         (click)="dataBaseConnected ? connectTables() : connectDB()"
         type="button"
       >
-        Connect
+        {{ dataBaseConnected ? "Connect" : "Next" }}
       </button>
       <!-- <button (click)="submitForm()">Submit</button> -->
     </div>

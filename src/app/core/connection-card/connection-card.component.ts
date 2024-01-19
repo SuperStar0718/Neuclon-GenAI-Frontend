@@ -1,23 +1,23 @@
-import { Component, Input , ChangeDetectorRef} from '@angular/core';
-import { connection } from 'src/app/Models/connection';
-import { ApiService } from 'src/app/services/api.service';
-import { NotifierService } from 'angular-notifier';
-import { MatDialog } from '@angular/material/dialog';
-import { DatasetSynchronizationComponent } from 'src/app/templates/main/views/connect/dataset-synchronization/dataset-synchronization.component';
-import { CategoryType } from 'src/app/Models/category-type';
-import {MatDialogRef} from '@angular/material/dialog';
-import dataSetCategories from 'src/assets/categoryType/categoryType'
+import { Component, Input, ChangeDetectorRef } from "@angular/core";
+import { IConnection } from "src/app/Models/connection";
+import { ApiService } from "src/app/services/api.service";
+import { NotifierService } from "angular-notifier";
+import { MatDialog } from "@angular/material/dialog";
+import { DatasetSynchronizationComponent } from "src/app/templates/main/views/connect/dataset-synchronization/dataset-synchronization.component";
+import { CategoryType } from "src/app/Models/category-type";
+import { MatDialogRef } from "@angular/material/dialog";
+import dataSetCategories from "src/assets/categoryType/categoryType";
 
+import * as moment from "moment";
 
 @Component({
-  selector: 'app-connection-card',
-  templateUrl: './connection-card.component.html',
-  styleUrls: ['./connection-card.component.scss']
+  selector: "app-connection-card",
+  templateUrl: "./connection-card.component.html",
+  styleUrls: ["./connection-card.component.scss"],
 })
 export class ConnectionCardComponent {
-
-  @Input() props!:connection;
-  private readonly notifier: NotifierService
+  @Input() props!: IConnection;
+  private readonly notifier: NotifierService;
   display = true;
 
   constructor(
@@ -25,59 +25,76 @@ export class ConnectionCardComponent {
     private apiService: ApiService,
     notifierService: NotifierService,
     private changeDetector: ChangeDetectorRef
-    ) { 
+  ) {
     this.notifier = notifierService;
-    }
-
-  refreshConnection(props: connection) {
-    console.log(props)
-    this.apiService.establishConnection(props).subscribe(res => {
-      console.log('success');
-      this.props = res;
-      this.changeDetector.detectChanges();
-      this.notifier.notify('success', 'Connection Successful');
-    },
-    error => {
-      console.log(error);
-      this.notifier.notify('error', 'Whoops, something went wrong.');
-    });
   }
 
-  stopConnection(props: connection) {
-    console.log(props)
-    this.apiService.stopConnection(props).subscribe(res => {
-      console.log('success');
-      this.props = res;
-      this.changeDetector.detectChanges();
-      this.notifier.notify('success', 'Connection Stopped');
-    },
-    error => {
-      console.log(error);
-      this.notifier.notify('error', 'Whoops, something went wrong.');
-    });
+  refreshConnection(props: IConnection) {
+    console.log(props);
+    this.apiService.establishConnection(props).subscribe(
+      (res) => {
+        console.log("success");
+        this.props = res;
+        this.changeDetector.detectChanges();
+        this.notifier.notify("success", "Connection Successful");
+      },
+      (error) => {
+        console.log(error);
+        this.notifier.notify("error", "Whoops, something went wrong.");
+      }
+    );
   }
 
-  deleteConnection(props: connection) {
-    console.log(props)
-    this.apiService.deleteConnection(props).subscribe(res => {
-      console.log('success');
-      this.display = false;
-      this.notifier.notify('success', 'Connection Deleted');
-    },
-    error => {
-      console.log(error);
-      this.notifier.notify('error', 'Whoops, something went wrong.');
-    });
+  momentFormat(date: string) {
+    return moment(date).format("M/D/YYYY-hh:mm A");
   }
 
-  syncPopup(dbname: string) {
+  stopConnection(props: IConnection) {
+    console.log(props);
+    this.apiService.stopConnection(props).subscribe(
+      (res) => {
+        console.log("success");
+        this.props = res;
+        this.changeDetector.detectChanges();
+        this.notifier.notify("success", "Connection Stopped");
+      },
+      (error) => {
+        console.log(error);
+        this.notifier.notify("error", "Whoops, something went wrong.");
+      }
+    );
+  }
+
+  deleteConnection(props: IConnection) {
+    console.log(props);
+    this.apiService.deleteConnection(props).subscribe(
+      (res) => {
+        console.log("success");
+        this.display = false;
+        this.notifier.notify("success", "Connection Deleted");
+      },
+      (error) => {
+        console.log(error);
+        this.notifier.notify("error", "Whoops, something went wrong.");
+      }
+    );
+  }
+
+  syncPopup(props: IConnection) {
     const syncDataset = dataSetCategories
-                .map(item => item.categoryType) // flatten categoryType arrays
-                .flat()
-                .filter(item1 => item1.categoryName === dbname);
+      .map((item) => item.categoryType) // flatten categoryType arrays
+      .flat()
+      .filter(
+        (item1) => item1.displayName?.toLowerCase() === props.type.toLowerCase()
+      );
+
+    console.log("Edit data:", syncDataset);
     this.dialogRef.open(DatasetSynchronizationComponent, {
-      data: syncDataset[0],
-      width: '550px',
+      data: {
+        categoryInfo: syncDataset[0],
+        dataSetInfo: props,
+      },
+      width: "550px",
     });
   }
 }

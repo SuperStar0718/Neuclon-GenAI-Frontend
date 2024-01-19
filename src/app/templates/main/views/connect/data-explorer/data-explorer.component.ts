@@ -290,8 +290,8 @@ export class DataExplorerComponent implements OnInit {
     // On click of correct button in table (after click on edit) this method will call
     SaveVO(VOFormElement: any, i: any) {
         const data = {
-            data: VOFormElement.get("VORows").at(i).value,
-            db: "mongodb",
+          data: VOFormElement.get("VORows").at(i).value,
+          db: "MongoDB",
         };
         console.log("data", data);
         this.apiService.saveData(data).subscribe(
@@ -321,8 +321,8 @@ export class DataExplorerComponent implements OnInit {
     // On click of delete button in the table this method will call
     DeleteSVO(VOFormElement: any, i: any) {
         const data = {
-            data: VOFormElement.get("VORows").at(i).value,
-            db: "mongodb",
+          data: VOFormElement.get("VORows").at(i).value,
+          db: "MongoDB",
         };
         this.apiService.deleteData(data).subscribe(
             (res) => {

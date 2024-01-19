@@ -1,45 +1,72 @@
-<div class="relative p-5 connection-data w-[23rem] h-full" *ngIf="display" style="border-top: 2px solid #005f65; background: #f4f4f4">
-  <span class="absolute top-0 left-0 p-2 uppercase status">{{ props.status }}</span>
+<div
+  class="relative p-5 connection-data w-[23rem] h-full"
+  *ngIf="display"
+  style="border-top: 2px solid #005f65; background: #f4f4f4"
+>
+  <span class="absolute top-0 left-0 p-2 uppercase status">{{
+    props.status
+  }}</span>
   <mat-icon class="absolute top-2 right-2">visibility</mat-icon>
-  <h2 class="pt-12 text-center ff-poppins-semibold" style="color: #04bac6; font-size: 16px">{{ props.type }}</h2>
-  <!-- <h3 class="pt-1 text-center ff-poppins-semibold" style="font-size: 15px">{{ props.type }}</h3> -->
-  <div class="flex items-center justify-center pt-2 pb-6" *ngIf="props.uri" >
-    <span class="text-center ff-poppins" style="font-size: 12px">{{ props.uri }}</span>
-    <img
-      src="assets/icons/copy_black.svg"
-      alt=""
-      class="mx-2"
-      width="20px"
-      height="20px"
-      [cdkCopyToClipboard]="props.uri"
-    />
-  </div>
-  <div class="flex items-center justify-center" *ngIf="props.dbname">
-    <span class="text-center ff-poppins" style="font-size: 12px">{{ props.dbname }}</span>
-    <img
-      src="assets/icons/copy_black.svg"
-      alt=""
-      class="mx-2"
-      width="20px"
-      height="20px"
-      [cdkCopyToClipboard]="props.dbname"
-    />
-  </div>
-  <div class="flex items-center justify-between pt-6 pb-8">
-    <div class="flex flex-col" *ngIf="props.host">
-      <span class="ff-poppins" style="font-size: 12px">{{ props.host }}</span>
-      <span class="ff-poppins-semibold" style="font-size: 12px">IP Address</span>
+  <div class="flex flex-col h-full justify-between">
+    <h2
+      class="pt-8 text-center ff-poppins-semibold"
+      style="color: #04bac6; font-size: 16px"
+    >
+      {{ props.type }}
+    </h2>
+    <h3 class="pt-4 text-center ff-poppins-semibold" style="font-size: 15px">
+      {{ props.dataset }}
+    </h3>
+    <div class="flex items-center justify-center pt-2 pb-6" *ngIf="props.uri">
+      <span class="text-center ff-poppins" style="font-size: 12px">{{
+        props.uri
+      }}</span>
+      <img
+        src="assets/icons/copy_black.svg"
+        alt=""
+        class="mx-2"
+        width="20px"
+        height="20px"
+        [cdkCopyToClipboard]="props.uri"
+      />
     </div>
-    <div class="flex flex-col" *ngIf="props.port">
-      <span class="ff-poppins" style="font-size: 12px">{{ props.port }}</span>
-      <span class="ff-poppins-semibold" style="font-size: 12px">Port</span>
+    <div class="flex items-center justify-center" *ngIf="props.dbname">
+      <span class="text-center ff-poppins" style="font-size: 12px">{{
+        props.dbname
+      }}</span>
+      <img
+        src="assets/icons/copy_black.svg"
+        alt=""
+        class="mx-2"
+        width="20px"
+        height="20px"
+        [cdkCopyToClipboard]="props.dbname"
+      />
     </div>
-  </div>
-  <div class="flex justify-center gap-2 actions">
-    <mat-icon (click)="refreshConnection(props)">refresh</mat-icon>
-    <mat-icon (click)="syncPopup(props.type)" >edit</mat-icon>
-    <mat-icon (click)="stopConnection(props)" >stop</mat-icon>
-    <mat-icon (click)="deleteConnection(props)" style="color: #eb3223">delete</mat-icon>
+    <div class="flex items-center justify-between pt-6 pb-1">
+      <div class="flex flex-col" *ngIf="props.host">
+        <span class="ff-poppins" style="font-size: 12px">{{ props.host }}</span>
+        <span class="ff-poppins-semibold" style="font-size: 12px"
+          >IP Address</span
+        >
+      </div>
+      <div class="flex flex-col" *ngIf="props.port">
+        <span class="ff-poppins" style="font-size: 12px">{{ props.port }}</span>
+        <span class="ff-poppins-semibold" style="font-size: 12px">Port</span>
+      </div>
+    </div>
+    <div style="font-size: 12px" class="pb-2 font-bold">
+      Last Updated:
+      <span class="ff-poppins">{{ momentFormat(props.updated_at) }}</span>
+    </div>
+    <div class="flex justify-center gap-2 actions">
+      <mat-icon (click)="refreshConnection(props)">refresh</mat-icon>
+      <mat-icon (click)="syncPopup(props)">edit</mat-icon>
+      <mat-icon (click)="stopConnection(props)">stop</mat-icon>
+      <mat-icon (click)="deleteConnection(props)" style="color: #eb3223"
+        >delete</mat-icon
+      >
+    </div>
   </div>
 </div>
 <notifier-container></notifier-container>
