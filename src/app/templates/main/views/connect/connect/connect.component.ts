@@ -10,7 +10,7 @@ import { ApiService } from "src/app/services/api.service";
 export class ConnectComponent {
   manageConnectCollection!: IConnection[];
 
-  connection_card_data: IConnection[] = [];
+  //   connection_card_data: IConnection[] = [];
   videoStatusRight: boolean = false;
   videoStatusLeft1: boolean = false;
   videoStatusLeft2: boolean = false;
@@ -154,12 +154,32 @@ export class ConnectComponent {
     // ];
   }
   ngOnInit(): void {
-    this.apiService.getAllConnections().subscribe((data: any) => {
-      this.connection_card_data = data;
-    });
+    // this.apiService.getAllConnections().subscribe((data: any) => {
+    //   this.connection_card_data = data;
+    // });
     this.apiService.getAllConnections().subscribe((res: any) => {
-      console.log("all connections: ", res);
       this.manageConnectCollection = res;
+      let dataEndpoints: Array<IConnection> = [];
+      res.forEach((connection: IConnection) => {
+        const tables = JSON.parse(connection.tables);
+        tables.forEach(
+          (table: {
+            name: string;
+            collections: Array<{ collectionName: string; status: boolean }>;
+          }) => {
+            table.collections.forEach(
+              (collection: { collectionName: string; status: boolean }) => {
+                dataEndpoints.push({
+                  ...connection,
+                  dataset: collection,
+                });
+              }
+            );
+          }
+        );
+      });
+      console.log("data endpoints: ", dataEndpoints);
+      this.manageConnectCollection = dataEndpoints;
     });
   }
 }

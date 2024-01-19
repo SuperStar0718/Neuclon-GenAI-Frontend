@@ -31,10 +31,12 @@ export class ConnectionCardComponent {
 
   refreshConnection(props: IConnection) {
     console.log(props);
-    this.apiService.establishConnection(props).subscribe(
+    this.apiService.refreshConnection(props).subscribe(
       (res) => {
         console.log("success");
-        this.props = res;
+        console.log("res:", res);
+        props.dataset.status = true;
+        this.props.dataset = props.dataset;
         this.changeDetector.detectChanges();
         this.notifier.notify("success", "Connection Successful");
       },
@@ -54,7 +56,8 @@ export class ConnectionCardComponent {
     this.apiService.stopConnection(props).subscribe(
       (res) => {
         console.log("success");
-        this.props = res;
+        props.dataset.status = false;
+        this.props.dataset = props.dataset;
         this.changeDetector.detectChanges();
         this.notifier.notify("success", "Connection Stopped");
       },

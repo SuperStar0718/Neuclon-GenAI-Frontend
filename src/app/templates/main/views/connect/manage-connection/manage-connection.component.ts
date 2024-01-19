@@ -29,13 +29,18 @@ export class ManageConnectionComponent implements OnInit {
       res.forEach((connection: IConnection) => {
         const tables = JSON.parse(connection.tables);
         tables.forEach(
-          (table: { name: string; collections: Array<string> }) => {
-            table.collections.forEach((collection: string) => {
-              dataEndpoints.push({
-                ...connection,
-                dataset: collection,
-              });
-            });
+          (table: {
+            name: string;
+            collections: Array<{ collectionName: string; status: boolean }>;
+          }) => {
+            table.collections.forEach(
+              (collection: { collectionName: string; status: boolean }) => {
+                dataEndpoints.push({
+                  ...connection,
+                  dataset: collection,
+                });
+              }
+            );
           }
         );
       });

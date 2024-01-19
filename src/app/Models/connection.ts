@@ -9,7 +9,7 @@ export interface IConnection {
   password: string;
   dbname?: string;
   tables: string;
-  dataset: string;
+  dataset: { collectionName: string; status: boolean };
   uri?: string;
   status: string;
   updated_at: string;

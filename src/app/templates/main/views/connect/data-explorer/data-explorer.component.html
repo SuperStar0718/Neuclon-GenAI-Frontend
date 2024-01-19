@@ -1,109 +1,201 @@
 <div class="mat-elevation-z8">
-  <div class="header" >
-    <dx-drop-down-button 
-    text="Export to PDF"
-    icon="exportpdf"
-    [items]="actions"
-    keyExpr="id"
-    displayExpr="text"
-    [splitButton]="true"
-    (onItemClick)="logAction($event)"
-    (onButtonClick)="exportAsPDF()">
-</dx-drop-down-button>
-    <app-drop-down-box (selectedDatabaseInfo)="onSelectedDatabaseInfoChange($event)"  ></app-drop-down-box>
+  <div class="header">
+    <dx-drop-down-button
+      text="Export to PDF"
+      icon="exportpdf"
+      [items]="actions"
+      keyExpr="id"
+      displayExpr="text"
+      [splitButton]="true"
+      (onItemClick)="logAction($event)"
+      (onButtonClick)="exportAsPDF()"
+    >
+    </dx-drop-down-button>
+    <app-drop-down-box
+      (selectedDatabaseInfo)="onSelectedDatabaseInfoChange($event)"
+    ></app-drop-down-box>
   </div>
-  <div class="px-[20px] pb-[20px]" >
+  <div class="px-[20px] pb-[20px]">
     <div class="dbname">
-      <button><mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon></button>
-      <p >
-        {{dbName}}
+      <button>
+        <mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon>
+      </button>
+      <p>
+        {{ dbName }}
       </p>
     </div>
     <mat-form-field style="width: 40%">
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ex. ium"
+        #input
+      />
     </mat-form-field>
-    <mat-form-field style="width: 20%; float: right;">
+    <mat-form-field style="width: 20%; float: right">
       <mat-label>Go to Page</mat-label>
-      <input matInput type="number" placeholder="Enter page number" [(ngModel)]="pageNumber" (ngModelChange)="goToPage()">
+      <input
+        matInput
+        type="number"
+        placeholder="Enter page number"
+        [(ngModel)]="pageNumber"
+        (ngModelChange)="goToPage()"
+      />
     </mat-form-field>
   </div>
-    <form [formGroup]="VOForm" autocomplete="off" >
-      <ng-container *ngIf="!noData && !isLoading" formArrayName="VORows">
-        <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" id="matTable">
-  
-          <!-- Column Definitions -->
-          <ng-container *ngFor="let column of displayedColumns" >
-            <ng-container *ngIf="column !== 'action'">
-              <ng-container [matColumnDef]="column">
-                <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
-                <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element" >
-
-                  <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
-                  <mat-form-field 
-                    [appearance]="VOForm.get('VORows')?.value[i].isEditable? 'outline' : 'fill'">
-                    <input matInput type="text" [formControlName]="column" [readonly]="VOForm.get('VORows')?.value[i].isEditable">
-                  </mat-form-field>
-                  <!-- </span> -->
-      
-                </td>
-              </ng-container>
+  <form [formGroup]="VOForm" autocomplete="off">
+    <ng-container *ngIf="!noData && !isLoading" formArrayName="VORows">
+      <table
+        #table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8"
+        id="matTable"
+      >
+        <!-- Column Definitions -->
+        <ng-container *ngFor="let column of displayedColumns">
+          <ng-container *ngIf="column !== 'action'">
+            <ng-container [matColumnDef]="column">
+              <th mat-header-cell *matHeaderCellDef>
+                {{ column | titlecase }}
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element; let i = index"
+                [formGroup]="element"
+              >
+                <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                <mat-form-field
+                  [appearance]="
+                    VOForm.get('VORows')?.value[i].isEditable
+                      ? 'outline'
+                      : 'fill'
+                  "
+                >
+                  <input
+                    matInput
+                    type="text"
+                    [formControlName]="column"
+                    [readonly]="VOForm.get('VORows')?.value[i].isEditable"
+                  />
+                </mat-form-field>
+                <!-- </span> -->
+              </td>
             </ng-container>
           </ng-container>
+        </ng-container>
 
-          
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> Action </th>
-            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
-              <button mat-icon-button class="material-icons app-toolbar-menu save-button"
-                                      matTooltip="Save Changes" (click)="SaveVO(VOForm,i)"
-                                      *ngIf="!VOForm.get('VORows')?.value[i].isEditable" color="primary">
-                                      <mat-icon>check_circle</mat-icon>
-                                  </button>
-  
-              <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
-                                      matTooltip="Cancel Changes" color="warn"
-                                      (click)="CancelSVO(VOForm,i)"
-                                      *ngIf="!VOForm.get('VORows')?.value[i].isEditable">
-                                      <mat-icon>cancel</mat-icon>
-                                  </button>
-  
-              <button mat-icon-button class="material-icons app-toolbar-menu save-button"
-                                      *ngIf="VOForm.get('VORows')?.value[i].isEditable"
-                                      matTooltip="Edit" color="primary" (click)="EditSVO(VOForm,i)">
-                                      <mat-icon>edit</mat-icon>
-                                  </button>
-  
-              <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
-                                      *ngIf="VOForm.get('VORows')?.value[i].isEditable"
-                                      matTooltip="Delete" color="warn" (click)="DeleteSVO(VOForm,i)">
-                                      <mat-icon>delete</mat-icon>
-                                  </button>
-            </td>
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          >
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
+              matTooltip="Save Changes"
+              (click)="SaveVO(VOForm, i)"
+              *ngIf="!VOForm.get('VORows')?.value[i].isEditable"
+              color="primary"
+            >
+              <mat-icon>check_circle</mat-icon>
+            </button>
 
-        </table>
-      </ng-container>
-    </form>
-    <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; padding-bottom: 50px; padding-top:50px;">
-    <mat-progress-spinner 
-      color="primary" 
-      mode="indeterminate">
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu cancel-button"
+              matTooltip="Cancel Changes"
+              color="warn"
+              (click)="CancelSVO(VOForm, i)"
+              *ngIf="!VOForm.get('VORows')?.value[i].isEditable"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
+              *ngIf="VOForm.get('VORows')?.value[i].isEditable"
+              matTooltip="Edit"
+              color="primary"
+              (click)="EditSVO(VOForm, i)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu delete-button"
+              *ngIf="VOForm.get('VORows')?.value[i].isEditable"
+              matTooltip="Delete"
+              color="warn"
+              (click)="DeleteSVO(VOForm, i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </ng-container>
+  </form>
+  <mat-card
+    *ngIf="isLoading"
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 50px;
+      padding-top: 50px;
+    "
+  >
+    <mat-progress-spinner color="primary" mode="indeterminate">
     </mat-progress-spinner>
   </mat-card>
-  <div *ngIf="noData" style=" width: 100%; text-align: center; font-size: larger; font-weight: bold; width: 100%; padding-top: 20px; padding-bottom: 20px;">
-      <ng-container *ngIf="!isLoading">
-      No Data Found
-      </ng-container>
+  <div
+    *ngIf="noData"
+    style="
+      width: 100%;
+      text-align: center;
+      font-size: larger;
+      font-weight: bold;
+      width: 100%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    "
+  >
+    <ng-container *ngIf="!isLoading"> No Data Found </ng-container>
   </div>
-  
-    <!-- <mat-paginator-goto [length]="100" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+  <div
+    *ngIf="!isLoading && dbName === ''"
+    style="
+      width: 100%;
+      text-align: center;
+      font-size: larger;
+      font-weight: bold;
+      width: 100%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    "
+  >
+    Please Select a DataSet.
+  </div>
+
+  <!-- <mat-paginator-goto [length]="100" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
           (page)="paginationChange($event)"></mat-paginator-goto> -->
-    <mat-paginator [pageSizeOptions]="[10, 20, dataSource.data.length > 20 ? 50: dataSource.data.length  ]" showFirstLastButtons>
-    </mat-paginator>
-  </div>
+  <mat-paginator
+    [pageSizeOptions]="[
+      10,
+      20,
+      dataSource.data.length > 20 ? 50 : dataSource.data.length
+    ]"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>
 <notifier-container></notifier-container>

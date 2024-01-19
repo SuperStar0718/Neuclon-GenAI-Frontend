@@ -4,7 +4,7 @@
   style="border-top: 2px solid #005f65; background: #f4f4f4"
 >
   <span class="absolute top-0 left-0 p-2 uppercase status">{{
-    props.status
+    props.dataset.status ? "connected" : "disconnected"
   }}</span>
   <mat-icon class="absolute top-2 right-2">visibility</mat-icon>
   <div class="flex flex-col h-full justify-between">
@@ -15,21 +15,9 @@
       {{ props.type }}
     </h2>
     <h3 class="pt-4 text-center ff-poppins-semibold" style="font-size: 15px">
-      {{ props.dataset }}
+      {{ props.dataset.collectionName }}
     </h3>
-    <div class="flex items-center justify-center pt-2 pb-6" *ngIf="props.uri">
-      <span class="text-center ff-poppins" style="font-size: 12px">{{
-        props.uri
-      }}</span>
-      <img
-        src="assets/icons/copy_black.svg"
-        alt=""
-        class="mx-2"
-        width="20px"
-        height="20px"
-        [cdkCopyToClipboard]="props.uri"
-      />
-    </div>
+
     <div class="flex items-center justify-center" *ngIf="props.dbname">
       <span class="text-center ff-poppins" style="font-size: 12px">{{
         props.dbname

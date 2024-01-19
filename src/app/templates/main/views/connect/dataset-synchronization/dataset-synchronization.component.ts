@@ -166,7 +166,7 @@ export class DatasetSynchronizationComponent implements OnInit {
     this.currentForm.fields.forEach((field: any) => {
       connectionData[field.name] = field.value;
     });
-    connectionData["type"] = this.dataSetCategories.categoryName;
+    connectionData["type"] = this.dataSetCategories.displayName;
     this.apiService.establishConnection(connectionData).subscribe(
       (res) => {
         console.log("success:", JSON.parse(res.tables));
@@ -175,19 +175,22 @@ export class DatasetSynchronizationComponent implements OnInit {
         tablesData.forEach((database: any, index: number) => {
           ++index;
           const tables: IDBTable[] = database.collections.map(
-            (collection: string, i: number) => {
+            (
+              collection: { collectionName: string; status: boolean },
+              i: number
+            ) => {
               return {
                 id: `${index}_${++i}`,
-                text: collection,
+                text: collection.collectionName,
                 isTable: true,
-                parentDB: database.dbname,
+                parentDB: database.name,
               };
             }
           );
 
           treeData.push({
             id: `${index}`,
-            text: database.dbname,
+            text: database.name,
             expanded: true,
             items: tables,
           });
@@ -219,12 +222,15 @@ export class DatasetSynchronizationComponent implements OnInit {
         const collectionName = table.text;
         if (db) {
           // If the database is already in the accumulator, add the table to its collections
-          db.collections.push(collectionName);
+          db.collections.push({
+            collectionName: collectionName,
+            status: true,
+          });
         } else {
           // If the database is not in the accumulator, add it
           acc.push({
             name: table.parentDB,
-            collections: [collectionName],
+            collections: [{ collectionName: collectionName, status: true }],
           });
         }
 
@@ -235,6 +241,7 @@ export class DatasetSynchronizationComponent implements OnInit {
       tables: JSON.stringify(selectedTables),
       host: this.connection.host,
     };
+    console.log("data:", data);
     this.apiService.connectTables(data).subscribe(
       (res) => {
         console.log("success:", res);
