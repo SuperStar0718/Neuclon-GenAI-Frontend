@@ -280,7 +280,7 @@ const dataSetCategories: DataSetCategories[] = [
       {
         categoryName: "SAP",
         categoryType: "erp",
-        logo: "assets/logos/SAP.png",
+        logo: "assets/logos/sap.png",
         size: "90px",
       },
       {
@@ -310,7 +310,7 @@ const dataSetCategories: DataSetCategories[] = [
       {
         categoryName: "QuickBook",
         categoryType: "erp",
-        logo: "assets/logos/quickbook.svg",
+        logo: "assets/logos/quickbooks.png",
         size: "50px",
       },
       {
@@ -424,7 +424,7 @@ const dataSetCategories: DataSetCategories[] = [
       {
         categoryName: "SAP successfactors",
         categoryType: "hrms",
-        logo: "assets/logos/SAP.png",
+        logo: "assets/logos/sap.png",
         size: "80px",
       },
       {

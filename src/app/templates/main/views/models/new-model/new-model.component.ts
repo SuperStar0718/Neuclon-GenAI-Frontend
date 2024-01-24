@@ -51,7 +51,7 @@ export class NewModelComponent {
         name: 'EPSON',
       },
       {
-        img: 'assets/logos/SAP.png',
+        img: 'assets/logos/sap.png',
         name: 'SAP',
       },
       {
