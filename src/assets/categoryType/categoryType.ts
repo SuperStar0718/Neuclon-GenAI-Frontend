@@ -519,6 +519,18 @@ const dataSetCategories: DataSetCategories[] = [
       },
     ],
   },
+  {
+    id: 12,
+    category: "EHS (1)",
+    categoryType: [
+      {
+        categoryName: "VelocityEHS",
+        categoryType: "ehs",
+        logo: "assets/logos/velocityEHS.png",
+        size: "90px",
+      },
+    ],
+  },
 ]
   .slice()
   .sort((a, b) => a.category.localeCompare(b.category));

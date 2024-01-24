@@ -10,7 +10,6 @@
         placeholder="Select dataset"
         [showClearButton]="true"
         [dataSource]="treeDataSource"
-        (onValueChanged)="syncTreeViewSelection($event)"
         (onOptionChanged)="onTreeBoxOptionChanged($event)"
       >
         <div *dxTemplate="let data of 'content'">
@@ -19,11 +18,12 @@
             dataStructure="plain"
             keyExpr="ID"
             parentIdExpr="categoryId"
-            [selectNodesRecursive]="false"
+            [selectNodesRecursive]="true"
             [showCheckBoxesMode]="multipleSelection ? 'normal' : 'none'"
             [selectionMode]="multipleSelection ? 'multiple' : 'single'"
             displayExpr="name"
             [selectByClick]="true"
+            (onContentReady)="onTreeViewReady($event)"
             (onItemSelectionChanged)="treeView_itemSelectionChanged($event)"
           >
           </dx-tree-view>

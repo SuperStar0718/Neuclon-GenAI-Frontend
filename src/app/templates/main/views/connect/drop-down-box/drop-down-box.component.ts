@@ -21,7 +21,6 @@ import { event } from "devextreme/events";
   styleUrls: ["./drop-down-box.component.scss"],
 })
 export class DropDownBoxComponent {
-  @ViewChild(DxTreeViewComponent, { static: false }) treeView: any;
   @Input() multipleSelection: boolean = false;
   @Input() expandAll: boolean = false;
   @Output() selectedDatabaseInfo: EventEmitter<any> = new EventEmitter<any>();
@@ -50,22 +49,33 @@ export class DropDownBoxComponent {
     this.apiService.getDatabaseList().subscribe((res) => {
       console.log("database list: ", res);
       let selectedDataset: Array<object> = [];
-      const foundItem = res.find(
-        (item: any) => item.ID === this.treeBoxValue[0]
-      );
 
-      if (foundItem !== undefined) {
-        selectedDataset.push(foundItem);
+      if (this.multipleSelection) {
+        this.treeBoxValue = res
+          .filter((item: any) => item.leaf === true)
+          .map((item: any) => {
+            return item.ID;
+          });
+        selectedDataset = res;
+        this.selectedDatabaseInfo.emit(selectedDataset);
+      } else {
+        const foundItem = res.find(
+          (item: any) => item.ID === this.treeBoxValue[0]
+        );
+
+        if (foundItem !== undefined) {
+          selectedDataset.push(foundItem);
+        }
+        this.selectedDatabaseInfo.emit(selectedDataset[0]);
       }
+
       this.treeDataSource = this.makeAsyncDataSource(res);
-      this.selectedDatabaseInfo.emit(
-        this.multipleSelection ? selectedDataset : selectedDataset[0]
-      );
 
       this.cdr.detectChanges(); // Trigger change detection
     });
   }
   onTreeViewReady(e: any) {
+    console.log("onTreeViewReady: ", e);
     this.updateSelection(e.component);
   }
 
@@ -97,31 +107,21 @@ export class DropDownBoxComponent {
     });
   }
 
-  syncTreeViewSelection(e: any) {
-    console.log("synctreeview selction");
-    if (!this.treeView) return;
-
-    if (!this.treeBoxValue) {
-      this.treeView.instance.unselectAll();
-    } else {
-      this.treeView.instance.selectItem(this.treeBoxValue);
-    }
-  }
-
   treeView_itemSelectionChanged(e: any) {
+    // this.treeBoxValue = e.component.getSelectedNodeKeys();
+
     console.log("treeView_itemSelectionChanged: ", e);
-    if (e.itemData.leaf) {
-      this.treeBoxValue = e.component.getSelectedNodeKeys();
-      let selectedDataset: Array<object> = [];
-      selectedDataset = e.component
-        .getSelectedNodes()
-        .map((node: { itemData: any }) => {
-          return node.itemData;
-        });
-      this.selectedDatabaseInfo.emit(
-        this.multipleSelection ? selectedDataset : e.itemData
-      );
-    }
+    console.log("treeBoxValue: ", this.treeBoxValue);
+    let selectedDataset: Array<object> = [];
+    selectedDataset = e.component
+      .getSelectedNodes()
+      .filter((node: { itemData: any }) => node.itemData.leaf === true)
+      .map((node: { itemData: any; leaf: boolean }) => node.itemData);
+    console.log("selectedDataset from treeview changed: ", selectedDataset);
+    this.treeBoxValue = selectedDataset.map((item: any) => item.ID);
+    this.selectedDatabaseInfo.emit(
+      this.multipleSelection ? selectedDataset : e.itemData
+    );
   }
 
   gridBox_displayExpr(item: any) {
@@ -129,10 +129,10 @@ export class DropDownBoxComponent {
   }
 
   onTreeBoxOptionChanged(e: any) {
-      if (e.name === "value") {
-          this.isTreeBoxOpened = false;
-          this.ref.detectChanges();
-      }
+    if (e.name === "value") {
+      this.isTreeBoxOpened = false;
+      this.ref.detectChanges();
+    }
   }
 
   onGridBoxOptionChanged(e: any) {
