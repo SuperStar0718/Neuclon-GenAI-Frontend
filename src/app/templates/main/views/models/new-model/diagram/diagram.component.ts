@@ -1,8 +1,25 @@
 import { AfterViewInit, Component, Input } from "@angular/core";
 import * as go from "gojs";
+import { data } from "jquery";
+import { IConnection } from "src/app/Models/connection";
+import { ApiService } from "src/app/services/api.service";
 
 const $ = go.GraphObject.make;
 const initJson = ``;
+
+interface IGraphLinksModel {
+  source: string;
+  description: string;
+  text: string;
+  figure: string;
+  fill: string;
+  size: string;
+  sizeb: string;
+  isActive: boolean;
+  dataFieldVisible: boolean;
+  isMarked: boolean;
+  menuList: any[];
+}
 
 @Component({
   selector: "app-diagram",
@@ -15,8 +32,66 @@ export class DiagramComponent implements AfterViewInit {
   public diagram!: go.Diagram;
   public myPalette!: go.Palette;
   public initJson = initJson;
+  dataEndpoints: Array<IGraphLinksModel> = [];
 
-  ngAfterViewInit(): void {
+  constructor(private apiService: ApiService) {}
+
+  async ngAfterViewInit(): Promise<void> {
+    //load all available nodes from the database
+    const res: any = await this.apiService.getAllConnections().toPromise();
+    // this.apiService.getAllConnections().subscribe((res: any[]) => {
+    //   for (let i = 0; i < res.length; i++) {
+    //     const connection = res[i];
+    //     const tables = JSON.parse(connection.tables);
+    //     for (let j = 0; j < tables.length; j++) {
+    //       const table = tables[j];
+    //       for (let k = 0; k < table.collections.length; k++) {
+    //         const collection = table.collections[k];
+    //         this.dataEndpoints.push({
+    //           source: `assets/logos/${connection.type.toLowerCase()}.png`,
+    //           description: "Machine Cycle Time",
+    //           text: collection.collectionName,
+    //           figure: "RoundedRectangle",
+    //           fill: "#f4f4f4",
+    //           size: "200 100",
+    //           sizeb: "100 100",
+    //           isActive: true,
+    //           dataFieldVisible: false,
+    //           isMarked: true,
+    //           menuList: [],
+    //         });
+    //       }
+    //     }
+    //   }
+    res.forEach((connection: IConnection) => {
+      const tables = JSON.parse(connection.tables);
+      tables.forEach(
+        (table: {
+          name: string;
+          collections: Array<{ collectionName: string; status: boolean }>;
+        }) => {
+          table.collections.forEach(
+            (collection: { collectionName: string; status: boolean }) => {
+              this.dataEndpoints.push({
+                source: `assets/logos/${connection.type.toLowerCase()}.png`,
+                description: collection.collectionName,
+                text: connection.type,
+                figure: "RoundedRectangle",
+                fill: "#f4f4f4",
+                size: "200 100",
+                sizeb: "100 100",
+                isActive: true,
+                dataFieldVisible: false,
+                isMarked: true,
+                menuList: [],
+              });
+            }
+          );
+        }
+      );
+    });
+    // });
+    console.log("data endpoints: ", this.dataEndpoints);
     this.init();
   }
 
@@ -409,8 +484,9 @@ export class DiagramComponent implements AfterViewInit {
     );
 
     this.load(); // load an initial diagram from some JSON text
+    console.log("data endpoints: ", this.dataEndpoints);
 
-    // initialize the Palette that is on the left side of the page
+    // initialize the Palette that is on the right side of the page
     this.myPalette = new go.Palette(
       "myPaletteDiv", // must name or refer to the DIV HTML element
       {
@@ -485,7 +561,7 @@ export class DiagramComponent implements AfterViewInit {
                 editable: false,
                 position: new go.Point(0.5, 1),
               },
-              new go.Binding("text").makeTwoWay()
+              new go.Binding("text", "description")
             )
           ),
           // four small named ports, one on each side:
@@ -538,177 +614,17 @@ export class DiagramComponent implements AfterViewInit {
             { toArrow: "Standard", stroke: null }
           )
         ),
-        model: new go.GraphLinksModel(
-          [
-            {
-              source: "assets/logos/Epicor.png",
-              description: "Machine Cycle Time",
-              text: "EPICOR",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 90",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/adp.png",
-              description: "Machine Cycle Time",
-              text: "ADP",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/Epson.png",
-              description: "Machine Cycle Time",
-              text: "EPSON",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/sap.png",
-              description: "Production Orders",
-              text: "SAP",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/sap.png",
-              description: "Sales Orders",
-              text: "SAP",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/Hubspot.png",
-              description: "Machine Cycle Time",
-              text: "Hubspot",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/kronos.png",
-              description: "Machine Cycle Time",
-              text: "KRONOS",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/Salesforce.png",
-              description: "Opportunity Data",
-              text: "salesforce",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/Oracle.png",
-              description: "Machine Cycle Time",
-              text: "Oracle",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/icons/iot.svg",
-              description: "Machine Cycle Time",
-              text: "NeuclonIoT",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/MBrain.png",
-              description: "Operator Cycle Time",
-              text: "MBrain",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-            {
-              source: "assets/logos/MBrain.png",
-              description: "Process Exit Cycles",
-              text: "MBrain",
-              figure: "RoundedRectangle",
-              fill: "#f4f4f4",
-              size: "200 100",
-              sizeb: "100 100",
-              isActive: true,
-              dataFieldVisible: false,
-              isMarked: true,
-              menuList: [],
-            },
-          ],
-          [
-            // // the Palette also has a disconnected Link, which the user can drag-and-drop
-            // {
-            //   points: new go.List(/*go.Point*/).addAll([
-            //     new go.Point(0, 0),
-            //     new go.Point(30, 0),
-            //     new go.Point(30, 40),
-            //     new go.Point(60, 40),
-            //   ]),
-            // },
-          ]
-        ),
+        model: new go.GraphLinksModel(this.dataEndpoints, [
+          // // the Palette also has a disconnected Link, which the user can drag-and-drop
+          // {
+          //   points: new go.List(/*go.Point*/).addAll([
+          //     new go.Point(0, 0),
+          //     new go.Point(30, 0),
+          //     new go.Point(30, 40),
+          //     new go.Point(60, 40),
+          //   ]),
+          // },
+        ]),
       }
     );
   }

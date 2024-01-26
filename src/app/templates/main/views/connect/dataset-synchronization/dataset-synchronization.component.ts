@@ -167,6 +167,7 @@ export class DatasetSynchronizationComponent implements OnInit {
       connectionData[field.name] = field.value;
     });
     connectionData["type"] = this.dataSetCategories.displayName;
+    console.log("connection data:", connectionData);
     this.apiService.establishConnection(connectionData).subscribe(
       (res) => {
         console.log("success:", JSON.parse(res.tables));

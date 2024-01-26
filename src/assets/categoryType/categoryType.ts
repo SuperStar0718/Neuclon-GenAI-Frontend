@@ -278,7 +278,8 @@ const dataSetCategories: DataSetCategories[] = [
     category: "ERP (8)",
     categoryType: [
       {
-        categoryName: "SAP",
+        displayName: "SAP",
+        categoryName: "sap",
         categoryType: "erp",
         logo: "assets/logos/sap.png",
         size: "90px",
@@ -308,7 +309,8 @@ const dataSetCategories: DataSetCategories[] = [
         size: "90px",
       },
       {
-        categoryName: "QuickBook",
+        displayName: "QuickBooks",
+        categoryName: "quickbooks",
         categoryType: "erp",
         logo: "assets/logos/quickbooks.png",
         size: "50px",
@@ -350,7 +352,8 @@ const dataSetCategories: DataSetCategories[] = [
         size: "70px",
       },
       {
-        categoryName: "Master Control",
+        displayName: "MasterControl",
+        categoryName: "mastercontrol",
         categoryType: "QMS",
         logo: "assets/logos/mastercontrol/icon.svg",
         size: "90px",
@@ -392,6 +395,7 @@ const dataSetCategories: DataSetCategories[] = [
         size: "90px",
       },
       {
+        displayName: "Tulip",
         categoryName: "tulip",
         categoryType: "mes",
         logo: "assets/logos/tulip/icon.svg",
@@ -404,7 +408,8 @@ const dataSetCategories: DataSetCategories[] = [
     category: "HRMS (5)",
     categoryType: [
       {
-        categoryName: "ADP",
+        displayName: "ADP",
+        categoryName: "adp",
         categoryType: "hrms",
         logo: "assets/logos/adp.png",
         size: "90px",
@@ -464,7 +469,8 @@ const dataSetCategories: DataSetCategories[] = [
         size: "90px",
       },
       {
-        categoryName: "Fedex",
+        displayName: "FedEx",
+        categoryName: "fedex",
         categoryType: "shipping",
         logo: "assets/logos/fedex.svg",
         size: "90px",

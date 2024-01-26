@@ -1,12 +1,19 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { BreakpointobserverService } from 'src/app/services/breakpointobserver.service';
+import { BreakpointObserver } from "@angular/cdk/layout";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  EventEmitter,
+  Output,
+} from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
+import { BreakpointobserverService } from "src/app/services/breakpointobserver.service";
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  selector: "app-main",
+  templateUrl: "./main.component.html",
+  styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
   isExpandedLeftSidebar: boolean = false;
@@ -19,20 +26,20 @@ export class MainComponent implements OnInit {
   isSidebarExtend: boolean | undefined;
   hasHeader: boolean = true;
 
-  @ViewChild('sidenav') sidenav: ElementRef | undefined;
+  @ViewChild("sidenav") sidenav: ElementRef | undefined;
 
   bgActive: boolean = false;
-  sidenavMode: any = 'over';
+  sidenavMode: any = "over";
 
   constructor(
     private breakpointObserverService: BreakpointobserverService,
     private bpS: BreakpointObserver,
     private elementRef: ElementRef,
-    private router: Router,
+    private router: Router
   ) {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.hasHeader = !event.url.includes('automation');
+        this.hasHeader = !event.url.includes("automation");
       }
     });
   }
