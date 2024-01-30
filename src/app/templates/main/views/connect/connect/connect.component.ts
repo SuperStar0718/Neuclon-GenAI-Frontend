@@ -165,10 +165,18 @@ export class ConnectComponent {
         tables.forEach(
           (table: {
             name: string;
-            collections: Array<{ collectionName: string; status: boolean }>;
+            collections: Array<{
+              collectionName: string;
+              headers: string;
+              status: boolean;
+            }>;
           }) => {
             table.collections.forEach(
-              (collection: { collectionName: string; status: boolean }) => {
+              (collection: {
+                collectionName: string;
+                headers: string;
+                status: boolean;
+              }) => {
                 dataEndpoints.push({
                   ...connection,
                   dataset: collection,

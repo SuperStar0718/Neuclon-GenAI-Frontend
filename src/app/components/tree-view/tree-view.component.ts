@@ -14,6 +14,7 @@ export interface IDBTable {
   isTable?: boolean;
 
   parentDB?: string;
+  headers?: string;
 }
 
 @Component({

@@ -1,8 +1,10 @@
+import { DomElementSchemaRegistry } from "@angular/compiler";
 import { AfterViewInit, Component, Input } from "@angular/core";
 import * as go from "gojs";
 import { data } from "jquery";
 import { IConnection } from "src/app/Models/connection";
 import { ApiService } from "src/app/services/api.service";
+import { NotifierService } from "angular-notifier";
 
 const $ = go.GraphObject.make;
 const initJson = ``;
@@ -19,6 +21,7 @@ interface IGraphLinksModel {
   dataFieldVisible: boolean;
   isMarked: boolean;
   menuList: any[];
+  headers: string;
 }
 
 @Component({
@@ -29,56 +32,49 @@ interface IGraphLinksModel {
 export class DiagramComponent implements AfterViewInit {
   @Input() model!: go.Model;
 
+  private readonly notifier: NotifierService;
+
   public diagram!: go.Diagram;
   public myPalette!: go.Palette;
   public initJson = initJson;
   dataEndpoints: Array<IGraphLinksModel> = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
+  }
 
   async ngAfterViewInit(): Promise<void> {
     //load all available nodes from the database
     const res: any = await this.apiService.getAllConnections().toPromise();
-    // this.apiService.getAllConnections().subscribe((res: any[]) => {
-    //   for (let i = 0; i < res.length; i++) {
-    //     const connection = res[i];
-    //     const tables = JSON.parse(connection.tables);
-    //     for (let j = 0; j < tables.length; j++) {
-    //       const table = tables[j];
-    //       for (let k = 0; k < table.collections.length; k++) {
-    //         const collection = table.collections[k];
-    //         this.dataEndpoints.push({
-    //           source: `assets/logos/${connection.type.toLowerCase()}.png`,
-    //           description: "Machine Cycle Time",
-    //           text: collection.collectionName,
-    //           figure: "RoundedRectangle",
-    //           fill: "#f4f4f4",
-    //           size: "200 100",
-    //           sizeb: "100 100",
-    //           isActive: true,
-    //           dataFieldVisible: false,
-    //           isMarked: true,
-    //           menuList: [],
-    //         });
-    //       }
-    //     }
-    //   }
+    console.log("response:", res);
     res.forEach((connection: IConnection) => {
       const tables = JSON.parse(connection.tables);
       tables.forEach(
         (table: {
           name: string;
-          collections: Array<{ collectionName: string; status: boolean }>;
+          collections: Array<{
+            collectionName: string;
+            headers: string;
+            status: boolean;
+          }>;
         }) => {
           table.collections.forEach(
-            (collection: { collectionName: string; status: boolean }) => {
+            (collection: {
+              collectionName: string;
+              headers: string;
+              status: boolean;
+            }) => {
               this.dataEndpoints.push({
                 source: `assets/logos/${connection.type.toLowerCase()}.png`,
                 description: collection.collectionName,
                 text: connection.type,
+                headers: collection.headers,
                 figure: "RoundedRectangle",
                 fill: "#f4f4f4",
-                size: "200 100",
+                size: "180 100",
                 sizeb: "100 100",
                 isActive: true,
                 dataFieldVisible: false,
@@ -159,6 +155,51 @@ export class DiagramComponent implements AfterViewInit {
         if (idx >= 0) document.title = document.title.slice(0, idx);
       }
     });
+
+    const handleLinkEvents = (e: go.DiagramEvent) => {
+      var link = e.subject;
+      var fromNode = link.fromNode;
+      var toNode = link.toNode;
+      const originalNodes: any[] = getAllConnectedNodes(fromNode);
+      try {
+        let headers = toNode.data.headers.split(", ");
+        headers.splice(headers.indexOf("_id"), 1);
+
+        if (headers.length === 0) throw new Error("No headers found");
+        let i;
+        for (i = 0; i < headers.length; i++) {
+          let header = headers[i];
+
+          let j;
+          for (
+            j = 0;
+            j < originalNodes.length &&
+            originalNodes[j].headers.split(", ").includes(header);
+            j++
+          );
+          if (j == originalNodes.length) {
+            this.notifier.notify("success", "Connection Successful");
+            break;
+          }
+        }
+        if (i === headers.length) {
+          this.notifier.notify("error", "Unable to connect nodes");
+          this.diagram.remove(link);
+        }
+      } catch (error) {
+        console.log("error: ", error);
+        this.notifier.notify("error", "Unable to connect nodes");
+        this.diagram.remove(link);
+      }
+
+      console.log("Original nodes: ", originalNodes);
+
+      console.log("From node data: ", fromNode.data);
+      console.log("To node data: ", toNode.data);
+    };
+
+    this.diagram.addDiagramListener("LinkDrawn", handleLinkEvents);
+    this.diagram.addDiagramListener("LinkRelinked", handleLinkEvents);
 
     // Define a function for creating a "port" that is normally transparent.
     // The "name" is used as the GraphObject.portId, the "spot" is used to control how links connect
@@ -261,6 +302,35 @@ export class DiagramComponent implements AfterViewInit {
       })
     );
 
+    function clickNode(e: any, obj: any) {
+      var node = obj.part;
+      var data = node.data;
+      const allConnectedNodes = getAllConnectedNodes(node);
+      console.log("all node data: ", allConnectedNodes);
+    }
+
+    function getAllConnectedNodes(node: go.Node) {
+      const queue = [node];
+      const visited = new Set([node]);
+
+      while (queue.length > 0) {
+        const currentNode = queue.shift();
+        currentNode?.findNodesConnected().each((connectedNode: go.Node) => {
+          if (!visited.has(connectedNode)) {
+            visited.add(connectedNode);
+            queue.push(connectedNode);
+          }
+        });
+      }
+
+      // Convert the set of nodes to an array of node data
+      const nodeDataArray = Array.from(visited).map(
+        (node: go.Node) => node.data
+      );
+
+      return nodeDataArray;
+    }
+
     function activeHandler(e: any, obj: any) {
       var node = obj.part;
       var data = node.data;
@@ -272,10 +342,47 @@ export class DiagramComponent implements AfterViewInit {
         );
       }
     }
+
+    function shutdownHandler(e: any, obj: any) {
+      var node = obj.part;
+      // if (node !== null) {
+      //   node.diagram.startTransaction("remove links");
+
+      //   // Remove links going out of the node
+      //   node.findLinksOutOf().each(function (link: any) {
+      //     node.diagram.remove(link);
+      //     console.log("link out");
+      //   });
+
+      //   // Remove links coming into the node
+      //   node.findLinksInto().each(function (link: any) {
+      //     node.diagram.remove(link);
+      //     console.log("link into");
+      //   });
+
+      //   node.diagram.commitTransaction("remove links");
+      // }
+      let links = node.findLinksConnected();
+      while (links.next()) {
+        console.log("link: ", links.value);
+        const link = links.value;
+        node.diagram.remove(link);
+        links = node.findLinksConnected();
+      }
+    }
+
+    function deleteHandler(e: any, obj: any) {
+      var node = obj.part;
+      node.diagram.remove(node);
+    }
+
     // node template
     this.diagram.nodeTemplate = $(
       go.Node,
       "Auto",
+      {
+        click: clickNode,
+      },
       { locationSpot: go.Spot.Center },
       new go.Binding("location", "loc", go.Point.parse).makeTwoWay(
         go.Point.stringify
@@ -320,27 +427,24 @@ export class DiagramComponent implements AfterViewInit {
         $(
           go.Panel,
           "Vertical",
-          { alignment: go.Spot.TopLeft, padding: 10 },
+          { alignment: go.Spot.TopCenter, padding: 10 },
           $(
-            go.TextBlock,
+            go.Picture,
             {
-              font: "bold 10pt Helvetica, Arial, sans-serif",
-              // margin: 2,
-              maxSize: new go.Size(160, NaN),
-              wrap: go.TextBlock.WrapFit,
-              alignment: go.Spot.TopLeft,
-              editable: false,
+              visible: true,
+              desiredSize: new go.Size(50, 30),
+              background: "#F4F4F4",
             },
-            new go.Binding("text").makeTwoWay()
+            new go.Binding("source")
           ),
           $(
             go.TextBlock,
             {
               font: "10pt Helvetica, Arial, sans-serif",
-              // margin: 2,
+              margin: 5,
               maxSize: new go.Size(160, NaN),
               wrap: go.TextBlock.WrapFit,
-              alignment: go.Spot.TopLeft,
+              alignment: go.Spot.Center,
               editable: false,
             },
             new go.Binding("text", "description").makeTwoWay()
@@ -354,7 +458,7 @@ export class DiagramComponent implements AfterViewInit {
           $(
             "Button",
             {
-              margin: 2,
+              margin: 1,
               isEnabled: true,
               click: activeHandler,
               "ButtonBorder.figure": "Circle",
@@ -369,7 +473,7 @@ export class DiagramComponent implements AfterViewInit {
           $(
             "Button",
             {
-              margin: 2,
+              margin: 1,
               isEnabled: true,
               click: activeHandler,
               "ButtonBorder.figure": "Circle",
@@ -378,15 +482,26 @@ export class DiagramComponent implements AfterViewInit {
               "ButtonBorder.strokeWidth": 1,
               _buttonFillOver: "white",
               _buttonFillPressed: "lightgray",
+              // Add this property
+              toolTip: $(
+                go.Adornment,
+                "Auto",
+                $(go.Shape, { fill: "#FFFFCC" }),
+                $(
+                  go.TextBlock,
+                  { margin: 4, width: 400 },
+                  new go.Binding("text", "headers").makeTwoWay()
+                ) // Tooltip text
+              ),
             },
             $(go.Picture, "/assets/icons/visibility.svg")
           ),
           $(
             "Button",
             {
-              margin: 2,
+              margin: 1,
               isEnabled: true,
-              click: activeHandler,
+              click: shutdownHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
@@ -399,19 +514,64 @@ export class DiagramComponent implements AfterViewInit {
           $(
             "Button",
             {
-              margin: 2,
+              margin: 1,
+              isEnabled: true,
+              click: deleteHandler,
+              "ButtonBorder.figure": "Circle",
+              "ButtonBorder.fill": "white",
+              "ButtonBorder.stroke": "white",
+              "ButtonBorder.strokeWidth": 1,
+              _buttonFillOver: "white",
+              _buttonFillPressed: "lightgray",
+            },
+            $(go.Picture, "/assets/icons/delete.svg")
+          ),
+          $(
+            "Button",
+            {
+              margin: 1,
               isEnabled: true,
               click: activeHandler,
-              "ButtonBorder.figure": "none",
-              "ButtonBorder.fill": "#f4f4f4",
-              "ButtonBorder.stroke": "#f4f4f4",
-              "ButtonBorder.strokeWidth": 0,
-              _buttonFillOver: "#f4f4f4",
-              _buttonFillPressed: "#f4f4f4",
-              alignment: go.Spot.BottomRight,
+              "ButtonBorder.figure": "Circle",
+              "ButtonBorder.fill": "white",
+              "ButtonBorder.stroke": "white",
+              "ButtonBorder.strokeWidth": 1,
+              _buttonFillOver: "white",
+              _buttonFillPressed: "lightgray",
             },
-            $(go.Picture, "/assets/icons/menuvertical.svg")
+            $(go.Picture, "/assets/icons/edit_green.svg")
+          ),
+          $(
+            "Button",
+            {
+              margin: 1,
+              isEnabled: true,
+              click: activeHandler,
+              "ButtonBorder.figure": "Circle",
+              "ButtonBorder.fill": "white",
+              "ButtonBorder.stroke": "white",
+              "ButtonBorder.strokeWidth": 1,
+              _buttonFillOver: "white",
+              _buttonFillPressed: "lightgray",
+            },
+            $(go.Picture, "/assets/icons/explorer.svg")
           )
+          // $(
+          //   "Button",
+          //   {
+          //     margin: 2,
+          //     isEnabled: true,
+          //     click: activeHandler,
+          //     "ButtonBorder.figure": "none",
+          //     "ButtonBorder.fill": "#f4f4f4",
+          //     "ButtonBorder.stroke": "#f4f4f4",
+          //     "ButtonBorder.strokeWidth": 0,
+          //     _buttonFillOver: "#f4f4f4",
+          //     _buttonFillPressed: "#f4f4f4",
+          //     alignment: go.Spot.BottomRight,
+          //   },
+          //   $(go.Picture, "/assets/icons/menuvertical.svg")
+          // )
         )
         // $(go.TextBlock, new go.Binding('text', 'clickCount', c => 'Clicked ' + c + ' times.')),
       ),
@@ -543,7 +703,7 @@ export class DiagramComponent implements AfterViewInit {
             $(
               go.Picture,
               {
-                margin: 8,
+                margin: 2,
                 visible: true,
                 desiredSize: new go.Size(50, 30),
                 background: "#F4F4F4",
@@ -554,12 +714,11 @@ export class DiagramComponent implements AfterViewInit {
               go.TextBlock,
               {
                 font: "bold 9pt poppins",
-                margin: 8,
+                margin: 2,
                 maxSize: new go.Size(160, NaN),
                 wrap: go.TextBlock.WrapFit,
                 alignment: go.Spot.BottomCenter,
                 editable: false,
-                position: new go.Point(0.5, 1),
               },
               new go.Binding("text", "description")
             )

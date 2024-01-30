@@ -177,12 +177,17 @@ export class DatasetSynchronizationComponent implements OnInit {
           ++index;
           const tables: IDBTable[] = database.collections.map(
             (
-              collection: { collectionName: string; status: boolean },
+              collection: {
+                collectionName: string;
+                headers?: string;
+                status: boolean;
+              },
               i: number
             ) => {
               return {
                 id: `${index}_${++i}`,
                 text: collection.collectionName,
+                headers: collection.headers,
                 isTable: true,
                 parentDB: database.name,
               };
@@ -225,13 +230,20 @@ export class DatasetSynchronizationComponent implements OnInit {
           // If the database is already in the accumulator, add the table to its collections
           db.collections.push({
             collectionName: collectionName,
+            headers: table.headers,
             status: true,
           });
         } else {
           // If the database is not in the accumulator, add it
           acc.push({
             name: table.parentDB,
-            collections: [{ collectionName: collectionName, status: true }],
+            collections: [
+              {
+                collectionName: collectionName,
+                headers: table.headers,
+                status: true,
+              },
+            ],
           });
         }
 
