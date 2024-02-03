@@ -5,6 +5,7 @@ import { data } from "jquery";
 import { IConnection } from "src/app/Models/connection";
 import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
+import { Router } from "@angular/router";
 
 const $ = go.GraphObject.make;
 const initJson = ``;
@@ -12,6 +13,8 @@ const initJson = ``;
 interface IGraphLinksModel {
   source: string;
   description: string;
+  host: string;
+  dbname: string;
   text: string;
   figure: string;
   fill: string;
@@ -41,7 +44,8 @@ export class DiagramComponent implements AfterViewInit {
 
   constructor(
     private apiService: ApiService,
-    notifierService: NotifierService
+    notifierService: NotifierService,
+    private router: Router
   ) {
     this.notifier = notifierService;
   }
@@ -69,9 +73,11 @@ export class DiagramComponent implements AfterViewInit {
             }) => {
               this.dataEndpoints.push({
                 source: `assets/logos/${connection.type.toLowerCase()}.png`,
+                host: connection.host,
                 description: collection.collectionName,
                 text: connection.type,
                 headers: collection.headers,
+                dbname: table.name,
                 figure: "RoundedRectangle",
                 fill: "#f4f4f4",
                 size: "180 100",
@@ -302,12 +308,12 @@ export class DiagramComponent implements AfterViewInit {
       })
     );
 
-    function clickNode(e: any, obj: any) {
+    const displayJoinedTable = (e: any, obj: any) => {
       var node = obj.part;
       var data = node.data;
       const allConnectedNodes = getAllConnectedNodes(node);
       console.log("all node data: ", allConnectedNodes);
-    }
+    };
 
     function getAllConnectedNodes(node: go.Node) {
       const queue = [node];
@@ -342,6 +348,17 @@ export class DiagramComponent implements AfterViewInit {
         );
       }
     }
+    const navigateHandler = (e: any, obj: any) => {
+      var node = obj.part;
+      var data = node.data;
+      console.log("node data: ", data);
+      this.router.navigate([
+        "/main/connect/data-explorer",
+        data.host,
+        data.dbname,
+        data.description,
+      ]);
+    };
 
     function shutdownHandler(e: any, obj: any) {
       var node = obj.part;
@@ -380,9 +397,7 @@ export class DiagramComponent implements AfterViewInit {
     this.diagram.nodeTemplate = $(
       go.Node,
       "Auto",
-      {
-        click: clickNode,
-      },
+
       { locationSpot: go.Spot.Center },
       new go.Binding("location", "loc", go.Point.parse).makeTwoWay(
         go.Point.stringify
@@ -405,6 +420,7 @@ export class DiagramComponent implements AfterViewInit {
       $(
         go.Panel,
         "Auto",
+
         { name: "PANEL", width: 300, height: 90 },
         new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(
           go.Size.stringify
@@ -412,6 +428,9 @@ export class DiagramComponent implements AfterViewInit {
         $(
           go.Shape,
           "Rectangle", // default figure
+          {
+            click: displayJoinedTable,
+          },
           {
             portId: "", // the default port: if no spot on link data, use closest side
             fromLinkable: true,
@@ -427,6 +446,9 @@ export class DiagramComponent implements AfterViewInit {
         $(
           go.Panel,
           "Vertical",
+          {
+            click: displayJoinedTable,
+          },
           { alignment: go.Spot.TopCenter, padding: 10 },
           $(
             go.Picture,
@@ -526,27 +548,27 @@ export class DiagramComponent implements AfterViewInit {
             },
             $(go.Picture, "/assets/icons/delete.svg")
           ),
+          // $(
+          //   "Button",
+          //   {
+          //     margin: 1,
+          //     isEnabled: true,
+          //     click: activeHandler,
+          //     "ButtonBorder.figure": "Circle",
+          //     "ButtonBorder.fill": "white",
+          //     "ButtonBorder.stroke": "white",
+          //     "ButtonBorder.strokeWidth": 1,
+          //     _buttonFillOver: "white",
+          //     _buttonFillPressed: "lightgray",
+          //   },
+          //   $(go.Picture, "/assets/icons/edit_green.svg")
+          // ),
           $(
             "Button",
             {
               margin: 1,
               isEnabled: true,
-              click: activeHandler,
-              "ButtonBorder.figure": "Circle",
-              "ButtonBorder.fill": "white",
-              "ButtonBorder.stroke": "white",
-              "ButtonBorder.strokeWidth": 1,
-              _buttonFillOver: "white",
-              _buttonFillPressed: "lightgray",
-            },
-            $(go.Picture, "/assets/icons/edit_green.svg")
-          ),
-          $(
-            "Button",
-            {
-              margin: 1,
-              isEnabled: true,
-              click: activeHandler,
+              click: navigateHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",

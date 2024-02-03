@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
 } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { startWith, tap } from "rxjs/operators";
@@ -38,6 +39,9 @@ export class DataExplorerComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[];
   dbName: string = "";
+  hostname: string = "";
+  dbname: string = "";
+  tablename: string = "";
 
   isLoading = true;
   noData = false;
@@ -64,7 +68,8 @@ export class DataExplorerComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private apiService: ApiService,
     notifierService: NotifierService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private route: ActivatedRoute
   ) {
     this.notifier = notifierService;
   }
@@ -212,6 +217,18 @@ export class DataExplorerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hostname = this.route.snapshot.paramMap.get("host") ?? "";
+    this.dbname = this.route.snapshot.paramMap.get("db") ?? "";
+    this.tablename = this.route.snapshot.paramMap.get("table") ?? "";
+    if (this.hostname !== "" && this.tablename !== "" && this.dbname !== "") {
+      console.log("host:", this.hostname);
+      this.fetchDataFromDatabase({
+        host: this.hostname,
+        db_name: this.dbname,
+        name: this.tablename,
+      });
+    }
+
     localStorage.setItem("activeComp", "Data Explorer");
     this.sharedService.component.next("Data Explorer");
 

@@ -12,9 +12,11 @@
     >
     </dx-drop-down-button>
     <app-drop-down-box
+      *ngIf="hostname == '' && tablename == '' && dbname == ''"
       (selectedDatabaseInfo)="onSelectedDatabaseInfoChange($event)"
     ></app-drop-down-box>
   </div>
+
   <div class="px-[20px] pb-[20px]">
     <div class="dbname">
       <button>
