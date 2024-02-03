@@ -1,11 +1,12 @@
 import { DomElementSchemaRegistry } from "@angular/compiler";
-import { AfterViewInit, Component, Input } from "@angular/core";
+import { AfterViewInit, Component } from "@angular/core";
 import * as go from "gojs";
 import { data } from "jquery";
 import { IConnection } from "src/app/Models/connection";
 import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
 import { Router } from "@angular/router";
+import { EventEmitter, Input, Output } from "@angular/core";
 
 const $ = go.GraphObject.make;
 const initJson = ``;
@@ -34,6 +35,7 @@ interface IGraphLinksModel {
 })
 export class DiagramComponent implements AfterViewInit {
   @Input() model!: go.Model;
+  @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
 
   private readonly notifier: NotifierService;
 
@@ -312,6 +314,9 @@ export class DiagramComponent implements AfterViewInit {
       var node = obj.part;
       var data = node.data;
       const allConnectedNodes = getAllConnectedNodes(node);
+      this.apiService.getJoinedTableData(allConnectedNodes).subscribe((res) => {
+        this.setJoinedTable.emit(res);
+      });
       console.log("all node data: ", allConnectedNodes);
     };
 

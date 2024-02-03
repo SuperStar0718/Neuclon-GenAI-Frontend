@@ -4,8 +4,10 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from "@angular/cdk/drag-drop";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { Config } from "src/config";
+import { EventEmitter, Input, Output } from "@angular/core";
+
 import * as go from "gojs";
 
 const $ = go.GraphObject.make;
@@ -16,6 +18,8 @@ const $ = go.GraphObject.make;
   styleUrls: ["./new-model.component.scss"],
 })
 export class NewModelComponent {
+  @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
+
   availableConnections: any[] = [];
   defaultPlaceholder: string = Config.default_placeholder;
   tableProps: any;
@@ -46,7 +50,7 @@ export class NewModelComponent {
     linkDataArray: [{ from: 1, fromPort: "o1", to: 2, toPort: "s2" }],
   });
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.availableConnections = [
       {
         img: "assets/logos/Epicor.png",
@@ -83,40 +87,51 @@ export class NewModelComponent {
     ];
 
     this.tableProps = {
-      colHeader: {
-        instance: "Instance",
-        timestramp: "Timestramp",
-        message: "Message",
-      },
+      colHeader: {},
       columnTypes: {},
     };
 
-    this.dataSource = [
-      {
-        instance: "flow - [2339]",
-        timestramp: "april 30, 2023, 11:25:22 aM",
-        message:
-          "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
-      },
-      {
-        instance: "flow - [2339]",
-        timestramp: "april 30, 2023, 11:25:22 aM",
-        message:
-          "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
-      },
-      {
-        instance: "flow - [2339]",
-        timestramp: "april 30, 2023, 11:25:22 aM",
-        message:
-          "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
-      },
-      {
-        instance: "flow - [2339]",
-        timestramp: "april 30, 2023, 11:25:22 aM",
-        message:
-          "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
-      },
-    ];
+    // this.dataSource = [
+    //   {
+    //     instance: "flow - [2339]",
+    //     timestramp: "april 30, 2023, 11:25:22 aM",
+    //     message:
+    //       "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
+    //   },
+    //   {
+    //     instance: "flow - [2339]",
+    //     timestramp: "april 30, 2023, 11:25:22 aM",
+    //     message:
+    //       "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
+    //   },
+    //   {
+    //     instance: "flow - [2339]",
+    //     timestramp: "april 30, 2023, 11:25:22 aM",
+    //     message:
+    //       "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
+    //   },
+    //   {
+    //     instance: "flow - [2339]",
+    //     timestramp: "april 30, 2023, 11:25:22 aM",
+    //     message:
+    //       "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
+    //   },
+    // ];
+  }
+
+  onSetJoinedtable(joinedTable: any) {
+    this.dataSource = joinedTable;
+    const headers = Object.keys(joinedTable[0]);
+    console.log("headers", headers);
+    this.tableProps = {
+      colHeader: headers.reduce((obj: any, header: string) => {
+        obj[header] = header;
+        return obj;
+      }, {}),
+
+      columnTypes: {},
+    };
+    // this.cdr.detectChanges();
   }
 
   onDrop(event: CdkDragDrop<any[]>) {

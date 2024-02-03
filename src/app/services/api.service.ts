@@ -45,6 +45,12 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getJoinedTableData(connectedNodes: any): Observable<any> {
+    return this.http
+      .post(this.baseUrl + "/api/getJoinedTableData", connectedNodes)
+      .pipe(catchError(this.handleError));
+  }
+
   refreshConnection(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/refreshConnection", connectionData)
