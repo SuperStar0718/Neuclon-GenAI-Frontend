@@ -6,7 +6,8 @@ import {
 } from "@angular/cdk/drag-drop";
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { Config } from "src/config";
-import { EventEmitter, Input, Output } from "@angular/core";
+import { EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import {DiagramComponent} from "./diagram/diagram.component"
 
 import * as go from "gojs";
 
@@ -19,6 +20,7 @@ const $ = go.GraphObject.make;
 })
 export class NewModelComponent {
   @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild(DiagramComponent)diagram: DiagramComponent
 
   availableConnections: any[] = [];
   defaultPlaceholder: string = Config.default_placeholder;
@@ -26,6 +28,7 @@ export class NewModelComponent {
   dataSource: any[] = [];
   models: any[] = [];
   isExpanded: boolean = true;
+  isLocked: boolean = false;
 
   public model: go.GraphLinksModel = new go.GraphLinksModel({
     copiesArrays: true,
@@ -117,6 +120,14 @@ export class NewModelComponent {
     //       "Lorem ipsum dolor sit amet consectetur. Urna non adipiscing neque odio. Nunc non vitae quis enim leo.",
     //   },
     // ];
+  }
+
+  onlockclicked($event: any) {
+    this.isLocked = !this.isLocked;
+    this.diagram.onLockClicked(this.isLocked);
+  }
+  onSaveclicked($event: any) {
+  console.log('clicked save button!');
   }
 
   onSetJoinedtable(joinedTable: any) {

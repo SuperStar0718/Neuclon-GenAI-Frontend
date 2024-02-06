@@ -222,6 +222,7 @@ export class DataExplorerComponent implements OnInit {
     this.tablename = this.route.snapshot.paramMap.get("table") ?? "";
     if (this.hostname !== "" && this.tablename !== "" && this.dbname !== "") {
       console.log("host:", this.hostname);
+      this.dbName = this.dbname;
       this.fetchDataFromDatabase({
         host: this.hostname,
         db_name: this.dbname,

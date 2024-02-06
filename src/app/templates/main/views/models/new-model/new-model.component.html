@@ -4,10 +4,16 @@
       <div class="flex w-full px-4 gap-4 h-[70px]">
         <div class="input-field flex items-center gap-3 w-[64%] py-6">
           <div class="flex justify-between items-center h-fit w-[60%]">
-            <span class="h-fit">Default</span>
-            <div class="flex h-fit items-center gap-3">
+            <div>
+              <mat-form-field class=" max-w-[220px]" >
+                <input matInput placeholder="Input Your Model Name" />
+              </mat-form-field>
+            </div>
+            <div class="flex items-center gap-3 h-fit">
+              <button mat-icon-button class="flex" aria-label="lock" (click)="onlockclicked($event)">
+                <mat-icon>{{ isLocked ?  "lock_open" : "lock"}}</mat-icon>
+              </button>
               <mat-icon>arrow_drop_down</mat-icon>
-              <mat-icon>lock</mat-icon>
               <mat-icon>radio_button_unchecked</mat-icon>
               <img
                 src="assets/icons/Vector_1.svg"
@@ -33,26 +39,28 @@
           />
         </div>
         <mat-divider [vertical]="true"></mat-divider>
-        <div class="flex h-fit items-center self-center gap-3">
+        <div class="flex items-center self-center gap-3 h-fit">
           <mat-icon>import_export</mat-icon>
-          <mat-icon>save</mat-icon>
+            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked($event)">
+                <mat-icon>save</mat-icon>
+            </button>
           <mat-icon>refresh</mat-icon>
           <mat-icon>filter_list</mat-icon>
         </div>
         <mat-divider [vertical]="true"></mat-divider>
-        <div class="flex h-fit items-center self-center gap-3">
+        <div class="flex items-center self-center gap-3 h-fit">
           <mat-icon>zoom_in</mat-icon>
           <span>100%</span>
           <mat-icon>zoom_out</mat-icon>
         </div>
         <mat-divider [vertical]="true"></mat-divider>
-        <div class="flex h-fit items-center self-center gap-10">
+        <div class="flex items-center self-center gap-10 h-fit">
           <span>Standard</span>
           <mat-icon>arrow_drop_down</mat-icon>
         </div>
       </div>
       <div>
-        <app-diagram (setJoinedTable)="onSetJoinedtable($event)"></app-diagram>
+        <app-diagram (setJoinedTable)="onSetJoinedtable($event)" ></app-diagram>
         <!-- <app-jointjs></app-jointjs> -->
       </div>
       <div class="mt-3">

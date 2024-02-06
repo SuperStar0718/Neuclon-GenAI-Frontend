@@ -43,13 +43,35 @@ export class DiagramComponent implements AfterViewInit {
   public myPalette!: go.Palette;
   public initJson = initJson;
   dataEndpoints: Array<IGraphLinksModel> = [];
-
+  isLocked: boolean = false;
   constructor(
     private apiService: ApiService,
     notifierService: NotifierService,
     private router: Router
   ) {
     this.notifier = notifierService;
+  }
+
+  onLockClicked(status: boolean) {
+      console.log('status:', status)
+      this.isLocked = status;
+      this.diagram.allowDelete = !status;
+      this.diagram.allowMove = !status;
+      this.diagram.allowTextEdit = !status;
+      this.diagram.allowCopy = !status;
+      this.diagram.allowLink = !status;
+      this.diagram.allowClipboard = !status;
+      this.diagram.allowDrop = !status;
+      this.diagram.allowDragOut = !status;
+      this.diagram.allowHorizontalScroll = !status;
+      this.diagram.allowRelink = !status;
+      this.diagram.allowSelect = !status;
+      this.diagram.allowZoom = !status;
+      this.diagram.allowReshape = !status;
+      this.diagram.allowRotate = !status;
+      this.diagram.allowVerticalScroll = !status;
+      this.diagram.allowInsert = !status;
+      this.diagram.allowHorizontalScroll = !status;
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -335,11 +357,7 @@ export class DiagramComponent implements AfterViewInit {
       }
 
       // Convert the set of nodes to an array of node data
-      const nodeDataArray = Array.from(visited).map(
-        (node: go.Node) => node.data
-      );
-
-      return nodeDataArray;
+      return Array.from(visited).map((node: go.Node) => node.data);
     }
 
     function activeHandler(e: any, obj: any) {
@@ -365,38 +383,25 @@ export class DiagramComponent implements AfterViewInit {
       ]);
     };
 
-    function shutdownHandler(e: any, obj: any) {
-      var node = obj.part;
-      // if (node !== null) {
-      //   node.diagram.startTransaction("remove links");
-
-      //   // Remove links going out of the node
-      //   node.findLinksOutOf().each(function (link: any) {
-      //     node.diagram.remove(link);
-      //     console.log("link out");
-      //   });
-
-      //   // Remove links coming into the node
-      //   node.findLinksInto().each(function (link: any) {
-      //     node.diagram.remove(link);
-      //     console.log("link into");
-      //   });
-
-      //   node.diagram.commitTransaction("remove links");
-      // }
-      let links = node.findLinksConnected();
-      while (links.next()) {
-        console.log("link: ", links.value);
-        const link = links.value;
-        node.diagram.remove(link);
-        links = node.findLinksConnected();
+    const shutdownHandler = (e: any, obj: any) => {
+      if (!this.isLocked) {
+        var node = obj.part;
+        let links = node.findLinksConnected();
+        while (links.next()) {
+          console.log("link: ", links.value);
+          const link = links.value;
+          node.diagram.remove(link);
+          links = node.findLinksConnected();
+        }
       }
-    }
+    };
 
-    function deleteHandler(e: any, obj: any) {
-      var node = obj.part;
-      node.diagram.remove(node);
-    }
+    const deleteHandler = (e: any, obj: any) => {
+      if (!this.isLocked) {
+        var node = obj.part;
+        node.diagram.remove(node);
+      }
+    };
 
     // node template
     this.diagram.nodeTemplate = $(
