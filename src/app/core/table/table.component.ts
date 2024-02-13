@@ -40,13 +40,15 @@ export class AppTableComponent implements OnInit, OnChanges {
 
   constructor(protected router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.onAllChecked();
   }
 
   isAllSelected() {
+
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
     return numSelected === numRows;
@@ -125,10 +127,12 @@ export class AppTableComponent implements OnInit, OnChanges {
   }
 
   setPagination(page: any) {
+    console.log('page', page);
     this.setPage.emit(page);
   }
 
   getPaginationText() {
+    console.log('pagination', this.pagination);
     let pagination = 'Total Count: ';
     if (this.pagination.page < this?.pagination?.pages) {
       pagination += this.pagination.per_page * this?.pagination?.page + '/' + this?.pagination?.count;

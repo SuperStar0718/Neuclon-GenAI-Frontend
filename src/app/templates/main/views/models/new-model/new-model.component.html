@@ -6,7 +6,7 @@
           <div class="flex justify-between items-center h-fit w-[60%]">
             <div>
               <mat-form-field class=" max-w-[220px]" >
-                <input matInput placeholder="Input Your Model Name" />
+                <input #modelName matInput placeholder="Input Your Model Name" />
               </mat-form-field>
             </div>
             <div class="flex items-center gap-3 h-fit">
@@ -41,7 +41,7 @@
         <mat-divider [vertical]="true"></mat-divider>
         <div class="flex items-center self-center gap-3 h-fit">
           <mat-icon>import_export</mat-icon>
-            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked($event)">
+            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked(modelName.value)">
                 <mat-icon>save</mat-icon>
             </button>
           <mat-icon>refresh</mat-icon>
@@ -79,3 +79,4 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+<notifier-container></notifier-container>

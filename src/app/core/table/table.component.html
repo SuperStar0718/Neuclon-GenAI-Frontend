@@ -51,17 +51,11 @@
           </ng-container>
 
           <!-- Column with image and text -->
-          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'imageText'">
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'Name'">
             <td mat-cell *matCellDef="let element">
               <div class="flex items-center">
-                <img
-                  [src]="element.imageText.img ? element.imageText.img : defaultPlaceholder"
-                  alt=""
-                  width="20px"
-                  height="20px"
-                  class="m-4 mx-0"
-                />
-                <span class="mx-2 ff-poppins-medium" style="font-size: 14px">{{ element.imageText.name }}</span>
+              
+                <span class="mx-2 ff-poppins-medium" style="font-size: 14px">{{ element[tableData] }}</span>
               </div>
             </td>
           </ng-container>
@@ -74,12 +68,12 @@
           <!-- Column with icon -->
           <ng-container *ngIf="tableProps.columnTypes[tableData] === 'icon'">
             <td mat-cell *matCellDef="let element">
-              <mat-icon style="cursor: pointer">{{ element[tableData] }}</mat-icon>
+              <img [src]="element[tableData]" alt="" class="w-8 h-4 cursor-pointer">
             </td>
           </ng-container>
 
           <!-- Column with exceeded text -->
-          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'textExceeded'">
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'endpointUrl'">
             <td mat-cell *matCellDef="let element">
               <div class="w-[400px] my-4" style="text-wrap: wrap">
                 {{ element[tableData] }}
@@ -88,7 +82,7 @@
           </ng-container>
 
           <!-- Column with date -->
-          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'date'">
+          <ng-container *ngIf="tableProps.columnTypes[tableData] === 'lastupdated'">
             <td mat-cell *matCellDef="let element">
               <div
                 style="
@@ -128,7 +122,6 @@
                 *ngFor="let item of tableProps.statusConfig"
                 [ngStyle]="{ color: element[tableData] == item.status ? item.color : '' }"
               >
-                {{ element[tableData] }}
                 <div
                   style="width: fit-content; height: auto; padding: 6px 10px; border-radius: 10px"
                   *ngIf="element[tableData] == item.status"

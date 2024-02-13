@@ -7,7 +7,8 @@ import {
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { Config } from "src/config";
 import { EventEmitter, Input, Output, ViewChild } from "@angular/core";
-import {DiagramComponent} from "./diagram/diagram.component"
+import { DiagramComponent } from "./diagram/diagram.component";
+import { NotifierService } from "angular-notifier";
 
 import * as go from "gojs";
 
@@ -20,7 +21,8 @@ const $ = go.GraphObject.make;
 })
 export class NewModelComponent {
   @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild(DiagramComponent)diagram: DiagramComponent
+  @ViewChild(DiagramComponent) diagram: DiagramComponent;
+  private readonly notifier: NotifierService;
 
   availableConnections: any[] = [];
   defaultPlaceholder: string = Config.default_placeholder;
@@ -53,7 +55,12 @@ export class NewModelComponent {
     linkDataArray: [{ from: 1, fromPort: "o1", to: 2, toPort: "s2" }],
   });
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
+
     this.availableConnections = [
       {
         img: "assets/logos/Epicor.png",
@@ -126,8 +133,20 @@ export class NewModelComponent {
     this.isLocked = !this.isLocked;
     this.diagram.onLockClicked(this.isLocked);
   }
-  onSaveclicked($event: any) {
-  console.log('clicked save button!');
+  onSaveclicked(modelName: string) {
+    console.log("clicked save button!:", modelName);
+    if (modelName !== "") {
+      if (this.diagram.checkSaveAvailablity()) {
+        this.notifier.notify("success", "Your model saved successfully");
+      } else {
+        this.notifier.notify(
+          "error",
+          "You can't save your model now, please check your model"
+        );
+      }
+    } else {
+      this.notifier.notify("error", "Input your Model Name");
+    }
   }
 
   onSetJoinedtable(joinedTable: any) {

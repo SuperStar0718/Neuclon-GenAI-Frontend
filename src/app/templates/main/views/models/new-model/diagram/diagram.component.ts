@@ -74,6 +74,133 @@ export class DiagramComponent implements AfterViewInit {
       this.diagram.allowHorizontalScroll = !status;
   }
 
+  checkSaveAvailablity() {
+    const allNodes = this.diagram.nodes;
+    let allNodeData = []
+    let connectedNodes = []
+    allNodes.each((node) => {
+      allNodeData.push(node.data);
+       connectedNodes = this.getAllConnectedNodes(node);
+    });
+    return connectedNodes.length === allNodeData.length;
+
+
+  }
+
+
+   displayJoinedTable = (e: any, obj: any) => {
+    var node = obj.part;
+    var data = node.data;
+    const allConnectedNodes = this.getAllConnectedNodes(node);
+    this.apiService.getJoinedTableData(allConnectedNodes).subscribe((res) => {
+      this.setJoinedTable.emit(res);
+    });
+    console.log("all node data: ", allConnectedNodes);
+  };
+
+   getAllConnectedNodes = (node: go.Node) => {
+    const queue = [node];
+    const visited = new Set([node]);
+
+    while (queue.length > 0) {
+      const currentNode = queue.shift();
+      currentNode?.findNodesConnected().each((connectedNode: go.Node) => {
+        if (!visited.has(connectedNode)) {
+          visited.add(connectedNode);
+          queue.push(connectedNode);
+        }
+      });
+    }
+
+    // Convert the set of nodes to an array of node data
+    return Array.from(visited).map((node: go.Node) => node.data);
+  }
+
+   activeHandler(e: any, obj: any) {
+    var node = obj.part;
+    var data = node.data;
+    if (data && typeof data.isActive === "boolean") {
+      node.data.isActive = !data.isActive;
+      node.diagram.model.commit(
+        (m: any) => m.set(data, "clickCount", !data.isActive),
+        "status"
+      );
+    }
+  }
+   navigateHandler = (e: any, obj: any) => {
+    var node = obj.part;
+    var data = node.data;
+    console.log("node data: ", data);
+    this.router.navigate([
+      "/main/connect/data-explorer",
+      data.host,
+      data.dbname,
+      data.description,
+    ]);
+  };
+
+   shutdownHandler = (e: any, obj: any) => {
+    if (!this.isLocked) {
+      var node = obj.part;
+      let links = node.findLinksConnected();
+      while (links.next()) {
+        console.log("link: ", links.value);
+        const link = links.value;
+        node.diagram.remove(link);
+        links = node.findLinksConnected();
+      }
+    }
+  };
+
+   deleteHandler = (e: any, obj: any) => {
+    if (!this.isLocked) {
+      var node = obj.part;
+      node.diagram.remove(node);
+    }
+  };
+
+  handleLinkEvents = (e: go.DiagramEvent) => {
+    var link = e.subject;
+    var fromNode = link.fromNode;
+    var toNode = link.toNode;
+    const originalNodes: any[] = this.getAllConnectedNodes(fromNode);
+    try {
+      let headers = toNode.data.headers.split(", ");
+      headers.splice(headers.indexOf("_id"), 1);
+
+      if (headers.length === 0) throw new Error("No headers found");
+      let i;
+      for (i = 0; i < headers.length; i++) {
+        let header = headers[i];
+
+        let j;
+        for (
+          j = 0;
+          j < originalNodes.length &&
+          originalNodes[j].headers.split(", ").includes(header);
+          j++
+        );
+        if (j == originalNodes.length) {
+          this.notifier.notify("success", "Connection Successful");
+          break;
+        }
+      }
+      if (i === headers.length) {
+        this.notifier.notify("error", "Unable to connect nodes");
+        this.diagram.remove(link);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      this.notifier.notify("error", "Unable to connect nodes");
+      this.diagram.remove(link);
+    }
+
+    console.log("Original nodes: ", originalNodes);
+
+    console.log("From node data: ", fromNode.data);
+    console.log("To node data: ", toNode.data);
+  };
+
   async ngAfterViewInit(): Promise<void> {
     //load all available nodes from the database
     const res: any = await this.apiService.getAllConnections().toPromise();
@@ -186,50 +313,10 @@ export class DiagramComponent implements AfterViewInit {
       }
     });
 
-    const handleLinkEvents = (e: go.DiagramEvent) => {
-      var link = e.subject;
-      var fromNode = link.fromNode;
-      var toNode = link.toNode;
-      const originalNodes: any[] = getAllConnectedNodes(fromNode);
-      try {
-        let headers = toNode.data.headers.split(", ");
-        headers.splice(headers.indexOf("_id"), 1);
+    
 
-        if (headers.length === 0) throw new Error("No headers found");
-        let i;
-        for (i = 0; i < headers.length; i++) {
-          let header = headers[i];
-
-          let j;
-          for (
-            j = 0;
-            j < originalNodes.length &&
-            originalNodes[j].headers.split(", ").includes(header);
-            j++
-          );
-          if (j == originalNodes.length) {
-            this.notifier.notify("success", "Connection Successful");
-            break;
-          }
-        }
-        if (i === headers.length) {
-          this.notifier.notify("error", "Unable to connect nodes");
-          this.diagram.remove(link);
-        }
-      } catch (error) {
-        console.log("error: ", error);
-        this.notifier.notify("error", "Unable to connect nodes");
-        this.diagram.remove(link);
-      }
-
-      console.log("Original nodes: ", originalNodes);
-
-      console.log("From node data: ", fromNode.data);
-      console.log("To node data: ", toNode.data);
-    };
-
-    this.diagram.addDiagramListener("LinkDrawn", handleLinkEvents);
-    this.diagram.addDiagramListener("LinkRelinked", handleLinkEvents);
+    this.diagram.addDiagramListener("LinkDrawn", this.handleLinkEvents);
+    this.diagram.addDiagramListener("LinkRelinked", this.handleLinkEvents);
 
     // Define a function for creating a "port" that is normally transparent.
     // The "name" is used as the GraphObject.portId, the "spot" is used to control how links connect
@@ -332,76 +419,8 @@ export class DiagramComponent implements AfterViewInit {
       })
     );
 
-    const displayJoinedTable = (e: any, obj: any) => {
-      var node = obj.part;
-      var data = node.data;
-      const allConnectedNodes = getAllConnectedNodes(node);
-      this.apiService.getJoinedTableData(allConnectedNodes).subscribe((res) => {
-        this.setJoinedTable.emit(res);
-      });
-      console.log("all node data: ", allConnectedNodes);
-    };
+    
 
-    function getAllConnectedNodes(node: go.Node) {
-      const queue = [node];
-      const visited = new Set([node]);
-
-      while (queue.length > 0) {
-        const currentNode = queue.shift();
-        currentNode?.findNodesConnected().each((connectedNode: go.Node) => {
-          if (!visited.has(connectedNode)) {
-            visited.add(connectedNode);
-            queue.push(connectedNode);
-          }
-        });
-      }
-
-      // Convert the set of nodes to an array of node data
-      return Array.from(visited).map((node: go.Node) => node.data);
-    }
-
-    function activeHandler(e: any, obj: any) {
-      var node = obj.part;
-      var data = node.data;
-      if (data && typeof data.isActive === "boolean") {
-        node.data.isActive = !data.isActive;
-        node.diagram.model.commit(
-          (m: any) => m.set(data, "clickCount", !data.isActive),
-          "status"
-        );
-      }
-    }
-    const navigateHandler = (e: any, obj: any) => {
-      var node = obj.part;
-      var data = node.data;
-      console.log("node data: ", data);
-      this.router.navigate([
-        "/main/connect/data-explorer",
-        data.host,
-        data.dbname,
-        data.description,
-      ]);
-    };
-
-    const shutdownHandler = (e: any, obj: any) => {
-      if (!this.isLocked) {
-        var node = obj.part;
-        let links = node.findLinksConnected();
-        while (links.next()) {
-          console.log("link: ", links.value);
-          const link = links.value;
-          node.diagram.remove(link);
-          links = node.findLinksConnected();
-        }
-      }
-    };
-
-    const deleteHandler = (e: any, obj: any) => {
-      if (!this.isLocked) {
-        var node = obj.part;
-        node.diagram.remove(node);
-      }
-    };
 
     // node template
     this.diagram.nodeTemplate = $(
@@ -439,7 +458,7 @@ export class DiagramComponent implements AfterViewInit {
           go.Shape,
           "Rectangle", // default figure
           {
-            click: displayJoinedTable,
+            click: this.displayJoinedTable,
           },
           {
             portId: "", // the default port: if no spot on link data, use closest side
@@ -457,7 +476,7 @@ export class DiagramComponent implements AfterViewInit {
           go.Panel,
           "Vertical",
           {
-            click: displayJoinedTable,
+            click: this.displayJoinedTable,
           },
           { alignment: go.Spot.TopCenter, padding: 10 },
           $(
@@ -492,7 +511,7 @@ export class DiagramComponent implements AfterViewInit {
             {
               margin: 1,
               isEnabled: true,
-              click: activeHandler,
+              click: this.activeHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
@@ -507,7 +526,7 @@ export class DiagramComponent implements AfterViewInit {
             {
               margin: 1,
               isEnabled: true,
-              click: activeHandler,
+              click: this.activeHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
@@ -533,7 +552,7 @@ export class DiagramComponent implements AfterViewInit {
             {
               margin: 1,
               isEnabled: true,
-              click: shutdownHandler,
+              click: this.shutdownHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
@@ -548,7 +567,7 @@ export class DiagramComponent implements AfterViewInit {
             {
               margin: 1,
               isEnabled: true,
-              click: deleteHandler,
+              click: this.deleteHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
@@ -578,7 +597,7 @@ export class DiagramComponent implements AfterViewInit {
             {
               margin: 1,
               isEnabled: true,
-              click: navigateHandler,
+              click: this.navigateHandler,
               "ButtonBorder.figure": "Circle",
               "ButtonBorder.fill": "white",
               "ButtonBorder.stroke": "white",
