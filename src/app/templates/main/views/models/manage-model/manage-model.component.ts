@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalListComponent } from "src/app/shared/global-list";
 import { ApiService } from "src/app/services/api.service";
 import { IConnection } from "src/app/Models/connection";
-import { AlertService } from "src/app/services/alert.service";
 
 @Component({
   selector: "app-manage-model",
@@ -19,10 +18,9 @@ export class ManageModelComponent
     protected override router: Router,
     protected override _route: ActivatedRoute,
     protected formbuilder: FormBuilder,
-    protected override apiService: ApiService,
-    protected override alertService: AlertService,
+    private apiService: ApiService
   ) {
-    super(router,apiService, alertService ,_route);
+    super(router, _route);
 
     this.tableProps = {
       colHeader: {
@@ -181,10 +179,12 @@ export class ManageModelComponent
   }
 
   override async ngOnInit(): Promise<void> {
-    const res: any = await this.apiService.getAllConnections().toPromise();
+    const connections: any = await this.apiService
+      .getAllConnections()
+      .toPromise();
     let dataEndpoints: any = [];
-    console.log("response:", res);
-    res.forEach((connection: IConnection) => {
+    console.log("response:", connections);
+    connections.forEach((connection: IConnection) => {
       const tables = JSON.parse(connection.tables);
       tables.forEach(
         (table: {
@@ -204,21 +204,50 @@ export class ManageModelComponent
               dataEndpoints.push({
                 Name: collection.collectionName,
                 status: "Running",
-                icon: `assets/logos/${connection.type.toLowerCase()}.png`,
+                icon: [`assets/logos/${connection.type.toLowerCase()}.png`],
                 endpointUrl: connection.host,
                 description: collection.collectionName,
                 text: connection.type,
                 headers: collection.headers,
                 dbname: table.name,
-                lastupdated: connection.updated_at
+                lastupdated: connection.updated_at,
               });
             }
           );
         }
       );
     });
-    this.dataItems = dataEndpoints;
-    console.log("dataEndpoints:", dataEndpoints);
-  }
 
+    const models: any = await this.apiService.getModels().toPromise();
+    models.forEach((model: any) => {
+      console.log("model:", model);
+      let icons: string[] = []
+      const connectors = JSON.parse(model.nodeData);
+      connectors.forEach((connector:any)=>{
+        icons.push(connector.source)
+      })
+      dataEndpoints.push({
+        Name: model.name,
+        status: "Running",
+        icon: icons,
+        endpointUrl: model.host,
+        description: model.name,
+        text: model.type,
+        headers: model.headers,
+        dbname: model.dbname,
+        lastupdated: model.updated_at,
+      });
+    });
+
+    this.allDataItems = dataEndpoints;
+    this.dataItems = dataEndpoints.slice(0, this.pagination.perPage);
+    this.pagination.pages = Math.floor(
+      dataEndpoints.length / this.pagination.perPage + 1
+    );
+    this.pagination.count = dataEndpoints.length;
+    console.log(
+      "dataEndpoints:",
+      dataEndpoints
+    );
+  }
 }

@@ -8,6 +8,7 @@ import { ChangeDetectorRef, Component } from "@angular/core";
 import { Config } from "src/config";
 import { EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { DiagramComponent } from "./diagram/diagram.component";
+import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
 
 import * as go from "gojs";
@@ -57,6 +58,8 @@ export class NewModelComponent {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private apiService: ApiService,
+
     notifierService: NotifierService
   ) {
     this.notifier = notifierService;
@@ -137,6 +140,22 @@ export class NewModelComponent {
     console.log("clicked save button!:", modelName);
     if (modelName !== "") {
       if (this.diagram.checkSaveAvailablity()) {
+        const node = this.diagram.diagram.nodes.first();
+        if (node) {
+          console.log("node", node.data);
+          const allConnectedNodes = this.diagram.getAllConnectedNodes(node);
+          const modelData = {
+            name: modelName,
+            host:"neuclongenmongodb.mongo.cosmos.azure.com",
+            nodeData: JSON.stringify(allConnectedNodes),
+          };
+          this.apiService
+            .saveModel(modelData)
+            .subscribe((res) => {
+              console.log('res from getJoinedTableData', res);  
+            });
+
+        }
         this.notifier.notify("success", "Your model saved successfully");
       } else {
         this.notifier.notify(
@@ -148,7 +167,7 @@ export class NewModelComponent {
       this.notifier.notify("error", "Input your Model Name");
     }
   }
-
+  
   onSetJoinedtable(joinedTable: any) {
     this.dataSource = joinedTable;
     const headers = Object.keys(joinedTable[0]);

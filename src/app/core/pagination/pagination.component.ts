@@ -12,7 +12,10 @@ export class AppPaginationComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('pagination', this.pagination);
+
+  }
 
   setPagination(page: any) {
     let obj = { page: page, perPage: +this.perPage };
@@ -28,7 +31,7 @@ export class AppPaginationComponent implements OnInit {
   getPaginationText() {
     let pagination;
     if (this.pagination.page < this.pagination?.pages) {
-      pagination = `${this.pagination.page} - ${this.pagination.perPage * this.pagination?.page} of ${
+      pagination = `${(this.pagination.page-1) * this.pagination.perPage +1} - ${this.pagination.perPage * this.pagination?.page} of ${
         this.pagination?.count
       }`;
     } else if (this.pagination?.page == this.pagination?.pages) {

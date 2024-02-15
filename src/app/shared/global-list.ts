@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AlertService } from '../services/alert.service';
-import { ApiService } from '../services/api.service';
+// import { Alert, AskingAlert } from '../models/alert';
+// import { appButton } from '../models/appButton';
+// import { AlertService } from '../services/alert.service';
+// import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-global-list',
   template: ``,
 })
 export class GlobalListComponent implements OnInit {
+  allDataItems: any[] = [];
   dataItems: any[] = [];
   pagination: any;
   pageNumber: any = 1;
@@ -23,8 +26,6 @@ export class GlobalListComponent implements OnInit {
 
   constructor(
     protected router: Router,
-    protected apiService: ApiService,
-    protected alertService: AlertService,
     protected _route: ActivatedRoute, // protected apiService: ApiService, // protected alertService: AlertService
   ) {
     this.dataItems = [];
@@ -50,11 +51,17 @@ export class GlobalListComponent implements OnInit {
   onDateRange(event: any): void {}
 
   onPagination(event: any): void {
-    console.log('onpagination')
     this.pageNumber = event.page;
     this.pageSize = event.perPage;
     this.paginationUrl = `?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}&SortColumn=id&SortOrder=z`;
-    this.getList();
+    // this.getList();
+    this.pagination.page = this.pageNumber;
+    this.pagination.perPage = this.pageSize;
+    this.pagination.pages = Math.floor(this.allDataItems.length / this.pagination.perPage+1);
+
+    const startAt = (this.pageNumber - 1) * this.pageSize;
+    const endAt = startAt + this.pageSize;  
+    this.dataItems = this.allDataItems.slice(startAt, endAt);
   }
 
   setPage(event: any) {
@@ -95,60 +102,60 @@ export class GlobalListComponent implements OnInit {
       this.filterUrl = filterUrl;
     }
 
-    this.apiService.get(url).then((result:any) => {
-      if (result?.succeeded) {
-        if (result.data != null) {
-          if (result.data.hasOwnProperty('listing')) {
-            this.dataItems = result.data.listing;
-          } else {
-            this.dataItems = result.data;
-          }
-        }
-        else {
-          this.dataItems = [];
-        }
-        this.pagination = {
-          count: result.totalRecords,
-          pages: result.totalPages,
-          page: result.pageNumber,
-          perPage: this.pageSize
-        };
-        this.afterListResponse();
-      } else {
-        this.dataItems = [];
-        this.alertService.error( {
-          heading: 'Error',
-          message: result.message
-        });
-      }
-    });
+    // this.apiService.get(url).then((result:any) => {
+    //   if (result?.succeeded) {
+    //     if (result.data != null) {
+    //       if (result.data.hasOwnProperty('listing')) {
+    //         this.dataItems = result.data.listing;
+    //       } else {
+    //         this.dataItems = result.data;
+    //       }
+    //     }
+    //     else {
+    //       this.dataItems = [];
+    //     }
+    //     this.pagination = {
+    //       count: result.totalRecords,
+    //       pages: result.totalPages,
+    //       page: result.pageNumber,
+    //       perPage: this.pageSize
+    //     };
+    //     this.afterListResponse();
+    //   } else {
+    //     this.dataItems = [];
+    //     this.alertService.error('error', {
+    //       heading: 'Error',
+    //       message: result.message
+    //     });
+    //   }
+    // });
   }
 
   getListPost(obj?: any): void {
     let url = this.listApi;
     obj['pageNumber'] = this.pageNumber;
     obj['pageSize'] = this.pageSize;
-    this.apiService.post(url, obj).then(result => {
-      if (result?.succeeded) {
-        if (result.data.hasOwnProperty('listing')) {
-          this.dataItems = result.data.listing;
-        } else {
-          this.dataItems = result.data;
-        }
-        this.pagination = {
-          'count': result.totalRecords,
-          'pages': result.totalPages,
-          'page': result.pageNumber
-        };
-        this.afterListResponse();
-      } else {
-        this.dataItems = [];
-        this.alertService.error( {
-          heading: 'Error',
-          message: result.message
-        });
-      }
-    });
+    // this.apiService.post(url, obj).then(result => {
+    //   if (result?.succeeded) {
+    //     if (result.data.hasOwnProperty('listing')) {
+    //       this.dataItems = result.data.listing;
+    //     } else {
+    //       this.dataItems = result.data;
+    //     }
+    //     this.pagination = {
+    //       'count': result.totalRecords,
+    //       'pages': result.totalPages,
+    //       'page': result.pageNumber
+    //     };
+    //     this.afterListResponse();
+    //   } else {
+    //     this.dataItems = [];
+    //     this.alertService.error('error', {
+    //       heading: 'Error',
+    //       message: result.message
+    //     });
+    //   }
+    // });
   }
 
   afterListResponse(): void {}
