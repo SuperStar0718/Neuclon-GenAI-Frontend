@@ -202,6 +202,7 @@ export class ManageModelComponent
               status: boolean;
             }) => {
               dataEndpoints.push({
+                type:'connection',
                 Name: collection.collectionName,
                 status: "Running",
                 icon: [`assets/logos/${connection.type.toLowerCase()}.png`],
@@ -210,7 +211,7 @@ export class ManageModelComponent
                 text: connection.type,
                 headers: collection.headers,
                 dbname: table.name,
-                lastupdated: connection.updated_at,
+                lastupdated: connection.updatedAt,
               });
             }
           );
@@ -220,13 +221,14 @@ export class ManageModelComponent
 
     const models: any = await this.apiService.getModels().toPromise();
     models.forEach((model: any) => {
-      console.log("model:", model);
       let icons: string[] = []
       const connectors = JSON.parse(model.nodeData);
       connectors.forEach((connector:any)=>{
         icons.push(connector.source)
       })
       dataEndpoints.push({
+        id: model._id,
+        type:'model',
         Name: model.name,
         status: "Running",
         icon: icons,
@@ -235,7 +237,8 @@ export class ManageModelComponent
         text: model.type,
         headers: model.headers,
         dbname: model.dbname,
-        lastupdated: model.updated_at,
+        diagramData: model.diagramData,
+        lastupdated: model.updatedAt,
       });
     });
 

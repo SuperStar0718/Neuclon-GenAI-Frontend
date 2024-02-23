@@ -28,44 +28,44 @@ export class ApiService {
   }
 
   /**
-   * 
-   * @param connectionData 
-   * @returns 
+   *
+   * @param connectionData
+   * @returns
    */
   establishConnection(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/connect", connectionData)
       .pipe(catchError(this.handleError));
   }
-/**
- * 
- * @param connectionData 
- * @returns 
- */
+  /**
+   *
+   * @param connectionData
+   * @returns
+   */
   connectTables(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/connectTables", connectionData)
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-getAllConnections(): Observable<any> {
+  /**
+   *
+   *
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  getAllConnections(): Observable<any> {
     return this.http
       .get(this.baseUrl + "/api/getAllConnections")
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @param {*} connectedNodes
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-getJoinedTableData(connectedNodes: any): Observable<any> {
+  /**
+   *
+   *
+   * @param {*} connectedNodes
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  getJoinedTableData(connectedNodes: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/getJoinedTableData", connectedNodes)
       .pipe(catchError(this.handleError));
@@ -76,56 +76,84 @@ getJoinedTableData(connectedNodes: any): Observable<any> {
       .post(this.baseUrl + "/api/saveModel", modelData)
       .pipe(catchError(this.handleError));
   }
+  /**
+   *
+   *
+   * @param {*} modelData
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  deleteModel(modelData: any): Observable<any> {
+    return this.http
+      .post(this.baseUrl + "/api/deleteModel", modelData)
+      .pipe(catchError(this.handleError));
+  }
 
+  /**
+   *
+   * @returns
+   */
   getModels(): Observable<any> {
     return this.http
       .get(this.baseUrl + "/api/getModels")
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @param {*} connectionData
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-refreshConnection(connectionData: any): Observable<any> {
+  /**
+   *
+   *
+   * @param {string} id
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  getModel(id: string): Observable<any> {
+    return this.http
+      .get(this.baseUrl + "/api/getModel/" + id)
+      .pipe(catchError(this.handleError));
+  }
+  /**
+   *
+   *
+   * @param {*} connectionData
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  refreshConnection(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/refreshConnection", connectionData)
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @param {*} connectionData
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-stopConnection(connectionData: any): Observable<any> {
+  /**
+   *
+   *
+   * @param {*} connectionData
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  stopConnection(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/stopConnection", connectionData)
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @param {*} connectionData
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-deleteConnection(connectionData: any): Observable<any> {
+  /**
+   *
+   *
+   * @param {*} connectionData
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  deleteConnection(connectionData: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/api/deleteConnection", connectionData)
       .pipe(catchError(this.handleError));
   }
-/**
- *
- *
- * @param {*} req
- * @return {*}  {Observable<any>}
- * @memberof ApiService
- */
-generateResponseFromChatGPT(req: any): Observable<any> {
+  /**
+   *
+   *
+   * @param {*} req
+   * @return {*}  {Observable<any>}
+   * @memberof ApiService
+   */
+  generateResponseFromChatGPT(req: any): Observable<any> {
     return this.http
       .post(this.baseUrl + "/chatgpt/generateResponseFromChatGPT", req)
       .pipe(catchError(this.handleError));

@@ -4,12 +4,18 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from "@angular/cdk/drag-drop";
-import { ChangeDetectorRef, Component } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+} from "@angular/core";
 import { Config } from "src/config";
 import { EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { DiagramComponent } from "./diagram/diagram.component";
 import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
+import { ActivatedRoute } from "@angular/router";
 
 import * as go from "gojs";
 
@@ -20,9 +26,10 @@ const $ = go.GraphObject.make;
   templateUrl: "./new-model.component.html",
   styleUrls: ["./new-model.component.scss"],
 })
-export class NewModelComponent {
+export class NewModelComponent implements AfterViewInit {
   @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(DiagramComponent) diagram: DiagramComponent;
+  @ViewChild("modelName") modelName: ElementRef;
   private readonly notifier: NotifierService;
 
   availableConnections: any[] = [];
@@ -59,6 +66,7 @@ export class NewModelComponent {
   constructor(
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
+    private route: ActivatedRoute,
 
     notifierService: NotifierService
   ) {
@@ -132,29 +140,52 @@ export class NewModelComponent {
     // ];
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const id = this.route.snapshot.paramMap.get("id");
+      if (id) {
+        this.apiService.getModel(id).subscribe((res) => {
+          // console.log('res from model data', res.diagramData);
+          // console.log('diagram.diagram.model:', this.diagram)
+          this.diagram.diagram.model = go.Model.fromJson(
+            JSON.parse(res.diagramData)
+          );
+          this.modelName.nativeElement.value = res.name;
+        });
+      }
+    }, 1000);
+  }
+
   onlockclicked($event: any) {
     this.isLocked = !this.isLocked;
     this.diagram.onLockClicked(this.isLocked);
   }
+
   onSaveclicked(modelName: string) {
     console.log("clicked save button!:", modelName);
+    const diagramData = this.diagram.diagram.model.toJson();
+    localStorage.setItem("diagramData", diagramData);
     if (modelName !== "") {
       if (this.diagram.checkSaveAvailablity()) {
         const node = this.diagram.diagram.nodes.first();
         if (node) {
           console.log("node", node.data);
           const allConnectedNodes = this.diagram.getAllConnectedNodes(node);
-          const modelData = {
-            name: modelName,
-            host:"neuclongenmongodb.mongo.cosmos.azure.com",
-            nodeData: JSON.stringify(allConnectedNodes),
-          };
-          this.apiService
-            .saveModel(modelData)
-            .subscribe((res) => {
-              console.log('res from getJoinedTableData', res);  
-            });
 
+          const modelData: any = {
+            name: modelName,
+            host: "neuclongenmongodb.mongo.cosmos.azure.com",
+            nodeData: JSON.stringify(allConnectedNodes),
+            diagramData: diagramData,
+          };
+          const id = this.route.snapshot.paramMap.get("id");
+
+          if (id) {
+            modelData["_id"] = id;
+          }
+          this.apiService.saveModel(modelData).subscribe((res) => {
+            console.log("res from getJoinedTableData", res);
+          });
         }
         this.notifier.notify("success", "Your model saved successfully");
       } else {
@@ -167,7 +198,7 @@ export class NewModelComponent {
       this.notifier.notify("error", "Input your Model Name");
     }
   }
-  
+
   onSetJoinedtable(joinedTable: any) {
     this.dataSource = joinedTable;
     const headers = Object.keys(joinedTable[0]);

@@ -52,6 +52,8 @@ export class DiagramComponent implements AfterViewInit {
     this.notifier = notifierService;
   }
 
+
+
   onLockClicked(status: boolean) {
       console.log('status:', status)
       this.isLocked = status;
@@ -694,7 +696,7 @@ export class DiagramComponent implements AfterViewInit {
       )
     );
 
-    this.load(); // load an initial diagram from some JSON text
+    // this.load(); // load an initial diagram from some JSON text
     console.log("data endpoints: ", this.dataEndpoints);
 
     // initialize the Palette that is on the right side of the page
@@ -873,11 +875,11 @@ export class DiagramComponent implements AfterViewInit {
     this.diagram.isModified = false;
   }
   load() {
-    const json = JSON.parse(
-      (document.getElementById("mySavedModel") as HTMLInputElement).value
-    );
-    this.diagram.model = go.Model.fromJson(json);
-    this.loadDiagramProperties(); // do this after the Model.modelData has been brought into memory
+    // const json = JSON.parse(
+    //   (document.getElementById("mySavedModel") as HTMLInputElement).value
+    // );
+    // this.diagram.model = go.Model.fromJson(json);
+    // this.loadDiagramProperties(); // do this after the Model.modelData has been brought into memory
   }
 
   saveDiagramProperties() {

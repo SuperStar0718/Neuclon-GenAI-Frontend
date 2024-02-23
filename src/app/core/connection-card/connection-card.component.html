@@ -7,8 +7,8 @@
     props.dataset.status ? "connected" : "disconnected"
   }}</span>
   <mat-icon class="absolute top-2 right-2">visibility</mat-icon>
-  <div class="flex flex-col h-full justify-between">
-    <div class="pt-8 items-center flex justify-center ff-poppins-semibold">
+  <div class="flex flex-col justify-between h-full">
+    <div class="flex items-center justify-center pt-8 ff-poppins-semibold">
       <img
         [src]="'assets/logos/' + props.type.toLowerCase() + '.png'"
         width="100"
@@ -47,7 +47,7 @@
     </div>
     <div style="font-size: 12px" class="pb-2 font-bold">
       Last Updated:
-      <span class="ff-poppins">{{ momentFormat(props.updated_at) }}</span>
+      <span class="ff-poppins">{{ momentFormat(props.updatedAt) }}</span>
     </div>
     <div class="flex justify-center gap-2 actions">
       <mat-icon (click)="refreshConnection(props)">refresh</mat-icon>

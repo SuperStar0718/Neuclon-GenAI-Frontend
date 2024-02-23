@@ -12,7 +12,7 @@ export interface IConnection {
   dataset: { collectionName: string; status: boolean };
   uri?: string;
   status: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface IConnectionInfo {

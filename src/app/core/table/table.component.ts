@@ -1,19 +1,38 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { appButton } from 'src/app/Models/appButton';
-import { Config } from '../../../config';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
+import { SelectionModel } from "@angular/cdk/collections";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { appButton } from "src/app/Models/appButton";
+import { Config } from "../../../config";
+import { ApiService } from "src/app/services/api.service";
+import { NotifierService } from "angular-notifier";
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  selector: "app-table",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.scss"],
   animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*', minHeight: '80px' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    trigger("detailExpand", [
+      state("collapsed", style({ height: "0px", minHeight: "0" })),
+      state("expanded", style({ height: "*", minHeight: "80px" })),
+      transition(
+        "expanded <=> collapsed",
+        animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
+      ),
     ]),
   ],
 })
@@ -38,17 +57,21 @@ export class AppTableComponent implements OnInit, OnChanges {
 
   selection = new SelectionModel<any>(true, []);
 
-  constructor(protected router: Router) {}
+  constructor(
+    protected router: Router,
+    private apiService: ApiService,
+    private notifier: NotifierService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.onAllChecked();
   }
-
+  onEditClicked(item: any) {
+    console.log("edit clicked:", item);
+  }
   isAllSelected() {
-
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
     return numSelected === numRows;
@@ -64,9 +87,11 @@ export class AppTableComponent implements OnInit, OnChanges {
 
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.position + 1
+    }`;
   }
 
   checkBox(event: any, row: any) {
@@ -81,7 +106,7 @@ export class AppTableComponent implements OnInit, OnChanges {
   checkBoxAll(checked: any) {
     if (checked) {
       this.dataSource.forEach((item: any) => {
-        if (!item['dontShowCB']) {
+        if (!item["dontShowCB"]) {
           item.checked = true;
         }
       });
@@ -99,7 +124,7 @@ export class AppTableComponent implements OnInit, OnChanges {
     let checkedCount = 0;
     if (this.dataSource?.length > 0) {
       this.dataSource.forEach((element: any) => {
-        if (element['checked']) {
+        if (element["checked"]) {
           checkedCount++;
         }
       });
@@ -107,12 +132,13 @@ export class AppTableComponent implements OnInit, OnChanges {
     let dataLength = 0;
     if (this.dataSource?.length > 0) {
       this.dataSource.forEach((element: any) => {
-        if (!element['dontShowCB']) {
+        if (!element["dontShowCB"]) {
           dataLength++;
         }
       });
     }
-    this.headerCheckBoxValue = dataLength > 0 && dataLength == checkedCount ? true : false;
+    this.headerCheckBoxValue =
+      dataLength > 0 && dataLength == checkedCount ? true : false;
 
     let obj = {
       checkCount: checkedCount,
@@ -127,17 +153,20 @@ export class AppTableComponent implements OnInit, OnChanges {
   }
 
   setPagination(page: any) {
-    console.log('page', page);
+    console.log("page", page);
     this.setPage.emit(page);
   }
 
   getPaginationText() {
-    console.log('pagination', this.pagination);
-    let pagination = 'Total Count: ';
+    console.log("pagination", this.pagination);
+    let pagination = "Total Count: ";
     if (this.pagination.page < this?.pagination?.pages) {
-      pagination += this.pagination.per_page * this?.pagination?.page + '/' + this?.pagination?.count;
+      pagination +=
+        this.pagination.per_page * this?.pagination?.page +
+        "/" +
+        this?.pagination?.count;
     } else if (this?.pagination?.page == this?.pagination?.pages) {
-      pagination += this?.pagination?.count + '/' + this?.pagination?.count;
+      pagination += this?.pagination?.count + "/" + this?.pagination?.count;
     }
 
     return pagination;
@@ -149,19 +178,64 @@ export class AppTableComponent implements OnInit, OnChanges {
       action: act,
       index: index,
     };
+    console.log("row:", row);
     this.actionClicked.emit(row);
+    if (act.type === "edit" && elem.id) {
+      this.router.navigate([`/main/models/new-model/${elem.id}`]);
+    } else if (act.type === "delete" && elem.id) {
+      this.apiService.deleteModel({ id: elem.id }).subscribe(
+        (res: any) => {
+          //remove the deleted model from the list
+          this.dataSource = this.dataSource.filter(
+            (item: any) => item.id !== elem.id
+          );
+          this.notifier.notify("success", "Model deleted successfully");
+        },
+        (error: any) => {
+          this.notifier.notify("error", "Model deletion failed");
+        }
+      );
+    } else if (act.type === "delete" && elem.type === "connection") {
+      const data = {
+        host: elem.endpointUrl,
+        type: elem.text,
+        dbname: elem.dbname,
+        dataset:{
+          collectionName: elem.Name,
+        }
+      };
+      this.apiService.deleteConnection(data).subscribe(
+        (res: any) => {
+          //remove the deleted model from the list
+          this.dataSource = this.dataSource.filter(
+            (item: any) => !(item.endpointUrl === elem.endpointUrl && item.dbname === elem.dbname && item.Name === elem.Name)
+          );
+          this.notifier.notify("success", "Connection deleted successfully");
+        },
+        (error: any) => {
+          this.notifier.notify("error", "Connection deletion failed");
+        }
+      );
+    } else if (act.type ==='copy'){
+      console.log('copy clicked');
+      navigator.clipboard.writeText(elem.endpointUrl).then(function() {
+        console.log('Copying to clipboard was successful!');
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
   }
 
   rowActionsVisibility(ele: any) {
     let show = false;
     let count = 0;
 
-    this.tableProps?.rowActions.forEach(item => {
-      if (item.type == 'view') {
+    this.tableProps?.rowActions.forEach((item) => {
+      if (item.type == "view") {
         item.isCustom = ele.isviewCustom;
       }
 
-      if (item.type == 'edit') {
+      if (item.type == "edit") {
         item.isCustom = ele.isEditCustom;
       }
 

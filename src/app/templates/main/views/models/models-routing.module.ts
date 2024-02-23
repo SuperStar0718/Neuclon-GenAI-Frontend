@@ -9,6 +9,11 @@ const routes: Routes = [
       import("./new-model/new-model.module").then((m) => m.NewModelModule),
   },
   {
+    path: "new-model/:id",
+    loadChildren: () =>
+      import("./new-model/new-model.module").then((m) => m.NewModelModule),
+  },
+  {
     path: "model-templates",
     loadChildren: () =>
       import("./template-model/template-model.module").then(
