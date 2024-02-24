@@ -30,6 +30,7 @@ export class NewModelComponent implements AfterViewInit {
   @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(DiagramComponent) diagram: DiagramComponent;
   @ViewChild("modelName") modelName: ElementRef;
+  @ViewChild("modelDescription") modelDescription: ElementRef;
   private readonly notifier: NotifierService;
 
   availableConnections: any[] = [];
@@ -161,7 +162,7 @@ export class NewModelComponent implements AfterViewInit {
     this.diagram.onLockClicked(this.isLocked);
   }
 
-  onSaveclicked(modelName: string) {
+  onSaveclicked(modelName: string, modelDescription: string) {
     console.log("clicked save button!:", modelName);
     const diagramData = this.diagram.diagram.model.toJson();
     localStorage.setItem("diagramData", diagramData);
@@ -177,6 +178,7 @@ export class NewModelComponent implements AfterViewInit {
             host: "neuclongenmongodb.mongo.cosmos.azure.com",
             nodeData: JSON.stringify(allConnectedNodes),
             diagramData: diagramData,
+            description: modelDescription,
           };
           const id = this.route.snapshot.paramMap.get("id");
 

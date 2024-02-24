@@ -41,7 +41,7 @@
         <mat-divider [vertical]="true"></mat-divider>
         <div class="flex items-center self-center gap-3 h-fit">
           <mat-icon>import_export</mat-icon>
-            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked(modelName.value)">
+            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked(modelName.value, modelDescription.value)">
                 <mat-icon>save</mat-icon>
             </button>
           <mat-icon>refresh</mat-icon>
@@ -62,6 +62,11 @@
       <div>
         <app-diagram (setJoinedTable)="onSetJoinedtable($event)" ></app-diagram>
         <!-- <app-jointjs></app-jointjs> -->
+      </div>
+      <div class="mt-3">
+        <mat-form-field class=" max-w-[220px]" >
+          <input #modelDescription matInput placeholder="Description for this Model" />
+        </mat-form-field>
       </div>
       <div class="mt-3">
         <mat-expansion-panel class="panel" expanded>

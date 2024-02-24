@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-template-model",
@@ -16,71 +17,93 @@ export class TemplateModelComponent {
     "Copy all rows from an excel file to another excel file with a click of a button",
   ];
 
-  templates: any[] = [
-    {
-      imgs: ["assets/logos/sap.png", "assets/logos/Salesforce.png"],
-      text: "send specific data from salesforce into SAP",
-    },
-    {
-      imgs: ["assets/logos/Oracle.png", "assets/logos/fedex.png"],
-      text: "Integrate oracle orders seamlessly with FEDEX for efficient shipping management.",
-    },
-    {
-      imgs: ["assets/logos/neuclon.svg", "assets/logos/opc.png"],
-      text: "Connect industrial equipment securely with Neuclon via OPC UA protocol.",
-    },
-    {
-      imgs: ["assets/logos/fanuc.jpeg", "assets/logos/x.png"],
-      text: "Sense abnormal condition from Fanuc robot and automatically schedule work order for maintenance",
-    },
-    {
-      imgs: ["assets/logos/excel.png", "assets/logos/sap.png"],
-      text: "Send specific data from Excel Worksheet into SAP",
-    },
-    {
-      imgs: ["assets/logos/sheets.png", "assets/logos/insight.png"],
-      text: "Build advance analytics from your data on google sheet in real time.",
-    },
-    {
-      imgs: [
-        "assets/logos/neuclon.svg",
-        "assets/logos/Oracle.png",
-        "assets/logos/mb.png",
-      ],
-      text: "Create data pipeline to connect data from oracle, industrial equipment and MES.",
-    },
-    {
-      imgs: ["assets/logos/slack.png", "assets/logos/gmail.png"],
-      text: "Send new Gmail emails as Slack channel messages..",
-    },
-    {
-      imgs: ["assets/logos/shopify.png", "assets/logos/channel.png"],
-      text: "Sell products from your online store in Amazon, eBay, Walmart and 50+ marketplaces.",
-    },
-    {
-      imgs: ["assets/logos/elephant.png", "assets/logos/snowflake.png"],
-      text: "Automatically sync data between PostgreSQL and Snowflake",
-    },
-    {
-      imgs: ["assets/logos/restapi.png", "assets/logos/insight.png"],
-      text: "Build advanced AI-Powered analytics dashboard from custom application via REST API",
-    },
-    {
-      imgs: ["assets/logos/youtube.png", "assets/logos/facebook.png"],
-      text: "Send new YouTube videos in a channel to a Facebook page",
-    },
-  ];
+  // templates: any[] = [
+  //   {
+  //     imgs: ["assets/logos/sap.png", "assets/logos/Salesforce.png"],
+  //     text: "send specific data from salesforce into SAP",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/Oracle.png", "assets/logos/fedex.png"],
+  //     text: "Integrate oracle orders seamlessly with FEDEX for efficient shipping management.",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/neuclon.svg", "assets/logos/opc.png"],
+  //     text: "Connect industrial equipment securely with Neuclon via OPC UA protocol.",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/fanuc.jpeg", "assets/logos/x.png"],
+  //     text: "Sense abnormal condition from Fanuc robot and automatically schedule work order for maintenance",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/excel.png", "assets/logos/sap.png"],
+  //     text: "Send specific data from Excel Worksheet into SAP",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/sheets.png", "assets/logos/insight.png"],
+  //     text: "Build advance analytics from your data on google sheet in real time.",
+  //   },
+  //   {
+  //     imgs: [
+  //       "assets/logos/neuclon.svg",
+  //       "assets/logos/Oracle.png",
+  //       "assets/logos/mb.png",
+  //     ],
+  //     text: "Create data pipeline to connect data from oracle, industrial equipment and MES.",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/slack.png", "assets/logos/gmail.png"],
+  //     text: "Send new Gmail emails as Slack channel messages..",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/shopify.png", "assets/logos/channel.png"],
+  //     text: "Sell products from your online store in Amazon, eBay, Walmart and 50+ marketplaces.",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/elephant.png", "assets/logos/snowflake.png"],
+  //     text: "Automatically sync data between PostgreSQL and Snowflake",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/restapi.png", "assets/logos/insight.png"],
+  //     text: "Build advanced AI-Powered analytics dashboard from custom application via REST API",
+  //   },
+  //   {
+  //     imgs: ["assets/logos/youtube.png", "assets/logos/facebook.png"],
+  //     text: "Send new YouTube videos in a channel to a Facebook page",
+  //   },
+  // ];
   pagination: any;
   pageNumber: number = 1;
   pageSize: number = 10;
+  templates: any[] = [];
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+  ) {
     this.pagination = {
       page: this.pageNumber,
       pages: this.pageSize,
       perPage: 10,
       count: 100,
     };
+  }
+
+  async ngOnInit() {
+    const models: any = await this.apiService.getModels().toPromise();
+    models.forEach((model: any) => {
+      let icons: string[] = []
+      const connectors = JSON.parse(model.nodeData);
+      connectors.forEach((connector:any)=>{
+        icons.push(connector.source)
+      })
+      this.templates.push({
+        imgs: icons,
+        text: model.description
+      });
+    });
+    this.pagination.pages = Math.floor(
+      models.length / this.pagination.perPage + 1
+    );
+    this.pagination.count = models.length;
   }
 
   onPagination(event: any): void {
