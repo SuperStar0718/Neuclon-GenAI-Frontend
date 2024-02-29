@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 // import { Alert, AskingAlert } from '../models/alert';
 // import { appButton } from '../models/appButton';
 // import { AlertService } from '../services/alert.service';
 // import { ApiService } from '../services/api.service';
 
 @Component({
-  selector: 'app-global-list',
+  selector: "app-global-list",
   template: ``,
 })
 export class GlobalListComponent implements OnInit {
@@ -26,7 +26,7 @@ export class GlobalListComponent implements OnInit {
 
   constructor(
     protected router: Router,
-    protected _route: ActivatedRoute, // protected apiService: ApiService, // protected alertService: AlertService
+    protected _route: ActivatedRoute // protected apiService: ApiService, // protected alertService: AlertService
   ) {
     this.dataItems = [];
     this.pagination = {
@@ -39,8 +39,8 @@ export class GlobalListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sub = this._route.params.subscribe(params => {
-      this.type = params['type'];
+    this.sub = this._route.params.subscribe((params) => {
+      this.type = params["type"];
     });
   }
 
@@ -54,13 +54,14 @@ export class GlobalListComponent implements OnInit {
     this.pageNumber = event.page;
     this.pageSize = event.perPage;
     this.paginationUrl = `?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}&SortColumn=id&SortOrder=z`;
-    // this.getList();
     this.pagination.page = this.pageNumber;
     this.pagination.perPage = this.pageSize;
-    this.pagination.pages = Math.floor(this.allDataItems.length / this.pagination.perPage+1);
+    this.pagination.pages = Math.floor(
+      this.allDataItems.length / this.pagination.perPage + 1
+    );
 
     const startAt = (this.pageNumber - 1) * this.pageSize;
-    const endAt = startAt + this.pageSize;  
+    const endAt = startAt + this.pageSize;
     this.dataItems = this.allDataItems.slice(startAt, endAt);
   }
 
@@ -71,7 +72,7 @@ export class GlobalListComponent implements OnInit {
   }
 
   finalFilters(event: any): void {
-    let filterUrl = '';
+    let filterUrl = "";
 
     if (event.sort) {
       filterUrl = filterUrl + event.sort;
@@ -133,8 +134,8 @@ export class GlobalListComponent implements OnInit {
 
   getListPost(obj?: any): void {
     let url = this.listApi;
-    obj['pageNumber'] = this.pageNumber;
-    obj['pageSize'] = this.pageSize;
+    obj["pageNumber"] = this.pageNumber;
+    obj["pageSize"] = this.pageSize;
     // this.apiService.post(url, obj).then(result => {
     //   if (result?.succeeded) {
     //     if (result.data.hasOwnProperty('listing')) {
@@ -190,7 +191,7 @@ export class GlobalListComponent implements OnInit {
   }
 
   actionClicked(event: any) {
-    console.log('actionClicked', event);
+    console.log("actionClicked", event);
   }
 
   searchData(event: any) {
@@ -199,11 +200,11 @@ export class GlobalListComponent implements OnInit {
   }
 
   onDateFilters(event: any) {
-    console.log('onDateFilters', event);
+    console.log("onDateFilters", event);
   }
 
   headerButton(event: any) {
-    console.log('headerButton', event);
+    console.log("headerButton", event);
   }
 
   onChangefilter(event: any) {}

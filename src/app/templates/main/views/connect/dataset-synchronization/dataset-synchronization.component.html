@@ -24,7 +24,7 @@
     </div>
 
     <form>
-      <mat-tab-group #tabGroup>
+      <mat-tab-group #tabGroup (selectedIndexChange)="onTabChange($event)">
         <mat-tab label="Connect" class="custom-tab">
           <div
             class="flex mt-[31px] items-center flex-col"
@@ -160,8 +160,8 @@
           [disabled]="!dataBaseConnected"
           class="custom-tab"
         >
-          <div class="flex mt-2 px-5 items-center flex-col pb-5 form-group">
-            <p class="text-center mb-2 font-bold">Select datasets to connect</p>
+          <div class="flex flex-col items-center px-5 pb-5 mt-2 form-group">
+            <p class="mb-2 font-bold text-center">Select datasets to connect</p>
 
             <app-tree-view
               #treeView
@@ -178,7 +178,14 @@
         (click)="dataBaseConnected ? connectTables() : connectDB()"
         type="button"
       >
-        {{ dataBaseConnected ? "Connect" : "Next" }}
+        <mat-spinner
+          *ngIf="isLoading; else showText"
+          mode="indeterminate"
+          style="height:30px"
+        ></mat-spinner>
+        <ng-template #showText>
+          {{ dataBaseConnected ? "Connect" : "Next" }}
+        </ng-template>
       </button>
       <!-- <button (click)="submitForm()">Submit</button> -->
     </div>

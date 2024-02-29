@@ -21,6 +21,10 @@ import { HeaderComponent } from "./header/header.component";
 import { AlertComponent } from "./alert/alert.component";
 import { AlertsComponent } from "./alerts/alerts.component";
 import { NotifierModule, NotifierOptions } from "angular-notifier";
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
 /**
  * Custom angular notifier options
@@ -91,6 +95,10 @@ const customNotifierOptions: NotifierOptions = {
     FormsModule,
     RouterModule,
     NotifierModule.withConfig(customNotifierOptions),
+    DialogModule,
+    ConfirmDialogModule,
+    ToastModule,
+    ButtonModule,
   ],
   exports: [
     MaterialModule,

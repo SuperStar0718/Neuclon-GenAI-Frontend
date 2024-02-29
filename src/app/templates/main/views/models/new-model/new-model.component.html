@@ -5,13 +5,22 @@
         <div class="input-field flex items-center gap-3 w-[64%] py-6">
           <div class="flex justify-between items-center h-fit w-[60%]">
             <div>
-              <mat-form-field class=" max-w-[220px]" >
-                <input #modelName matInput placeholder="Input Your Model Name" />
+              <mat-form-field class="max-w-[220px]">
+                <input
+                  #modelName
+                  matInput
+                  placeholder="Input Your Model Name"
+                />
               </mat-form-field>
             </div>
             <div class="flex items-center gap-3 h-fit">
-              <button mat-icon-button class="flex" aria-label="lock" (click)="onlockclicked($event)">
-                <mat-icon>{{ isLocked ?  "lock_open" : "lock"}}</mat-icon>
+              <button
+                mat-icon-button
+                class="flex"
+                aria-label="lock"
+                (click)="onlockclicked($event)"
+              >
+                <mat-icon>{{ isLocked ? "lock" : "lock_open" }}</mat-icon>
               </button>
               <mat-icon>arrow_drop_down</mat-icon>
               <mat-icon>radio_button_unchecked</mat-icon>
@@ -41,9 +50,14 @@
         <mat-divider [vertical]="true"></mat-divider>
         <div class="flex items-center self-center gap-3 h-fit">
           <mat-icon>import_export</mat-icon>
-            <button mat-icon-button class="flex" aria-label="lock" (click)="onSaveclicked(modelName.value, modelDescription.value)">
-                <mat-icon>save</mat-icon>
-            </button>
+          <button
+            mat-icon-button
+            class="flex"
+            aria-label="lock"
+            (click)="onSaveclicked(modelName.value, modelDescription.value)"
+          >
+            <mat-icon>save</mat-icon>
+          </button>
           <mat-icon>refresh</mat-icon>
           <mat-icon>filter_list</mat-icon>
         </div>
@@ -60,12 +74,20 @@
         </div>
       </div>
       <div>
-        <app-diagram (setJoinedTable)="onSetJoinedtable($event)" ></app-diagram>
+        <app-diagram (setJoinedTable)="onSetJoinedtable($event)"></app-diagram>
         <!-- <app-jointjs></app-jointjs> -->
       </div>
       <div class="mt-3">
-        <mat-form-field class=" max-w-[220px]" >
-          <input #modelDescription matInput placeholder="Description for this Model" />
+        <mat-form-field class="w-[600px]">
+          <textarea
+            #modelDescription
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            placeholder="Description for this Model"
+          ></textarea>
         </mat-form-field>
       </div>
       <div class="mt-3">
@@ -73,7 +95,9 @@
           <mat-expansion-panel-header> </mat-expansion-panel-header>
           <app-table
             [tableProps]="tableProps"
-            [dataSource]="dataSource"
+            [dataSource]="dataItems"
+            [pagination]="pagination"
+            (setPage)="onPagination($event)"
           ></app-table>
         </mat-expansion-panel>
       </div>

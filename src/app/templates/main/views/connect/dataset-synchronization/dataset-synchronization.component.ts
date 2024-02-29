@@ -40,6 +40,7 @@ export class DatasetSynchronizationComponent implements OnInit {
   ) {
     this.notifier = notifierService;
   }
+  isLoading: boolean = false;
   currentForm: any;
   existingConnectionInfo: IConnection;
   dataBaseConnected: boolean;
@@ -162,6 +163,7 @@ export class DatasetSynchronizationComponent implements OnInit {
 
   connectDB() {
     console.log(this.currentForm);
+    this.isLoading = true;
     let connectionData: { [key: string]: any } = {};
     this.currentForm.fields.forEach((field: any) => {
       connectionData[field.name] = field.value;
@@ -205,6 +207,7 @@ export class DatasetSynchronizationComponent implements OnInit {
         this.dataBaseConnected = true;
         this.treeView.DBTables = treeData;
         this.tabGroup.selectedIndex = 1;
+        this.isLoading = false;
         this.notifier.notify("success", "Connection Successful");
       },
       (error) => {
@@ -212,12 +215,20 @@ export class DatasetSynchronizationComponent implements OnInit {
         this.notifier.notify("error", "Whoops, something went wrong.");
       }
     );
+
   }
+
+  onTabChange(event: any) {
+    console.log("tab changed:", event);
+    this.treeView.treeView.instance.selectAll();
+  }
+
   selectDBTables(selectionData: any) {
     this.selectedTables = selectionData;
   }
 
   connectTables() {
+    this.isLoading = true;
     console.log("selected tables:", this.selectedTables);
     const selectedTables = this.selectedTables
       .filter((table: IDBTable) => table.isTable)
@@ -265,6 +276,8 @@ export class DatasetSynchronizationComponent implements OnInit {
         this.notifier.notify("error", "Whoops, something went wrong.");
       }
     );
+    this.isLoading = false;
+    this.dialogRef.close();
   }
 }
 

@@ -20,6 +20,13 @@ import { appButton } from "src/app/Models/appButton";
 import { Config } from "../../../config";
 import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
+import {
+  ConfirmationService,
+  MessageService,
+  ConfirmEventType,
+} from "primeng/api";
+import { ConfirmDialog } from "primeng/confirmdialog";
+import { Toast } from "primeng/toast";
 
 @Component({
   selector: "app-table",
@@ -35,6 +42,7 @@ import { NotifierService } from "angular-notifier";
       ),
     ]),
   ],
+  providers: [ConfirmationService, MessageService],
 })
 export class AppTableComponent implements OnInit, OnChanges {
   objectKeys = Object.keys;
@@ -60,7 +68,9 @@ export class AppTableComponent implements OnInit, OnChanges {
   constructor(
     protected router: Router,
     private apiService: ApiService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {}
@@ -68,6 +78,9 @@ export class AppTableComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.onAllChecked();
   }
+
+  
+
   onEditClicked(item: any) {
     console.log("edit clicked:", item);
   }
@@ -172,7 +185,7 @@ export class AppTableComponent implements OnInit, OnChanges {
     return pagination;
   }
 
-  onRowActionClicked(elem: any, act: any, index: any) {
+  onRowActionClicked(event: Event,elem: any, act: any, index: any) {
     let row = {
       element: elem,
       action: act,
@@ -183,32 +196,54 @@ export class AppTableComponent implements OnInit, OnChanges {
     if (act.type === "edit" && elem.id) {
       this.router.navigate([`/main/models/new-model/${elem.id}`]);
     } else if (act.type === "delete" && elem.id) {
-      this.apiService.deleteModel({ id: elem.id }).subscribe(
-        (res: any) => {
-          //remove the deleted model from the list
-          this.dataSource = this.dataSource.filter(
-            (item: any) => item.id !== elem.id
-          );
-          this.notifier.notify("success", "Model deleted successfully");
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to delete this model?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
+  
+        accept: () => {
+            this.apiService.deleteModel({ id: elem.id }).subscribe(
+              (res: any) => {
+                //remove the deleted model from the list
+                this.dataSource = this.dataSource.filter(
+                  (item: any) => item.id !== elem.id
+                );
+                this.notifier.notify("success", "Model deleted successfully");
+              },
+              (error: any) => {
+                this.notifier.notify("error", "Model deletion failed");
+              }
+            );
         },
-        (error: any) => {
-          this.notifier.notify("error", "Model deletion failed");
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
         }
-      );
+    });
+     
     } else if (act.type === "delete" && elem.type === "connection") {
       const data = {
         host: elem.endpointUrl,
         type: elem.text,
         dbname: elem.dbname,
-        dataset:{
+        dataset: {
           collectionName: elem.Name,
-        }
+        },
       };
       this.apiService.deleteConnection(data).subscribe(
         (res: any) => {
           //remove the deleted model from the list
           this.dataSource = this.dataSource.filter(
-            (item: any) => !(item.endpointUrl === elem.endpointUrl && item.dbname === elem.dbname && item.Name === elem.Name)
+            (item: any) =>
+              !(
+                item.endpointUrl === elem.endpointUrl &&
+                item.dbname === elem.dbname &&
+                item.Name === elem.Name
+              )
           );
           this.notifier.notify("success", "Connection deleted successfully");
         },
@@ -216,13 +251,16 @@ export class AppTableComponent implements OnInit, OnChanges {
           this.notifier.notify("error", "Connection deletion failed");
         }
       );
-    } else if (act.type ==='copy'){
-      console.log('copy clicked');
-      navigator.clipboard.writeText(elem.endpointUrl).then(function() {
-        console.log('Copying to clipboard was successful!');
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-      });
+    } else if (act.type === "copy") {
+      console.log("copy clicked");
+      navigator.clipboard.writeText(elem.endpointUrl).then(
+        function () {
+          console.log("Copying to clipboard was successful!");
+        },
+        function (err) {
+          console.error("Could not copy text: ", err);
+        }
+      );
     }
   }
 

@@ -15,9 +15,10 @@ import { EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { DiagramComponent } from "./diagram/diagram.component";
 import { ApiService } from "src/app/services/api.service";
 import { NotifierService } from "angular-notifier";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import * as go from "gojs";
+import { GlobalListComponent } from "src/app/shared/global-list";
 
 const $ = go.GraphObject.make;
 
@@ -26,7 +27,10 @@ const $ = go.GraphObject.make;
   templateUrl: "./new-model.component.html",
   styleUrls: ["./new-model.component.scss"],
 })
-export class NewModelComponent implements AfterViewInit {
+export class NewModelComponent
+  extends GlobalListComponent
+  implements AfterViewInit
+{
   @Output() setJoinedTable: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(DiagramComponent) diagram: DiagramComponent;
   @ViewChild("modelName") modelName: ElementRef;
@@ -35,8 +39,7 @@ export class NewModelComponent implements AfterViewInit {
 
   availableConnections: any[] = [];
   defaultPlaceholder: string = Config.default_placeholder;
-  tableProps: any;
-  dataSource: any[] = [];
+  // tableProps: any;
   models: any[] = [];
   isExpanded: boolean = true;
   isLocked: boolean = false;
@@ -65,14 +68,20 @@ export class NewModelComponent implements AfterViewInit {
   });
 
   constructor(
+    protected override router: Router,
+    protected override _route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
     private route: ActivatedRoute,
 
     notifierService: NotifierService
   ) {
+    super(router, _route);
+
     this.notifier = notifierService;
 
+    this.pagination.pages = 1;
+    this.pagination.count=0
     this.availableConnections = [
       {
         img: "assets/logos/Epicor.png",
@@ -146,12 +155,11 @@ export class NewModelComponent implements AfterViewInit {
       const id = this.route.snapshot.paramMap.get("id");
       if (id) {
         this.apiService.getModel(id).subscribe((res) => {
-          // console.log('res from model data', res.diagramData);
-          // console.log('diagram.diagram.model:', this.diagram)
           this.diagram.diagram.model = go.Model.fromJson(
             JSON.parse(res.diagramData)
           );
           this.modelName.nativeElement.value = res.name;
+          this.modelDescription.nativeElement.value = res.description;
         });
       }
     }, 1000);
@@ -202,9 +210,8 @@ export class NewModelComponent implements AfterViewInit {
   }
 
   onSetJoinedtable(joinedTable: any) {
-    this.dataSource = joinedTable;
+    this.allDataItems = joinedTable;
     const headers = Object.keys(joinedTable[0]);
-    console.log("headers", headers);
     this.tableProps = {
       colHeader: headers.reduce((obj: any, header: string) => {
         obj[header] = header;
@@ -213,7 +220,12 @@ export class NewModelComponent implements AfterViewInit {
 
       columnTypes: {},
     };
-    // this.cdr.detectChanges();
+
+    this.dataItems = this.allDataItems.slice(0, this.pagination.perPage);
+    this.pagination.pages = Math.floor(
+      this.allDataItems.length / this.pagination.perPage + 1
+    );
+    this.pagination.count = this.allDataItems.length;
   }
 
   onDrop(event: CdkDragDrop<any[]>) {

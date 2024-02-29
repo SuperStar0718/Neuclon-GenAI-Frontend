@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from "@angular/core";
+import { DxTreeViewComponent } from "devextreme-angular";
 
 export interface IDBTable {
   id: string;
@@ -22,17 +23,20 @@ export interface IDBTable {
   templateUrl: "./tree-view.component.html",
   styleUrls: ["./tree-view.component.scss"],
 })
-export class TreeViewComponent {
+export class TreeViewComponent  {
   @Input() DBTables: IDBTable[];
   @Output() selectDBTables: EventEmitter<any> = new EventEmitter<any>();
-
+  @ViewChild("treeView") treeView: DxTreeViewComponent;
   products: IDBTable[];
 
   currentItem: IDBTable;
 
-  constructor() {}
+  constructor() {
+  }
+ 
 
   selectItem(e: any) {
+
     this.currentItem = e.itemData;
     const selectedItems = e.component.getSelectedNodes().map((node: any) => {
       return node.itemData;
