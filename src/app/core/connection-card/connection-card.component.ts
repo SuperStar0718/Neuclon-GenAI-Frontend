@@ -30,11 +30,8 @@ export class ConnectionCardComponent {
   }
 
   refreshConnection(props: IConnection) {
-    console.log(props);
     this.apiService.refreshConnection(props).subscribe(
       (res) => {
-        console.log("success");
-        console.log("res:", res);
         props.dataset.status = true;
         this.props.dataset = props.dataset;
         this.changeDetector.detectChanges();
@@ -52,10 +49,8 @@ export class ConnectionCardComponent {
   }
 
   stopConnection(props: IConnection) {
-    console.log(props);
     this.apiService.stopConnection(props).subscribe(
       (res) => {
-        console.log("success");
         props.dataset.status = false;
         this.props.dataset = props.dataset;
         this.changeDetector.detectChanges();
@@ -69,10 +64,8 @@ export class ConnectionCardComponent {
   }
 
   deleteConnection(props: IConnection) {
-    console.log(props);
     this.apiService.deleteConnection(props).subscribe(
       (res) => {
-        console.log("success");
         this.display = false;
         this.notifier.notify("success", "Connection Deleted");
       },
@@ -91,7 +84,6 @@ export class ConnectionCardComponent {
         (item1) => item1.displayName?.toLowerCase() === props.type.toLowerCase()
       );
 
-    console.log("Edit data:", syncDataset);
     this.dialogRef.open(DatasetSynchronizationComponent, {
       data: {
         categoryInfo: syncDataset[0],
