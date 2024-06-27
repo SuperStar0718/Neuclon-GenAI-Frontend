@@ -1,0 +1,18 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "OneDrive URL",
+      "name": "url",
+      "value": "",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Field is required"
+        }
+      ]
+    }
+  ]
+}
+    
